@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>(Re)introduction to R (Lecture 3) – EHS 655</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../01-lectures/01-the-basics/04-descriptive-stats/descriptive_stats.html" rel="next">
+<link href="../../../01-lectures/01-the-basics/02-introduction-pt2/introduction_pt2.html" rel="prev">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../html_styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../01-lectures/01-the-basics/01-introduction/introduction.html">Section 1</a></li><li class="breadcrumb-item"><a href="../../../01-lectures/01-the-basics/03-introduction-to-R/introduction_to_R.html">3 (Re)introduction to R</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../../">EHS 655</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../01-lectures/01-the-basics/00-prerequisites/prerequisites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting started</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 1</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../01-lectures/01-the-basics/01-introduction/introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1 Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../01-lectures/01-the-basics/02-introduction-pt2/introduction_pt2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2 Introduction pt II</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../01-lectures/01-the-basics/03-introduction-to-R/introduction_to_R.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">3 (Re)introduction to R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../01-lectures/01-the-basics/04-descriptive-stats/descriptive_stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4 Types of data</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#about-r" id="toc-about-r" class="nav-link active" data-scroll-target="#about-r">About R</a></li>
+  <li><a href="#about-r-studio" id="toc-about-r-studio" class="nav-link" data-scroll-target="#about-r-studio">About R Studio</a></li>
+  <li><a href="#installing-r-and-rstudio-on-your-computer" id="toc-installing-r-and-rstudio-on-your-computer" class="nav-link" data-scroll-target="#installing-r-and-rstudio-on-your-computer">Installing R and RStudio on your computer</a></li>
+  <li><a href="#running-r-and-rstudio-remotely-via-virtual-sites" id="toc-running-r-and-rstudio-remotely-via-virtual-sites" class="nav-link" data-scroll-target="#running-r-and-rstudio-remotely-via-virtual-sites">Running R and RStudio remotely via Virtual Sites</a></li>
+  <li><a href="#setting-your-working-directory" id="toc-setting-your-working-directory" class="nav-link" data-scroll-target="#setting-your-working-directory">Setting your working directory</a></li>
+  <li><a href="#importing-the-ehs-655-dataset" id="toc-importing-the-ehs-655-dataset" class="nav-link" data-scroll-target="#importing-the-ehs-655-dataset">Importing the EHS 655 dataset</a></li>
+  <li><a href="#loading-packages-in-r" id="toc-loading-packages-in-r" class="nav-link" data-scroll-target="#loading-packages-in-r">Loading packages in R</a></li>
+  <li><a href="#boolean-operators" id="toc-boolean-operators" class="nav-link" data-scroll-target="#boolean-operators">Boolean operators</a></li>
+  <li><a href="#tidyverse" id="toc-tidyverse" class="nav-link" data-scroll-target="#tidyverse">Tidyverse</a></li>
+  <li><a href="#more-on-tidyverse" id="toc-more-on-tidyverse" class="nav-link" data-scroll-target="#more-on-tidyverse">More on <code>tidyverse</code></a></li>
+  <li><a href="#exploring-tidyverse-with-air-quality-data" id="toc-exploring-tidyverse-with-air-quality-data" class="nav-link" data-scroll-target="#exploring-tidyverse-with-air-quality-data">Exploring <code>tidyverse</code> with air quality data</a></li>
+  <li><a href="#air-quality-example-data-frame-and-tibble" id="toc-air-quality-example-data-frame-and-tibble" class="nav-link" data-scroll-target="#air-quality-example-data-frame-and-tibble">Air quality example: data frame and tibble</a></li>
+  <li><a href="#so-whats-a-dataframe-and-whats-a-tibble" id="toc-so-whats-a-dataframe-and-whats-a-tibble" class="nav-link" data-scroll-target="#so-whats-a-dataframe-and-whats-a-tibble">So, what’s a dataframe, and what’s a tibble?</a></li>
+  <li><a href="#air-quality-example-arrange-function" id="toc-air-quality-example-arrange-function" class="nav-link" data-scroll-target="#air-quality-example-arrange-function">Air quality example: arrange function</a></li>
+  <li><a href="#air-quality-example-select-function" id="toc-air-quality-example-select-function" class="nav-link" data-scroll-target="#air-quality-example-select-function">Air quality example: select function</a></li>
+  <li><a href="#air-quality-example-filter-and-mutate-functions" id="toc-air-quality-example-filter-and-mutate-functions" class="nav-link" data-scroll-target="#air-quality-example-filter-and-mutate-functions">Air quality example: filter and mutate functions</a></li>
+  <li><a href="#air-quality-example-the-pipe-operator" id="toc-air-quality-example-the-pipe-operator" class="nav-link" data-scroll-target="#air-quality-example-the-pipe-operator">Air quality example: the pipe operator (<code>%&gt;%</code>)</a></li>
+  <li><a href="#now-lets-look-at-our-data.-first-stop-the-r-script" id="toc-now-lets-look-at-our-data.-first-stop-the-r-script" class="nav-link" data-scroll-target="#now-lets-look-at-our-data.-first-stop-the-r-script">Now let’s look at our data. First stop: the R script</a></li>
+  <li><a href="#creating-an-r-script" id="toc-creating-an-r-script" class="nav-link" data-scroll-target="#creating-an-r-script">Creating an R script</a></li>
+  <li><a href="#creating-an-r-script-1" id="toc-creating-an-r-script-1" class="nav-link" data-scroll-target="#creating-an-r-script-1">Creating an R script</a></li>
+  <li><a href="#creating-an-r-script-2" id="toc-creating-an-r-script-2" class="nav-link" data-scroll-target="#creating-an-r-script-2">Creating an R script</a></li>
+  <li><a href="#exploring-the-dataset" id="toc-exploring-the-dataset" class="nav-link" data-scroll-target="#exploring-the-dataset">Exploring the dataset</a></li>
+  <li><a href="#lets-interact-with-the-data-a-bit" id="toc-lets-interact-with-the-data-a-bit" class="nav-link" data-scroll-target="#lets-interact-with-the-data-a-bit">Let’s interact with the data a bit</a></li>
+  <li><a href="#lets-interact-with-the-data-a-bit-1" id="toc-lets-interact-with-the-data-a-bit-1" class="nav-link" data-scroll-target="#lets-interact-with-the-data-a-bit-1">Let’s interact with the data a bit</a></li>
+  <li><a href="#some-basic-analysis-commands-in-r" id="toc-some-basic-analysis-commands-in-r" class="nav-link" data-scroll-target="#some-basic-analysis-commands-in-r">Some basic analysis commands in R</a></li>
+  <li><a href="#a-few-other-things-about-r" id="toc-a-few-other-things-about-r" class="nav-link" data-scroll-target="#a-few-other-things-about-r">A few other things about R</a></li>
+  <li><a href="#thats-enough-for-today" id="toc-thats-enough-for-today" class="nav-link" data-scroll-target="#thats-enough-for-today">That’s enough for today</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="introduction_to_R.slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../01-lectures/01-the-basics/01-introduction/introduction.html">Section 1</a></li><li class="breadcrumb-item"><a href="../../../01-lectures/01-the-basics/03-introduction-to-R/introduction_to_R.html">3 (Re)introduction to R</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">(Re)introduction to R (Lecture 3)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="about-r" class="level3">
+<h3 class="anchored" data-anchor-id="about-r">About R</h3>
+<ul>
+<li><p>R is primarily used for statistical analysis and graphics development, including</p>
+<ul>
+<li><p>Data handling and manipulation</p></li>
+<li><p>Data analysis</p></li>
+<li><p>Data visualization</p></li>
+</ul></li>
+<li><p>R is open source, and anyone can create functions</p>
+<ul>
+<li>As a result, R is a composite of <em>packages</em> (i.e., set of related functions) that many independent developers created</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="about-r-studio" class="level3">
+<h3 class="anchored" data-anchor-id="about-r-studio">About R Studio</h3>
+<ul>
+<li><p>While R is a computer language, RStudio is an <em>Integrated Development Environment</em> (IDE)</p>
+<ul>
+<li><p>Provides a more user-friendly interface when coding in R</p></li>
+<li><p>Note! You don’t have to use RStudio to run R code; but it will make it much easier to develop your R code</p></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="installing-r-and-rstudio-on-your-computer" class="level3">
+<h3 class="anchored" data-anchor-id="installing-r-and-rstudio-on-your-computer">Installing R and RStudio on your computer</h3>
+<p>This <u><strong>is</strong></u> the recommended approach</p>
+<ul>
+<li><p>Choose your operating system and then download and install R from UM’s CRAN site:</p>
+<ul>
+<li><a href="https://repo.miserver.it.umich.edu/cran/" class="uri">https://repo.miserver.it.umich.edu/cran/</a></li>
+</ul></li>
+<li><p>Choose your operating system and then download and install R Studio from POSIT:</p>
+<ul>
+<li><a href="https://posit.co/downloads" class="uri">https://posit.co/downloads</a></li>
+</ul></li>
+<li><p>Then we can start to configure R Studio for your analyses</p></li>
+</ul>
+<hr>
+</section>
+<section id="running-r-and-rstudio-remotely-via-virtual-sites" class="level3">
+<h3 class="anchored" data-anchor-id="running-r-and-rstudio-remotely-via-virtual-sites">Running R and RStudio remotely via Virtual Sites</h3>
+<p>This is <u><strong>not</strong></u> the recommended approach</p>
+<ul>
+<li><p>Log in to Virtual Sites</p>
+<ul>
+<li><a href="https://its.umich.edu/computing/computers-software/virtual-sites" class="uri">https://its.umich.edu/computing/computers-software/virtual-sites</a></li>
+</ul></li>
+<li><p>Get yourself configured to save your files on Virtual Sites</p>
+<ul>
+<li><a href="https://teamdynamix.umich.edu/TDClient/30/Portal/KB/Article/4508/Saving-Files-When-Using-Campus-Computing-or-Virtual-Sites-Configuring-Kumo" class="uri">https://teamdynamix.umich.edu/TDClient/30/Portal/KB/Article/4508/Saving-Files-When-Using-Campus-Computing-or-Virtual-Sites-Configuring-Kumo</a></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="setting-your-working-directory" class="level3">
+<h3 class="anchored" data-anchor-id="setting-your-working-directory">Setting your working directory</h3>
+<ul>
+<li><p>When you first open R, your working directory is your entire computer</p></li>
+<li><p>You can specify a particular folder to work from using the set working directory command</p>
+<ul>
+<li><code>setwd()</code></li>
+</ul></li>
+<li><p>For instance, on a Mac, if my username is “industrialhygiene”, and I have a folder under the file path&nbsp;Documents &gt; Coding &gt; EHS655 where I plan to do my R analyses:</p>
+<ul>
+<li><code>setwd("/Users/industrialhygiene/Documents/Coding/EHS655")</code></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="importing-the-ehs-655-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="importing-the-ehs-655-dataset">Importing the EHS 655 dataset</h3>
+<ul>
+<li><p>Now if I read a dataset file (“dataset.csv”) I can simply call the dataset filename directly since my RStudio already knows to look in the “EHS655” folder:</p>
+<ul>
+<li><code>read.csv(”dataset.csv")</code></li>
+</ul></li>
+<li><p>If I did not set my working directory already, I would’ve needed to read the file using the entire file path:</p>
+<ul>
+<li><code>read.csv("/Users/industrialhygiene/Documents/Coding/EHS655/dataset.csv")</code></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="loading-packages-in-r" class="level3">
+<h3 class="anchored" data-anchor-id="loading-packages-in-r">Loading packages in R</h3>
+<ul>
+<li><p>All functions to run a particular command in R are stored in packages</p>
+<ul>
+<li>If you want to install a new package to use additional commands, you will have to install and load them into your environment manually</li>
+</ul></li>
+<li><p>For example, base R does not have the ability to read Excel files. In order to do this, you will have to first download and install the <code>readxl</code> package:</p>
+<ul>
+<li><code>install.packages("readxl")</code></li>
+</ul></li>
+<li><p>To load (use) the package you will then use this command:</p>
+<ul>
+<li><p><code>library("readxl")</code></p></li>
+<li><p>Note! You will have to run the <code>library()</code> command every time you open your RStudio to use the loaded functions.</p></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="boolean-operators" class="level3">
+<h3 class="anchored" data-anchor-id="boolean-operators">Boolean operators</h3>
+<p>A form of logical values (i.e., <code>TRUE</code> or <code>FALSE</code>) using:</p>
+<ul>
+<li><code>&gt;</code>: greater than</li>
+<li><code>&gt;=</code>: greater than or equal to</li>
+<li><code>&lt;</code>: less than</li>
+<li><code>&lt;</code>: less than or equal to</li>
+<li><code>==</code>: equal to</li>
+<li><code>!=</code>: not equal to</li>
+</ul>
+<hr>
+</section>
+<section id="tidyverse" class="level3">
+<h3 class="anchored" data-anchor-id="tidyverse">Tidyverse</h3>
+<ul>
+<li><p>While base R code is incredibly versatile, most R users utilize the <code>tidyverse</code> package for data wrangling, visualization, and simple analysis</p></li>
+<li><p>To install and load the <code>tidyverse</code> package:</p>
+<ul>
+<li><p><code>install.packages("tidyverse")</code></p></li>
+<li><p><code>library("tidyverse")</code></p>
+<p><img src="images/clipboard-481026334.png" class="img-fluid" style="width:50.0%"></p></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="more-on-tidyverse" class="level3">
+<h3 class="anchored" data-anchor-id="more-on-tidyverse">More on <code>tidyverse</code></h3>
+<p>The <code>tidyverse</code> is package that loads multiple packages that work in harmony with each other.</p>
+<ul>
+<li><code>dplyr</code> - for data wrangling and manipulation</li>
+<li><code>forcats</code> - for reordering factor variables</li>
+<li><code>ggplot2</code> - for data visualization</li>
+<li><code>lubridate</code> - used for handling date and time data</li>
+<li><code>purrr</code> - a functional programming toolkit</li>
+<li><code>readr</code> - for reading reading data files</li>
+<li><code>stringr</code> - for handling string variables</li>
+<li><code>tibble</code> - provides better formatting for data frames</li>
+<li><code>tidyr</code> - provides tools to handle tibble-formatted data frame</li>
+</ul>
+<hr>
+</section>
+<section id="exploring-tidyverse-with-air-quality-data" class="level3">
+<h3 class="anchored" data-anchor-id="exploring-tidyverse-with-air-quality-data">Exploring <code>tidyverse</code> with air quality data</h3>
+<p>To demonstrate the basic features of the tidyverse packages, we will use the <code>airquality</code> dataframe that is pre-loaded into base R</p>
+<p>We will store this dataframe under the name <code>aq_df</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>aq_df <span class="ot">&lt;-</span> datasets<span class="sc">::</span>airquality</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="air-quality-example-data-frame-and-tibble" class="level3">
+<h3 class="anchored" data-anchor-id="air-quality-example-data-frame-and-tibble">Air quality example: data frame and tibble</h3>
+<p>Let’s view what the dataset looks like</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(aq_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Ozone Solar.R Wind Temp Month Day
+1    41     190  7.4   67     5   1
+2    36     118  8.0   72     5   2
+3    12     149 12.6   74     5   3
+4    18     313 11.5   62     5   4
+5    NA      NA 14.3   56     5   5
+6    28      NA 14.9   66     5   6</code></pre>
+</div>
+</div>
+<p>We can view what <em>class</em> of dataset this is</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(aq_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+</div>
+<p>This shows the dataset is stored in R as a <code>data.frame</code>, not a <code>tibble</code>. We can change this using the <code>as_tibble()</code> function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>aq_df <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(aq_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Pro tip: use the up arrow in the command line to scroll to last command</p>
+<hr>
+</section>
+<section id="so-whats-a-dataframe-and-whats-a-tibble" class="level3">
+<h3 class="anchored" data-anchor-id="so-whats-a-dataframe-and-whats-a-tibble">So, what’s a dataframe, and what’s a tibble?</h3>
+<p>Data frame</p>
+<ul>
+<li><p>Two-dimensional, table-like data structure designed to store tabular data</p></li>
+<li><p>Columns can contain different data types like numeric, character, logical, etc.</p></li>
+<li><p>Each individual column must have the exact same type of data in all of its rows</p></li>
+<li><p>Every column must have a unique name</p></li>
+</ul>
+<p>Tibble</p>
+<ul>
+<li><p>Basically what the tidyverse calls a data frame</p></li>
+<li><p>From <a href="https://tibble.tidyverse.org/" class="uri">https://tibble.tidyverse.org/</a>:</p>
+<ul>
+<li>“Tibbles are data.frames that are lazy and surly: they do less (i.e.&nbsp;they don’t change variable names or types, and don’t do partial matching) and complain more (e.g.&nbsp;when a variable does not exist). This forces you to confront problems earlier, typically leading to cleaner, more expressive code.”</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="air-quality-example-arrange-function" class="level3">
+<h3 class="anchored" data-anchor-id="air-quality-example-arrange-function">Air quality example: arrange function</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<p>Now, we can check the class of the dataset to see if it is a tibble:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(aq_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "tbl_df"     "tbl"        "data.frame"</code></pre>
+</div>
+</div>
+<p>Now we can start exploring and manipulating this dataset</p>
+<p>First, let’s sort data by ascending temperature using the <code>arrange()</code> function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(aq_df, Temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 153 × 6
+   Ozone Solar.R  Wind  Temp Month   Day
+   &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1    NA      NA  14.3    56     5     5
+ 2     6      78  18.4    57     5    18
+ 3    NA      66  16.6    57     5    25
+ 4    NA      NA   8      57     5    27
+ 5    18      65  13.2    58     5    15
+ 6    NA     266  14.9    58     5    26
+ 7    19      99  13.8    59     5     8
+ 8     1       8   9.7    59     5    21
+ 9     8      19  20.1    61     5     9
+10     4      25   9.7    61     5    23
+# ℹ 143 more rows</code></pre>
+</div>
+</div>
+</div>
+<div class="slide-column">
+<p>Or, we could sort by descending temperature by adding a minus (-) sign</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(aq_df, <span class="sc">-</span>Temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 153 × 6
+   Ozone Solar.R  Wind  Temp Month   Day
+   &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1    76     203   9.7    97     8    28
+ 2    84     237   6.3    96     8    30
+ 3   118     225   2.3    94     8    29
+ 4    85     188   6.3    94     8    31
+ 5    NA     259  10.9    93     6    11
+ 6    73     183   2.8    93     9     3
+ 7    91     189   4.6    93     9     4
+ 8    NA     250   9.2    92     6    12
+ 9    97     267   6.3    92     7     8
+10    97     272   5.7    92     7     9
+# ℹ 143 more rows</code></pre>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="air-quality-example-select-function" class="level3">
+<h3 class="anchored" data-anchor-id="air-quality-example-select-function">Air quality example: select function</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<p>We can also sort by multiple columns (e.g., day and then month</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(aq_df, Day, Month)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 153 × 6
+   Ozone Solar.R  Wind  Temp Month   Day
+   &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1    41     190   7.4    67     5     1
+ 2    NA     286   8.6    78     6     1
+ 3   135     269   4.1    84     7     1
+ 4    39      83   6.9    81     8     1
+ 5    96     167   6.9    91     9     1
+ 6    36     118   8      72     5     2
+ 7    NA     287   9.7    74     6     2
+ 8    49     248   9.2    85     7     2
+ 9     9      24  13.8    81     8     2
+10    78     197   5.1    92     9     2
+# ℹ 143 more rows</code></pre>
+</div>
+</div>
+<p>We can also keep or remove specific columns using the <code>select()</code> function. To remove the solar radiation column:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(aq_df, <span class="sc">-</span>Solar.R)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 153 × 5
+   Ozone  Wind  Temp Month   Day
+   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1    41   7.4    67     5     1
+ 2    36   8      72     5     2
+ 3    12  12.6    74     5     3
+ 4    18  11.5    62     5     4
+ 5    NA  14.3    56     5     5
+ 6    28  14.9    66     5     6
+ 7    23   8.6    65     5     7
+ 8    19  13.8    59     5     8
+ 9     8  20.1    61     5     9
+10    NA   8.6    69     5    10
+# ℹ 143 more rows</code></pre>
+</div>
+</div>
+</div>
+<div class="slide-column">
+<p>Or, if there are specific columns we want to keep (e.g., ozone, month, day), we can list them:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(aq_df, Ozone, Month, Day)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 153 × 3
+   Ozone Month   Day
+   &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1    41     5     1
+ 2    36     5     2
+ 3    12     5     3
+ 4    18     5     4
+ 5    NA     5     5
+ 6    28     5     6
+ 7    23     5     7
+ 8    19     5     8
+ 9     8     5     9
+10    NA     5    10
+# ℹ 143 more rows</code></pre>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="air-quality-example-filter-and-mutate-functions" class="level3">
+<h3 class="anchored" data-anchor-id="air-quality-example-filter-and-mutate-functions">Air quality example: filter and mutate functions</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<p>In addition to removing columns, we can also remove specific rows using the <code>filter()</code> function. For example, to look only at the month of May:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(aq_df, Month <span class="sc">==</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 31 × 6
+   Ozone Solar.R  Wind  Temp Month   Day
+   &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1    41     190   7.4    67     5     1
+ 2    36     118   8      72     5     2
+ 3    12     149  12.6    74     5     3
+ 4    18     313  11.5    62     5     4
+ 5    NA      NA  14.3    56     5     5
+ 6    28      NA  14.9    66     5     6
+ 7    23     299   8.6    65     5     7
+ 8    19      99  13.8    59     5     8
+ 9     8      19  20.1    61     5     9
+10    NA     194   8.6    69     5    10
+# ℹ 21 more rows</code></pre>
+</div>
+</div>
+<p><em>Note: we can check the N of rows (which started at 153, now down to 31) to confirm the change was made</em></p>
+</div>
+<div class="slide-column">
+<p>We can also create new columns using the <code>mutate()</code> function. Let’s create an indicator variable for days when ozone is greater than 30:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(aq_df, <span class="at">Ozone_above_30 =</span> <span class="fu">ifelse</span>(Ozone <span class="sc">&gt;</span> <span class="dv">30</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 153 × 7
+   Ozone Solar.R  Wind  Temp Month   Day Ozone_above_30
+   &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;          &lt;dbl&gt;
+ 1    41     190   7.4    67     5     1              1
+ 2    36     118   8      72     5     2              1
+ 3    12     149  12.6    74     5     3              0
+ 4    18     313  11.5    62     5     4              0
+ 5    NA      NA  14.3    56     5     5             NA
+ 6    28      NA  14.9    66     5     6              0
+ 7    23     299   8.6    65     5     7              0
+ 8    19      99  13.8    59     5     8              0
+ 9     8      19  20.1    61     5     9              0
+10    NA     194   8.6    69     5    10             NA
+# ℹ 143 more rows</code></pre>
+</div>
+</div>
+<p><em>Note: the command sets the variable to <code>1</code> if ozone &gt;30, otherwise to <code>0</code></em></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="air-quality-example-the-pipe-operator" class="level3">
+<h3 class="anchored" data-anchor-id="air-quality-example-the-pipe-operator">Air quality example: the pipe operator (<code>%&gt;%</code>)</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<p>To arrange, select, filter, and mutate data all in one line of code, we could use:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="fu">filter</span>(<span class="fu">select</span>(<span class="fu">arrange</span>(aq_df, <span class="sc">-</span>Temp), <span class="sc">-</span>Solar.R), Month <span class="sc">==</span> <span class="dv">5</span>), <span class="at">Ozone_above_30 =</span> <span class="fu">ifelse</span>(Ozone <span class="sc">&gt;</span> <span class="dv">30</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 31 × 6
+   Ozone  Wind  Temp Month   Day Ozone_above_30
+   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;          &lt;dbl&gt;
+ 1    45  14.9    81     5    29              1
+ 2   115   5.7    79     5    30              1
+ 3    37   7.4    76     5    31              1
+ 4    12  12.6    74     5     3              0
+ 5     7   6.9    74     5    11              0
+ 6    11  16.6    73     5    22              0
+ 7    36   8      72     5     2              1
+ 8    NA   8.6    69     5    10             NA
+ 9    16   9.7    69     5    12              0
+10    14  10.9    68     5    14              0
+# ℹ 21 more rows</code></pre>
+</div>
+</div>
+<p><em>Note: this is difficult to read and debug, and has a weird order of operations</em></p>
+</div>
+<div class="slide-column">
+<p>With the pipe operator (<code>%&gt;%</code>), we can separate command sequentially:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(aq_df, <span class="sc">-</span>Temp) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Solar.R) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Ozone_above_30 =</span> <span class="fu">ifelse</span>(Ozone <span class="sc">&gt;</span> <span class="dv">30</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 31 × 6
+   Ozone  Wind  Temp Month   Day Ozone_above_30
+   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;          &lt;dbl&gt;
+ 1    45  14.9    81     5    29              1
+ 2   115   5.7    79     5    30              1
+ 3    37   7.4    76     5    31              1
+ 4    12  12.6    74     5     3              0
+ 5     7   6.9    74     5    11              0
+ 6    11  16.6    73     5    22              0
+ 7    36   8      72     5     2              1
+ 8    NA   8.6    69     5    10             NA
+ 9    16   9.7    69     5    12              0
+10    14  10.9    68     5    14              0
+# ℹ 21 more rows</code></pre>
+</div>
+</div>
+<p>Much better! Need to be cognizant of order of operations (i.e., filter before mutating)</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="now-lets-look-at-our-data.-first-stop-the-r-script" class="level3">
+<h3 class="anchored" data-anchor-id="now-lets-look-at-our-data.-first-stop-the-r-script">Now let’s look at our data. First stop: the R script</h3>
+<ul>
+<li><p>What is an R script?</p>
+<ul>
+<li>It’s a blank R file that will allow you to execute commands in a sequential manner</li>
+</ul></li>
+<li><p>Why use a script?</p>
+<ul>
+<li><p>Ease of manipulation of data</p></li>
+<li><p>Documentation of manipulations and analyses</p></li>
+<li><p>Preserve original data file</p></li>
+<li><p>I’m forcing you to</p></li>
+</ul></li>
+<li><p><strong>Pro tip: work along with me in your R script and SAVE YOUR CHANGES</strong></p></li>
+</ul>
+<hr>
+</section>
+<section id="creating-an-r-script" class="level3">
+<h3 class="anchored" data-anchor-id="creating-an-r-script">Creating an R script</h3>
+<ul>
+<li><p>Create a new file, type R script</p></li>
+<li><p>First thing to do is set the working directory. Example:</p>
+<ul>
+<li><p><code>setwd("/Users/rneitzel/Library/CloudStorage/Dropbox-UniversityofMichigan/Rick Neitzel/R Workshop")</code></p></li>
+<li><p>Note: this is for a Mac; Windows format will look different</p></li>
+</ul></li>
+<li><p>Next, let’s make sure tidyverse is installed:</p>
+<ul>
+<li><p><code>install.packages("tidyverse")</code></p></li>
+<li><p>Note: when to use quotation marks in R is still a mystery to me; we’ll get through it!</p></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="creating-an-r-script-1" class="level3">
+<h3 class="anchored" data-anchor-id="creating-an-r-script-1">Creating an R script</h3>
+<ul>
+<li><p>Next we want to actually use the <code>tidyverse</code> and <code>readxl</code> packages</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>Pro tip for R scripts: document, document, document</p>
+<ul>
+<li><p>You can do this by placing a <code>#</code> in front of your text to tell R this is a note, not code</p></li>
+<li><p>R will recognize this and display text after the <code>#</code> in green</p></li>
+<li><p>Example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This section loads our datafile and tidyverse </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+</ul></li>
+<li><p>Now we can load our data file</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"Dataset V1.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Note: R will look for this file in your working directory; make sure it’s saved there!</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="creating-an-r-script-2" class="level3">
+<h3 class="anchored" data-anchor-id="creating-an-r-script-2">Creating an R script</h3>
+<p>Now let’s save our dataframe as a tibble</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Congratulations! Our dataset is loaded and ready for exploration</p>
+<p>Some basic exploration</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 36
+  `Subject-ID` `Job-title` Gender `Measurement date`  `Site-type` County   
+         &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;  &lt;dttm&gt;              &lt;chr&gt;       &lt;chr&gt;    
+1            1 Laborer     M      2010-01-04 00:00:00 Civil       King     
+2            2 Laborer     M      2010-02-03 00:00:00 Civil       Pierce   
+3            3 Laborer     M      2008-06-01 00:00:00 Commercial  Pierce   
+4            4 Laborer     M      2010-06-15 00:00:00 Commercial  Snohomish
+5            5 Laborer     Male   2011-10-02 00:00:00 Road        Kitsap   
+6            6 Laborer     Male   2010-11-15 00:00:00 Road        Thurston 
+# ℹ 30 more variables: `Age-baseline-years` &lt;dbl&gt;, `Work-LEQ-dBA` &lt;dbl&gt;,
+#   `Measured-shift-length-mins` &lt;dbl&gt;, `Post-cal-value-dBA` &lt;dbl&gt;,
+#   `Perceived-type-of-noise-shift` &lt;chr&gt;, `Perceived-noise-level-shift` &lt;chr&gt;,
+#   `LMAX-dBA-shift` &lt;dbl&gt;, `Primary-task-shift` &lt;chr&gt;,
+#   `Other-nearby-noise-shift` &lt;chr&gt;, `Usual-shift-length-hours` &lt;dbl&gt;,
+#   `Usual-hours-worked-per-week` &lt;dbl&gt;, `Usual-weeks-worked-per-year` &lt;dbl&gt;,
+#   `Primary-task-study` &lt;chr&gt;, `Perceived-type-of-noise-study` &lt;chr&gt;, …</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="exploring-the-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="exploring-the-dataset">Exploring the dataset</h3>
+<p>R can show us what’s in the dataset graphically</p>
+<p>You can also see all of the commands you’ve run in this R session</p>
+<p><img src="images/clipboard-667046295.png" class="img-fluid" style="width:30.0%"></p>
+<hr>
+</section>
+<section id="lets-interact-with-the-data-a-bit" class="level3">
+<h3 class="anchored" data-anchor-id="lets-interact-with-the-data-a-bit">Let’s interact with the data a bit</h3>
+<p>Let’s limit the number of variable we’re looking at to just the first 8</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">Subject-ID</span><span class="st">`</span>, <span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>, <span class="st">`</span><span class="at">Measurement date</span><span class="st">`</span>, <span class="st">`</span><span class="at">Site-type</span><span class="st">`</span>,  County, <span class="st">`</span><span class="at">Age-baseline-years</span><span class="st">`</span>, <span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><em>Note: we can select any number and selection of variables this way</em></p>
+<p><em>Note: we don’t have to save changes (first line) – just showing this for clarification for when you do might want to save changes (for instance, when you create a permanent new variable)</em></p>
+<p><em>Note: when there are spaces and weird symbols in a column name (e.g., a dash), you have to use the backward tick symbol (`) around your column name to call it. Otherwise, you don’t need it (like when we call the County variable). We will discuss how to clean up column names later.</em></p>
+<p>Now let’s sort by measurement date instead of subject ID</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="st">`</span><span class="at">Measurement date</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="lets-interact-with-the-data-a-bit-1" class="level3">
+<h3 class="anchored" data-anchor-id="lets-interact-with-the-data-a-bit-1">Let’s interact with the data a bit</h3>
+<p>And then back to sorted by subject ID</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="st">`</span><span class="at">Subject-ID</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Display data types</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [201 × 7] (S3: tbl_df/tbl/data.frame)
+ $ Subject-ID        : num [1:201] 1 2 3 4 5 6 7 8 9 10 ...
+ $ Job-title         : chr [1:201] "Laborer" "Laborer" "Laborer" "Laborer" ...
+ $ Measurement date  : POSIXct[1:201], format: "2010-01-04" "2010-02-03" ...
+ $ Site-type         : chr [1:201] "Civil" "Civil" "Commercial" "Commercial" ...
+ $ County            : chr [1:201] "King" "Pierce" "Pierce" "Snohomish" ...
+ $ Age-baseline-years: num [1:201] 32 30 27 28 34 33 27 26 30 32 ...
+ $ Work-LEQ-dBA      : num [1:201] 91.1 91.4 92.3 92 94.8 94.3 90.8 91.1 84.9 85.4 ...</code></pre>
+</div>
+</div>
+<p>List variable names</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Subject-ID"         "Job-title"          "Measurement date"  
+[4] "Site-type"          "County"             "Age-baseline-years"
+[7] "Work-LEQ-dBA"      </code></pre>
+</div>
+</div>
+<p>Identify unique values in a variable</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Laborer"            "Lborer"             "Laboerr"           
+ [4] "Electrician"        "Electrican"         "Carpenter"         
+ [7] "Carpentr"           "Operating engineer" "Operaing engineer" 
+[10] "Ironworker"         "Ironworkr"         </code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="some-basic-analysis-commands-in-r" class="level3">
+<h3 class="anchored" data-anchor-id="some-basic-analysis-commands-in-r">Some basic analysis commands in R</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<p>Summarize all variables</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Subject-ID   Job-title         Measurement date             
+ Min.   :  1   Length:201         Min.   :2008-01-08 00:00:00  
+ 1st Qu.: 51   Class :character   1st Qu.:2009-02-07 00:00:00  
+ Median :101   Mode  :character   Median :2010-03-01 00:00:00  
+ Mean   :101                      Mean   :2010-03-22 23:45:40  
+ 3rd Qu.:151                      3rd Qu.:2011-05-22 00:00:00  
+ Max.   :201                      Max.   :2012-12-01 00:00:00  
+  Site-type            County          Age-baseline-years  Work-LEQ-dBA   
+ Length:201         Length:201         Min.   :21.00      Min.   :  0.00  
+ Class :character   Class :character   1st Qu.:25.00      1st Qu.: 84.30  
+ Mode  :character   Mode  :character   Median :29.00      Median : 89.50  
+                                       Mean   :28.67      Mean   : 83.01  
+                                       3rd Qu.:32.00      3rd Qu.: 96.10  
+                                       Max.   :36.00      Max.   :108.20  </code></pre>
+</div>
+</div>
+<p>Calculate specific statistics (more later)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 83.01025</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Age-baseline-years</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 29</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Subject-ID</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 58.16786</code></pre>
+</div>
+</div>
+<p>Note: this last statistic makes no sense at all</p>
+</div>
+<div class="slide-column">
+<p>Create a table of unique values in a variable</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+         Carpenter           Carpentr         Electrican        Electrician 
+                38                  2                  2                 39 
+        Ironworker          Ironworkr            Laboerr            Laborer 
+                40                  2                  2                 34 
+            Lborer  Operaing engineer Operating engineer 
+                 2                  2                 38 </code></pre>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="a-few-other-things-about-r" class="level3">
+<h3 class="anchored" data-anchor-id="a-few-other-things-about-r">A few other things about R</h3>
+<p>Help is available (but a search engine will likely give you better results)</p>
+<p><img src="images/clipboard-3022780375.png" class="img-fluid" style="width:40.0%"></p>
+<hr>
+</section>
+<section id="thats-enough-for-today" class="level3">
+<h3 class="anchored" data-anchor-id="thats-enough-for-today">That’s enough for today</h3>
+<p>Questions?</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../../01-lectures/01-the-basics/02-introduction-pt2/introduction_pt2.html" class="pagination-link" aria-label="2 Introduction pt II">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">2 Introduction pt II</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../../01-lectures/01-the-basics/04-descriptive-stats/descriptive_stats.html" class="pagination-link" aria-label="4 Types of data">
+        <span class="nav-page-text">4 Types of data</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
