@@ -122,5 +122,33 @@
       "Section 1",
       "4 Types of data"
     ]
+  },
+  {
+    "objectID": "01-lectures/01-the-basics/01-introduction/introduction.slides.html#lecture-1-introduction-and-overview",
+    "href": "01-lectures/01-the-basics/01-introduction/introduction.slides.html#lecture-1-introduction-and-overview",
+    "title": "Introduction (Lecture 1)",
+    "section": "Lecture 1: Introduction and Overview",
+    "text": "Lecture 1: Introduction and Overview"
+  },
+  {
+    "objectID": "01-lectures/01-the-basics/02-introduction-pt2/introduction_pt2.slides.html#lecture-2-introduction-and-overview-continued",
+    "href": "01-lectures/01-the-basics/02-introduction-pt2/introduction_pt2.slides.html#lecture-2-introduction-and-overview-continued",
+    "title": "Introduction pt II, overview of dataset (Lecture 2)",
+    "section": "Lecture 2: Introduction and overview, continued",
+    "text": "Lecture 2: Introduction and overview, continued"
+  },
+  {
+    "objectID": "01-lectures/01-the-basics/03-introduction-to-R/introduction_to_R.slides.html#lecture-3-reintroduction-to-r",
+    "href": "01-lectures/01-the-basics/03-introduction-to-R/introduction_to_R.slides.html#lecture-3-reintroduction-to-r",
+    "title": "(Re)introduction to R (Lecture 3)",
+    "section": "Lecture 3: Reintroduction to R",
+    "text": "Lecture 3: Reintroduction to R"
+  },
+  {
+    "objectID": "01-lectures/01-the-basics/04-descriptive-stats/descriptive_stats.slides.html#lecture-4-types-of-data-descriptive-statistics-censored-data-more-r",
+    "href": "01-lectures/01-the-basics/04-descriptive-stats/descriptive_stats.slides.html#lecture-4-types-of-data-descriptive-statistics-censored-data-more-r",
+    "title": "Types of data, descriptive statistics, and censoring (Lecture 4)",
+    "section": "Lecture 4: Types of data, descriptive statistics, censored data, more R",
+    "text": "Lecture 4: Types of data, descriptive statistics, censored data, more R"
   }
 ]
