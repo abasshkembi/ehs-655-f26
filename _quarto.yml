@@ -3,7 +3,7 @@ project:
   type: website
   render:
     - "*.qmd"
-  output-dir: 02-website/docs
+  output-dir: docs
 
 website:
   title: "EHS 655"
