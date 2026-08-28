@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.32">
+
+  <title>EHS 655 – (Re)introduction to R (Lecture 3)</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../../../site_libs/revealjs/dist/theme/quarto-f563837468303362081e247dddd440d0.css">
+  <link rel="stylesheet" href="../../../slide_styles.css">
+  <link href="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">(Re)introduction to R (Lecture 3)</h1>
+
+<div class="quarto-title-authors">
+</div>
+
+</section>
+<section id="lecture-3-reintroduction-to-r" class="slide level2 center">
+<h2>Lecture 3: Reintroduction to R</h2>
+</section>
+<section class="slide level2 center">
+
+<h3 id="about-r">About R</h3>
+<ul>
+<li><p>R is primarily used for statistical analysis and graphics development, including</p>
+<ul>
+<li><p>Data handling and manipulation</p></li>
+<li><p>Data analysis</p></li>
+<li><p>Data visualization</p></li>
+</ul></li>
+<li><p>R is open source, and anyone can create functions</p>
+<ul>
+<li>As a result, R is a composite of <em>packages</em> (i.e., set of related functions) that many independent developers created</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+<h3 id="about-r-studio">About R Studio</h3>
+<ul>
+<li><p>While R is a computer language, RStudio is an <em>Integrated Development Environment</em> (IDE)</p>
+<ul>
+<li><p>Provides a more user-friendly interface when coding in R</p></li>
+<li><p>Note! You don’t have to use RStudio to run R code; but it will make it much easier to develop your R code</p></li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+<h3 id="installing-r-and-rstudio-on-your-computer">Installing R and RStudio on your computer</h3>
+<p>This <u><strong>is</strong></u> the recommended approach</p>
+<ul>
+<li><p>Choose your operating system and then download and install R from UM’s CRAN site:</p>
+<ul>
+<li><a href="https://repo.miserver.it.umich.edu/cran/" class="uri">https://repo.miserver.it.umich.edu/cran/</a></li>
+</ul></li>
+<li><p>Choose your operating system and then download and install R Studio from POSIT:</p>
+<ul>
+<li><a href="https://posit.co/downloads" class="uri">https://posit.co/downloads</a></li>
+</ul></li>
+<li><p>Then we can start to configure R Studio for your analyses</p></li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+<h3 id="running-r-and-rstudio-remotely-via-virtual-sites">Running R and RStudio remotely via Virtual Sites</h3>
+<p>This is <u><strong>not</strong></u> the recommended approach</p>
+<ul>
+<li><p>Log in to Virtual Sites</p>
+<ul>
+<li><a href="https://its.umich.edu/computing/computers-software/virtual-sites" class="uri">https://its.umich.edu/computing/computers-software/virtual-sites</a></li>
+</ul></li>
+<li><p>Get yourself configured to save your files on Virtual Sites</p>
+<ul>
+<li><a href="https://teamdynamix.umich.edu/TDClient/30/Portal/KB/Article/4508/Saving-Files-When-Using-Campus-Computing-or-Virtual-Sites-Configuring-Kumo" class="uri">https://teamdynamix.umich.edu/TDClient/30/Portal/KB/Article/4508/Saving-Files-When-Using-Campus-Computing-or-Virtual-Sites-Configuring-Kumo</a></li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+<h3 id="setting-your-working-directory">Setting your working directory</h3>
+<ul>
+<li><p>When you first open R, your working directory is your entire computer</p></li>
+<li><p>You can specify a particular folder to work from using the set working directory command</p>
+<ul>
+<li><code>setwd()</code></li>
+</ul></li>
+<li><p>For instance, on a Mac, if my username is “industrialhygiene”, and I have a folder under the file path&nbsp;Documents &gt; Coding &gt; EHS655 where I plan to do my R analyses:</p>
+<ul>
+<li><code>setwd("/Users/industrialhygiene/Documents/Coding/EHS655")</code></li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+<h3 id="importing-the-ehs-655-dataset">Importing the EHS 655 dataset</h3>
+<ul>
+<li><p>Now if I read a dataset file (“dataset.csv”) I can simply call the dataset filename directly since my RStudio already knows to look in the “EHS655” folder:</p>
+<ul>
+<li><code>read.csv(”dataset.csv")</code></li>
+</ul></li>
+<li><p>If I did not set my working directory already, I would’ve needed to read the file using the entire file path:</p>
+<ul>
+<li><code>read.csv("/Users/industrialhygiene/Documents/Coding/EHS655/dataset.csv")</code></li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+<h3 id="loading-packages-in-r">Loading packages in R</h3>
+<ul>
+<li><p>All functions to run a particular command in R are stored in packages</p>
+<ul>
+<li>If you want to install a new package to use additional commands, you will have to install and load them into your environment manually</li>
+</ul></li>
+<li><p>For example, base R does not have the ability to read Excel files. In order to do this, you will have to first download and install the <code>readxl</code> package:</p>
+<ul>
+<li><code>install.packages("readxl")</code></li>
+</ul></li>
+<li><p>To load (use) the package you will then use this command:</p>
+<ul>
+<li><p><code>library("readxl")</code></p></li>
+<li><p>Note! You will have to run the <code>library()</code> command every time you open your RStudio to use the loaded functions.</p></li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+<h3 id="boolean-operators">Boolean operators</h3>
+<p>A form of logical values (i.e., <code>TRUE</code> or <code>FALSE</code>) using:</p>
+<ul>
+<li><code>&gt;</code>: greater than</li>
+<li><code>&gt;=</code>: greater than or equal to</li>
+<li><code>&lt;</code>: less than</li>
+<li><code>&lt;</code>: less than or equal to</li>
+<li><code>==</code>: equal to</li>
+<li><code>!=</code>: not equal to</li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+<h3 id="tidyverse">Tidyverse</h3>
+<ul>
+<li><p>While base R code is incredibly versatile, most R users utilize the <code>tidyverse</code> package for data wrangling, visualization, and simple analysis</p></li>
+<li><p>To install and load the <code>tidyverse</code> package:</p>
+<ul>
+<li><p><code>install.packages("tidyverse")</code></p></li>
+<li><p><code>library("tidyverse")</code></p>
+<p><img data-src="images/clipboard-481026334.png" style="width:50.0%"></p></li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+<h3 id="more-on-tidyverse">More on <code>tidyverse</code></h3>
+<p>The <code>tidyverse</code> is package that loads multiple packages that work in harmony with each other.</p>
+<ul>
+<li><code>dplyr</code> - for data wrangling and manipulation</li>
+<li><code>forcats</code> - for reordering factor variables</li>
+<li><code>ggplot2</code> - for data visualization</li>
+<li><code>lubridate</code> - used for handling date and time data</li>
+<li><code>purrr</code> - a functional programming toolkit</li>
+<li><code>readr</code> - for reading reading data files</li>
+<li><code>stringr</code> - for handling string variables</li>
+<li><code>tibble</code> - provides better formatting for data frames</li>
+<li><code>tidyr</code> - provides tools to handle tibble-formatted data frame</li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+<h3 id="exploring-tidyverse-with-air-quality-data">Exploring <code>tidyverse</code> with air quality data</h3>
+<p>To demonstrate the basic features of the tidyverse packages, we will use the <code>airquality</code> dataframe that is pre-loaded into base R</p>
+<p>We will store this dataframe under the name <code>aq_df</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>aq_df <span class="ot">&lt;-</span> datasets<span class="sc">::</span>airquality</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="air-quality-example-data-frame-and-tibble">Air quality example: data frame and tibble</h3>
+<p>Let’s view what the dataset looks like</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="fu">head</span>(aq_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Ozone Solar.R Wind Temp Month Day
+1    41     190  7.4   67     5   1
+2    36     118  8.0   72     5   2
+3    12     149 12.6   74     5   3
+4    18     313 11.5   62     5   4
+5    NA      NA 14.3   56     5   5
+6    28      NA 14.9   66     5   6</code></pre>
+</div>
+</div>
+<p>We can view what <em>class</em> of dataset this is</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="fu">class</span>(aq_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+</div>
+<p>This shows the dataset is stored in R as a <code>data.frame</code>, not a <code>tibble</code>. We can change this using the <code>as_tibble()</code> function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a>aq_df <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(aq_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Pro tip: use the up arrow in the command line to scroll to last command</p>
+</section>
+<section class="slide level2 center">
+
+<h3 id="so-whats-a-dataframe-and-whats-a-tibble">So, what’s a dataframe, and what’s a tibble?</h3>
+<p>Data frame</p>
+<ul>
+<li><p>Two-dimensional, table-like data structure designed to store tabular data</p></li>
+<li><p>Columns can contain different data types like numeric, character, logical, etc.</p></li>
+<li><p>Each individual column must have the exact same type of data in all of its rows</p></li>
+<li><p>Every column must have a unique name</p></li>
+</ul>
+<p>Tibble</p>
+<ul>
+<li><p>Basically what the tidyverse calls a data frame</p></li>
+<li><p>From <a href="https://tibble.tidyverse.org/" class="uri">https://tibble.tidyverse.org/</a>:</p>
+<ul>
+<li>“Tibbles are data.frames that are lazy and surly: they do less (i.e.&nbsp;they don’t change variable names or types, and don’t do partial matching) and complain more (e.g.&nbsp;when a variable does not exist). This forces you to confront problems earlier, typically leading to cleaner, more expressive code.”</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+<h3 id="air-quality-example-arrange-function">Air quality example: arrange function</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<p>Now, we can check the class of the dataset to see if it is a tibble:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="fu">class</span>(aq_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "tbl_df"     "tbl"        "data.frame"</code></pre>
+</div>
+</div>
+<p>Now we can start exploring and manipulating this dataset</p>
+<p>First, let’s sort data by ascending temperature using the <code>arrange()</code> function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="fu">arrange</span>(aq_df, Temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 153 × 6
+   Ozone Solar.R  Wind  Temp Month   Day
+   &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1    NA      NA  14.3    56     5     5
+ 2     6      78  18.4    57     5    18
+ 3    NA      66  16.6    57     5    25
+ 4    NA      NA   8      57     5    27
+ 5    18      65  13.2    58     5    15
+ 6    NA     266  14.9    58     5    26
+ 7    19      99  13.8    59     5     8
+ 8     1       8   9.7    59     5    21
+ 9     8      19  20.1    61     5     9
+10     4      25   9.7    61     5    23
+# ℹ 143 more rows</code></pre>
+</div>
+</div>
+</div>
+<div class="slide-column">
+<p>Or, we could sort by descending temperature by adding a minus (-) sign</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="fu">arrange</span>(aq_df, <span class="sc">-</span>Temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 153 × 6
+   Ozone Solar.R  Wind  Temp Month   Day
+   &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1    76     203   9.7    97     8    28
+ 2    84     237   6.3    96     8    30
+ 3   118     225   2.3    94     8    29
+ 4    85     188   6.3    94     8    31
+ 5    NA     259  10.9    93     6    11
+ 6    73     183   2.8    93     9     3
+ 7    91     189   4.6    93     9     4
+ 8    NA     250   9.2    92     6    12
+ 9    97     267   6.3    92     7     8
+10    97     272   5.7    92     7     9
+# ℹ 143 more rows</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="air-quality-example-select-function">Air quality example: select function</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<p>We can also sort by multiple columns (e.g., day and then month</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a><span class="fu">arrange</span>(aq_df, Day, Month)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 153 × 6
+   Ozone Solar.R  Wind  Temp Month   Day
+   &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1    41     190   7.4    67     5     1
+ 2    NA     286   8.6    78     6     1
+ 3   135     269   4.1    84     7     1
+ 4    39      83   6.9    81     8     1
+ 5    96     167   6.9    91     9     1
+ 6    36     118   8      72     5     2
+ 7    NA     287   9.7    74     6     2
+ 8    49     248   9.2    85     7     2
+ 9     9      24  13.8    81     8     2
+10    78     197   5.1    92     9     2
+# ℹ 143 more rows</code></pre>
+</div>
+</div>
+<p>We can also keep or remove specific columns using the <code>select()</code> function. To remove the solar radiation column:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a><span class="fu">select</span>(aq_df, <span class="sc">-</span>Solar.R)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 153 × 5
+   Ozone  Wind  Temp Month   Day
+   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1    41   7.4    67     5     1
+ 2    36   8      72     5     2
+ 3    12  12.6    74     5     3
+ 4    18  11.5    62     5     4
+ 5    NA  14.3    56     5     5
+ 6    28  14.9    66     5     6
+ 7    23   8.6    65     5     7
+ 8    19  13.8    59     5     8
+ 9     8  20.1    61     5     9
+10    NA   8.6    69     5    10
+# ℹ 143 more rows</code></pre>
+</div>
+</div>
+</div>
+<div class="slide-column">
+<p>Or, if there are specific columns we want to keep (e.g., ozone, month, day), we can list them:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a><span class="fu">select</span>(aq_df, Ozone, Month, Day)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 153 × 3
+   Ozone Month   Day
+   &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1    41     5     1
+ 2    36     5     2
+ 3    12     5     3
+ 4    18     5     4
+ 5    NA     5     5
+ 6    28     5     6
+ 7    23     5     7
+ 8    19     5     8
+ 9     8     5     9
+10    NA     5    10
+# ℹ 143 more rows</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="air-quality-example-filter-and-mutate-functions">Air quality example: filter and mutate functions</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<p>In addition to removing columns, we can also remove specific rows using the <code>filter()</code> function. For example, to look only at the month of May:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a><span class="fu">filter</span>(aq_df, Month <span class="sc">==</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 31 × 6
+   Ozone Solar.R  Wind  Temp Month   Day
+   &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1    41     190   7.4    67     5     1
+ 2    36     118   8      72     5     2
+ 3    12     149  12.6    74     5     3
+ 4    18     313  11.5    62     5     4
+ 5    NA      NA  14.3    56     5     5
+ 6    28      NA  14.9    66     5     6
+ 7    23     299   8.6    65     5     7
+ 8    19      99  13.8    59     5     8
+ 9     8      19  20.1    61     5     9
+10    NA     194   8.6    69     5    10
+# ℹ 21 more rows</code></pre>
+</div>
+</div>
+<p><em>Note: we can check the N of rows (which started at 153, now down to 31) to confirm the change was made</em></p>
+</div>
+<div class="slide-column">
+<p>We can also create new columns using the <code>mutate()</code> function. Let’s create an indicator variable for days when ozone is greater than 30:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a><span class="fu">mutate</span>(aq_df, <span class="at">Ozone_above_30 =</span> <span class="fu">ifelse</span>(Ozone <span class="sc">&gt;</span> <span class="dv">30</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 153 × 7
+   Ozone Solar.R  Wind  Temp Month   Day Ozone_above_30
+   &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;          &lt;dbl&gt;
+ 1    41     190   7.4    67     5     1              1
+ 2    36     118   8      72     5     2              1
+ 3    12     149  12.6    74     5     3              0
+ 4    18     313  11.5    62     5     4              0
+ 5    NA      NA  14.3    56     5     5             NA
+ 6    28      NA  14.9    66     5     6              0
+ 7    23     299   8.6    65     5     7              0
+ 8    19      99  13.8    59     5     8              0
+ 9     8      19  20.1    61     5     9              0
+10    NA     194   8.6    69     5    10             NA
+# ℹ 143 more rows</code></pre>
+</div>
+</div>
+<p><em>Note: the command sets the variable to <code>1</code> if ozone &gt;30, otherwise to <code>0</code></em></p>
+</div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="air-quality-example-the-pipe-operator">Air quality example: the pipe operator (<code>%&gt;%</code>)</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<p>To arrange, select, filter, and mutate data all in one line of code, we could use:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a><span class="fu">mutate</span>(<span class="fu">filter</span>(<span class="fu">select</span>(<span class="fu">arrange</span>(aq_df, <span class="sc">-</span>Temp), <span class="sc">-</span>Solar.R), Month <span class="sc">==</span> <span class="dv">5</span>), <span class="at">Ozone_above_30 =</span> <span class="fu">ifelse</span>(Ozone <span class="sc">&gt;</span> <span class="dv">30</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 31 × 6
+   Ozone  Wind  Temp Month   Day Ozone_above_30
+   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;          &lt;dbl&gt;
+ 1    45  14.9    81     5    29              1
+ 2   115   5.7    79     5    30              1
+ 3    37   7.4    76     5    31              1
+ 4    12  12.6    74     5     3              0
+ 5     7   6.9    74     5    11              0
+ 6    11  16.6    73     5    22              0
+ 7    36   8      72     5     2              1
+ 8    NA   8.6    69     5    10             NA
+ 9    16   9.7    69     5    12              0
+10    14  10.9    68     5    14              0
+# ℹ 21 more rows</code></pre>
+</div>
+</div>
+<p><em>Note: this is difficult to read and debug, and has a weird order of operations</em></p>
+</div>
+<div class="slide-column">
+<p>With the pipe operator (<code>%&gt;%</code>), we can separate command sequentially:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a><span class="fu">arrange</span>(aq_df, <span class="sc">-</span>Temp) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a></a>  <span class="fu">select</span>(<span class="sc">-</span>Solar.R) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-3"><a></a>  <span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-4"><a></a>  <span class="fu">mutate</span>(<span class="at">Ozone_above_30 =</span> <span class="fu">ifelse</span>(Ozone <span class="sc">&gt;</span> <span class="dv">30</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 31 × 6
+   Ozone  Wind  Temp Month   Day Ozone_above_30
+   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;          &lt;dbl&gt;
+ 1    45  14.9    81     5    29              1
+ 2   115   5.7    79     5    30              1
+ 3    37   7.4    76     5    31              1
+ 4    12  12.6    74     5     3              0
+ 5     7   6.9    74     5    11              0
+ 6    11  16.6    73     5    22              0
+ 7    36   8      72     5     2              1
+ 8    NA   8.6    69     5    10             NA
+ 9    16   9.7    69     5    12              0
+10    14  10.9    68     5    14              0
+# ℹ 21 more rows</code></pre>
+</div>
+</div>
+<p>Much better! Need to be cognizant of order of operations (i.e., filter before mutating)</p>
+</div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="now-lets-look-at-our-data.-first-stop-the-r-script">Now let’s look at our data. First stop: the R script</h3>
+<ul>
+<li><p>What is an R script?</p>
+<ul>
+<li>It’s a blank R file that will allow you to execute commands in a sequential manner</li>
+</ul></li>
+<li><p>Why use a script?</p>
+<ul>
+<li><p>Ease of manipulation of data</p></li>
+<li><p>Documentation of manipulations and analyses</p></li>
+<li><p>Preserve original data file</p></li>
+<li><p>I’m forcing you to</p></li>
+</ul></li>
+<li><p><strong>Pro tip: work along with me in your R script and SAVE YOUR CHANGES</strong></p></li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+<h3 id="creating-an-r-script">Creating an R script</h3>
+<ul>
+<li><p>Create a new file, type R script</p></li>
+<li><p>First thing to do is set the working directory. Example:</p>
+<ul>
+<li><p><code>setwd("/Users/rneitzel/Library/CloudStorage/Dropbox-UniversityofMichigan/Rick Neitzel/R Workshop")</code></p></li>
+<li><p>Note: this is for a Mac; Windows format will look different</p></li>
+</ul></li>
+<li><p>Next, let’s make sure tidyverse is installed:</p>
+<ul>
+<li><p><code>install.packages("tidyverse")</code></p></li>
+<li><p>Note: when to use quotation marks in R is still a mystery to me; we’ll get through it!</p></li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+<h3 id="creating-an-r-script-1">Creating an R script</h3>
+<ul>
+<li><p>Next we want to actually use the <code>tidyverse</code> and <code>readxl</code> packages</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb27-2"><a></a><span class="fu">library</span>(readxl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+<li><p>Pro tip for R scripts: document, document, document</p>
+<ul>
+<li><p>You can do this by placing a <code>#</code> in front of your text to tell R this is a note, not code</p></li>
+<li><p>R will recognize this and display text after the <code>#</code> in green</p></li>
+<li><p>Example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a></a><span class="co"># This section loads our datafile and tidyverse </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+</ul></li>
+<li><p>Now we can load our data file</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a></a>ehs655 <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"Dataset V1.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Note: R will look for this file in your working directory; make sure it’s saved there!</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+<h3 id="creating-an-r-script-2">Creating an R script</h3>
+<p>Now let’s save our dataframe as a tibble</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a></a>ehs655 <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Congratulations! Our dataset is loaded and ready for exploration</p>
+<p>Some basic exploration</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a></a><span class="fu">head</span>(ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 36
+  `Subject-ID` `Job-title` Gender `Measurement date`  `Site-type` County   
+         &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;  &lt;dttm&gt;              &lt;chr&gt;       &lt;chr&gt;    
+1            1 Laborer     M      2010-01-04 00:00:00 Civil       King     
+2            2 Laborer     M      2010-02-03 00:00:00 Civil       Pierce   
+3            3 Laborer     M      2008-06-01 00:00:00 Commercial  Pierce   
+4            4 Laborer     M      2010-06-15 00:00:00 Commercial  Snohomish
+5            5 Laborer     Male   2011-10-02 00:00:00 Road        Kitsap   
+6            6 Laborer     Male   2010-11-15 00:00:00 Road        Thurston 
+# ℹ 30 more variables: `Age-baseline-years` &lt;dbl&gt;, `Work-LEQ-dBA` &lt;dbl&gt;,
+#   `Measured-shift-length-mins` &lt;dbl&gt;, `Post-cal-value-dBA` &lt;dbl&gt;,
+#   `Perceived-type-of-noise-shift` &lt;chr&gt;, `Perceived-noise-level-shift` &lt;chr&gt;,
+#   `LMAX-dBA-shift` &lt;dbl&gt;, `Primary-task-shift` &lt;chr&gt;,
+#   `Other-nearby-noise-shift` &lt;chr&gt;, `Usual-shift-length-hours` &lt;dbl&gt;,
+#   `Usual-hours-worked-per-week` &lt;dbl&gt;, `Usual-weeks-worked-per-year` &lt;dbl&gt;,
+#   `Primary-task-study` &lt;chr&gt;, `Perceived-type-of-noise-study` &lt;chr&gt;, …</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="exploring-the-dataset">Exploring the dataset</h3>
+<p>R can show us what’s in the dataset graphically</p>
+<p>You can also see all of the commands you’ve run in this R session</p>
+
+<img data-src="images/clipboard-667046295.png" style="width:30.0%" class="r-stretch"></section>
+<section class="slide level2 center">
+
+<h3 id="lets-interact-with-the-data-a-bit">Let’s interact with the data a bit</h3>
+<p>Let’s limit the number of variable we’re looking at to just the first 8</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb33-3"><a></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">Subject-ID</span><span class="st">`</span>, <span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>, <span class="st">`</span><span class="at">Measurement date</span><span class="st">`</span>, <span class="st">`</span><span class="at">Site-type</span><span class="st">`</span>,  County, <span class="st">`</span><span class="at">Age-baseline-years</span><span class="st">`</span>, <span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><em>Note: we can select any number and selection of variables this way</em></p>
+<p><em>Note: we don’t have to save changes (first line) – just showing this for clarification for when you do might want to save changes (for instance, when you create a permanent new variable)</em></p>
+<p><em>Note: when there are spaces and weird symbols in a column name (e.g., a dash), you have to use the backward tick symbol (`) around your column name to call it. Otherwise, you don’t need it (like when we call the County variable). We will discuss how to clean up column names later.</em></p>
+<p>Now let’s sort by measurement date instead of subject ID</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="st">`</span><span class="at">Measurement date</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="lets-interact-with-the-data-a-bit-1">Let’s interact with the data a bit</h3>
+<p>And then back to sorted by subject ID</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="st">`</span><span class="at">Subject-ID</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Display data types</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a></a><span class="fu">str</span>(ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [201 × 7] (S3: tbl_df/tbl/data.frame)
+ $ Subject-ID        : num [1:201] 1 2 3 4 5 6 7 8 9 10 ...
+ $ Job-title         : chr [1:201] "Laborer" "Laborer" "Laborer" "Laborer" ...
+ $ Measurement date  : POSIXct[1:201], format: "2010-01-04" "2010-02-03" ...
+ $ Site-type         : chr [1:201] "Civil" "Civil" "Commercial" "Commercial" ...
+ $ County            : chr [1:201] "King" "Pierce" "Pierce" "Snohomish" ...
+ $ Age-baseline-years: num [1:201] 32 30 27 28 34 33 27 26 30 32 ...
+ $ Work-LEQ-dBA      : num [1:201] 91.1 91.4 92.3 92 94.8 94.3 90.8 91.1 84.9 85.4 ...</code></pre>
+</div>
+</div>
+<p>List variable names</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a></a><span class="fu">names</span>(ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Subject-ID"         "Job-title"          "Measurement date"  
+[4] "Site-type"          "County"             "Age-baseline-years"
+[7] "Work-LEQ-dBA"      </code></pre>
+</div>
+</div>
+<p>Identify unique values in a variable</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a></a><span class="fu">unique</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Laborer"            "Lborer"             "Laboerr"           
+ [4] "Electrician"        "Electrican"         "Carpenter"         
+ [7] "Carpentr"           "Operating engineer" "Operaing engineer" 
+[10] "Ironworker"         "Ironworkr"         </code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="some-basic-analysis-commands-in-r">Some basic analysis commands in R</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<p>Summarize all variables</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a></a><span class="fu">summary</span>(ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Subject-ID   Job-title         Measurement date             
+ Min.   :  1   Length:201         Min.   :2008-01-08 00:00:00  
+ 1st Qu.: 51   Class :character   1st Qu.:2009-02-07 00:00:00  
+ Median :101   Mode  :character   Median :2010-03-01 00:00:00  
+ Mean   :101                      Mean   :2010-03-22 23:45:40  
+ 3rd Qu.:151                      3rd Qu.:2011-05-22 00:00:00  
+ Max.   :201                      Max.   :2012-12-01 00:00:00  
+  Site-type            County          Age-baseline-years  Work-LEQ-dBA   
+ Length:201         Length:201         Min.   :21.00      Min.   :  0.00  
+ Class :character   Class :character   1st Qu.:25.00      1st Qu.: 84.30  
+ Mode  :character   Mode  :character   Median :29.00      Median : 89.50  
+                                       Mean   :28.67      Mean   : 83.01  
+                                       3rd Qu.:32.00      3rd Qu.: 96.10  
+                                       Max.   :36.00      Max.   :108.20  </code></pre>
+</div>
+</div>
+<p>Calculate specific statistics (more later)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a></a><span class="fu">mean</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 83.01025</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a></a><span class="fu">median</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Age-baseline-years</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 29</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a></a><span class="fu">sd</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Subject-ID</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 58.16786</code></pre>
+</div>
+</div>
+<p>Note: this last statistic makes no sense at all</p>
+</div>
+<div class="slide-column">
+<p>Create a table of unique values in a variable</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a></a><span class="fu">table</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+         Carpenter           Carpentr         Electrican        Electrician 
+                38                  2                  2                 39 
+        Ironworker          Ironworkr            Laboerr            Laborer 
+                40                  2                  2                 34 
+            Lborer  Operaing engineer Operating engineer 
+                 2                  2                 38 </code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="a-few-other-things-about-r">A few other things about R</h3>
+<p>Help is available (but a search engine will likely give you better results)</p>
+
+<img data-src="images/clipboard-3022780375.png" style="width:40.0%" class="r-stretch"></section>
+<section class="slide level2 center">
+
+<h3 id="thats-enough-for-today">That’s enough for today</h3>
+<p>Questions?</p>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': true,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 5.0e-2,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

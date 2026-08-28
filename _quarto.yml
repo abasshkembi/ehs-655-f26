@@ -1,0 +1,53 @@
+project:
+  title: "EHS 655"
+  type: website
+  render:
+    - "*.qmd"
+  output-dir: 02-website/docs
+
+website:
+  title: "EHS 655"
+  page-navigation: true
+  sidebar:
+    contents:
+      - href: index.qmd
+        text: Home
+      - href: 01-lectures/01-the-basics/00-prerequisites/prerequisites.qmd
+        text: Getting started
+      - section: Section 1
+        contents:
+          - href: 01-lectures/01-the-basics/01-introduction/introduction.qmd
+            text: 1 Introduction
+          - href: 01-lectures/01-the-basics/02-introduction-pt2/introduction_pt2.qmd
+            text: 2 Introduction pt II
+          - href: 01-lectures/01-the-basics/03-introduction-to-R/introduction_to_R.qmd
+            text: 3 (Re)introduction to R
+          - href: 01-lectures/01-the-basics/04-descriptive-stats/descriptive_stats.qmd
+            text: 4 Types of data
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    css: html_styles.css
+    toc: true
+    
+  revealjs:
+    output-ext: "slides.html"
+    theme: white
+    controls: true
+    controls-tutorial: true
+    transition: none
+    slide-number: c/t
+    preview-links: false
+    margin: 0.05
+    smaller: true
+    width: 1600
+    history: false
+    center: true
+    css: slide_styles.css
+    height: 900
+
+editor: visual
+

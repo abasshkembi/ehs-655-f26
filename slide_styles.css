@@ -1,0 +1,49 @@
+/* css styles */
+
+/* custom footer design */
+.reveal .custom-footer {
+  position: absolute;
+  bottom: 0px;
+  left: 5%;
+  width: 90%;
+  text-align: center;
+  font-size: 0.6em;
+  color: #555555;
+  z-index: 10; /* Ensures it stays above slide backgrounds */
+}
+
+/* Ensures that columns only appear on slides, not html render */
+.columns-only-on-slides {
+  display: flex;
+  gap: 40px;          /* Adds comfortable breathing room between columns */
+  min-height: 70vh;    /* Forces the columns to use most of the slide height */
+}
+
+.slide-column {
+  flex: 1;
+  max-width: 50%; /* Prevents either column from stretching past half the slide width */
+  box-sizing: border-box; /* Ensures padding and gap spaces are included in the 50% math */
+}
+
+/* ensures that outline of code block only wraps around the code, not entire screen */
+
+/* Box sizing rules */
+.reveal div.sourceCode {
+  width: max-content !important;
+  max-width: 100% !important;
+  min-width: 50% !important;  /* Prevents short code blocks from getting too tiny */
+}
+
+/* Text within box sizing rules */
+.reveal pre.sourceCode {
+  width: max-content !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+  background-color: "white" !important; /* Removes outer layer gray spill */
+}
+
+/* Force inner text block to lock background and outline widths */
+.reveal pre code {
+  width: max-content !important;
+  box-sizing: border-box !important;
+}

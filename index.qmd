@@ -1,0 +1,38 @@
+---
+title: "EHS 655"
+subtitle: "Human Exposure Analysis"
+author: 
+  - name: Rick Neitzel, PhD, MS, CIH, FAIHA
+    email: rneitzel@umich.edu
+    affiliation: 
+      - name: University of Michigan School of Public Health
+        city: Ann Arbor
+        state: MI
+        url: https://umexposureresearch.org/
+  - name: Abas Shkembi, MS
+    orcid: 0000-0002-5398-861X
+    email: ashkembi@umich.edu
+    affiliation: 
+      - name: University of Michigan School of Public Health
+        city: Ann Arbor
+        state: MI
+        url: https://abasshkembi.github.io/
+format:
+  html: default
+---
+
+::: callout-note
+This webpage accompanies the lectures to EHS 655: Human Exposure Analysis taught at the University of Michigan School of Public Health during Fall 2026. It goes over the code presented in class, as well as some code not covered in class.
+:::
+
+[0 Getting started](/01-lectures/01-the-basics/00-prerequisites/prerequisites.qmd)
+
+**Section 1: Introduction and the Basics**
+
+[1 Introduction](/01-lectures/01-the-basics/01-introduction/introduction.qmd)
+
+[2 Introduction pt II, overview of dataset](/01-lectures/01-the-basics/02-introduction-pt2/introduction_pt2.qmd)
+
+[3 (Re)introduction to R](/01-lectures/01-the-basics/03-introduction-to-R/introduction_to_R.qmd)
+
+[4 Types of data, descriptive statistics, censoring](/01-lectures/01-the-basics/04-descriptive-stats/descriptive_stats.qmd)

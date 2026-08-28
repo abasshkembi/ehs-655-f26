@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Types of data, descriptive statistics, and censoring (Lecture 4) – EHS 655</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../01-lectures/01-the-basics/03-introduction-to-R/introduction_to_R.html" rel="prev">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../html_styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../01-lectures/01-the-basics/01-introduction/introduction.html">Section 1</a></li><li class="breadcrumb-item"><a href="../../../01-lectures/01-the-basics/04-descriptive-stats/descriptive_stats.html">4 Types of data</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../../">EHS 655</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../01-lectures/01-the-basics/00-prerequisites/prerequisites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting started</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Section 1</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../01-lectures/01-the-basics/01-introduction/introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1 Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../01-lectures/01-the-basics/02-introduction-pt2/introduction_pt2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2 Introduction pt II</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../01-lectures/01-the-basics/03-introduction-to-R/introduction_to_R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3 (Re)introduction to R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../01-lectures/01-the-basics/04-descriptive-stats/descriptive_stats.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">4 Types of data</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-well-cover-today" id="toc-what-well-cover-today" class="nav-link active" data-scroll-target="#what-well-cover-today">What we’ll cover today</a></li>
+  <li><a href="#the-basics-understanding-exposure" id="toc-the-basics-understanding-exposure" class="nav-link" data-scroll-target="#the-basics-understanding-exposure">The basics: understanding exposure</a></li>
+  <li><a href="#assessing-exposures" id="toc-assessing-exposures" class="nav-link" data-scroll-target="#assessing-exposures">Assessing exposures</a></li>
+  <li><a href="#exposure-data-examples" id="toc-exposure-data-examples" class="nav-link" data-scroll-target="#exposure-data-examples">Exposure data examples</a></li>
+  <li><a href="#exposure-data-examples-1" id="toc-exposure-data-examples-1" class="nav-link" data-scroll-target="#exposure-data-examples-1">Exposure data examples</a></li>
+  <li><a href="#types-and-scales-of-data" id="toc-types-and-scales-of-data" class="nav-link" data-scroll-target="#types-and-scales-of-data">Types and scales of data</a></li>
+  <li><a href="#binary-and-nominal" id="toc-binary-and-nominal" class="nav-link" data-scroll-target="#binary-and-nominal">Binary and nominal</a></li>
+  <li><a href="#ordinal" id="toc-ordinal" class="nav-link" data-scroll-target="#ordinal">Ordinal</a></li>
+  <li><a href="#numeric" id="toc-numeric" class="nav-link" data-scroll-target="#numeric">Numeric</a></li>
+  <li><a href="#exercise" id="toc-exercise" class="nav-link" data-scroll-target="#exercise">Exercise</a></li>
+  <li><a href="#data-types-associated-with-exposure-assessment-methods" id="toc-data-types-associated-with-exposure-assessment-methods" class="nav-link" data-scroll-target="#data-types-associated-with-exposure-assessment-methods">Data types associated with exposure assessment methods</a></li>
+  <li><a href="#data-that-might-be-available-for-exposure-analysis" id="toc-data-that-might-be-available-for-exposure-analysis" class="nav-link" data-scroll-target="#data-that-might-be-available-for-exposure-analysis">Data that might be available for exposure analysis</a></li>
+  <li><a href="#tool-to-help-document-exposure-measurements" id="toc-tool-to-help-document-exposure-measurements" class="nav-link" data-scroll-target="#tool-to-help-document-exposure-measurements">Tool to help document exposure measurements</a></li>
+  <li><a href="#tool-to-help-collect-information-on-exposure-scenarios" id="toc-tool-to-help-collect-information-on-exposure-scenarios" class="nav-link" data-scroll-target="#tool-to-help-collect-information-on-exposure-scenarios">Tool to help collect information on exposure scenarios</a></li>
+  <li><a href="#ramifications-of-data-scales" id="toc-ramifications-of-data-scales" class="nav-link" data-scroll-target="#ramifications-of-data-scales">Ramifications of data scales</a></li>
+  <li><a href="#descriptive-analysis" id="toc-descriptive-analysis" class="nav-link" data-scroll-target="#descriptive-analysis">Descriptive analysis</a></li>
+  <li><a href="#scope-of-datasetanalysis" id="toc-scope-of-datasetanalysis" class="nav-link" data-scroll-target="#scope-of-datasetanalysis">Scope of dataset/analysis</a></li>
+  <li><a href="#univariate-analyses" id="toc-univariate-analyses" class="nav-link" data-scroll-target="#univariate-analyses">Univariate analyses</a></li>
+  <li><a href="#distribution-categorical-table" id="toc-distribution-categorical-table" class="nav-link" data-scroll-target="#distribution-categorical-table">Distribution: categorical (table)</a></li>
+  <li><a href="#distribution-categorical-ordinal" id="toc-distribution-categorical-ordinal" class="nav-link" data-scroll-target="#distribution-categorical-ordinal">Distribution: categorical (ordinal)</a></li>
+  <li><a href="#distribution-quantitative-ratio-histogram" id="toc-distribution-quantitative-ratio-histogram" class="nav-link" data-scroll-target="#distribution-quantitative-ratio-histogram">Distribution: quantitative (ratio) histogram</a></li>
+  <li><a href="#distribution-exceedance-fraction" id="toc-distribution-exceedance-fraction" class="nav-link" data-scroll-target="#distribution-exceedance-fraction">Distribution: exceedance fraction</a></li>
+  <li><a href="#central-tendency-mean-median-mode" id="toc-central-tendency-mean-median-mode" class="nav-link" data-scroll-target="#central-tendency-mean-median-mode">Central tendency: mean, median, mode</a></li>
+  <li><a href="#dispersion" id="toc-dispersion" class="nav-link" data-scroll-target="#dispersion">Dispersion</a></li>
+  <li><a href="#dispersion-standard-deviation-vs-variance" id="toc-dispersion-standard-deviation-vs-variance" class="nav-link" data-scroll-target="#dispersion-standard-deviation-vs-variance">Dispersion: standard deviation vs variance</a></li>
+  <li><a href="#dispersion-visualization-boxplot" id="toc-dispersion-visualization-boxplot" class="nav-link" data-scroll-target="#dispersion-visualization-boxplot">Dispersion visualization: boxplot</a></li>
+  <li><a href="#excel-tool-available-for-basic-descriptive-statistics-ihstat" id="toc-excel-tool-available-for-basic-descriptive-statistics-ihstat" class="nav-link" data-scroll-target="#excel-tool-available-for-basic-descriptive-statistics-ihstat">Excel tool available for basic descriptive statistics: IHSTAT</a></li>
+  <li><a href="#bivariate-analyses" id="toc-bivariate-analyses" class="nav-link" data-scroll-target="#bivariate-analyses">Bivariate analyses</a></li>
+  <li><a href="#bivariate-scatter-plot" id="toc-bivariate-scatter-plot" class="nav-link" data-scroll-target="#bivariate-scatter-plot">Bivariate: scatter plot</a></li>
+  <li><a href="#bivariate-pearson-correlation" id="toc-bivariate-pearson-correlation" class="nav-link" data-scroll-target="#bivariate-pearson-correlation">Bivariate: Pearson correlation</a></li>
+  <li><a href="#bivariate-spearman-correlation" id="toc-bivariate-spearman-correlation" class="nav-link" data-scroll-target="#bivariate-spearman-correlation">Bivariate: Spearman correlation</a></li>
+  <li><a href="#bivariate-spearman-vs-pearson-correlation-coefficient" id="toc-bivariate-spearman-vs-pearson-correlation-coefficient" class="nav-link" data-scroll-target="#bivariate-spearman-vs-pearson-correlation-coefficient">Bivariate: Spearman vs Pearson correlation coefficient</a></li>
+  <li><a href="#bivariate-cross-tabulation" id="toc-bivariate-cross-tabulation" class="nav-link" data-scroll-target="#bivariate-cross-tabulation">Bivariate: cross-tabulation</a></li>
+  <li><a href="#censored-data" id="toc-censored-data" class="nav-link" data-scroll-target="#censored-data">Censored data</a></li>
+  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">Exercise</a></li>
+  <li><a href="#common-approach-1-to-dealing-with-censored-data" id="toc-common-approach-1-to-dealing-with-censored-data" class="nav-link" data-scroll-target="#common-approach-1-to-dealing-with-censored-data">Common approach #1 to dealing with censored data</a></li>
+  <li><a href="#common-approach-1-to-dealing-with-censored-data-1" id="toc-common-approach-1-to-dealing-with-censored-data-1" class="nav-link" data-scroll-target="#common-approach-1-to-dealing-with-censored-data-1">Common approach #1 to dealing with censored data</a></li>
+  <li><a href="#on-to-r" id="toc-on-to-r" class="nav-link" data-scroll-target="#on-to-r">On to R!</a></li>
+  <li><a href="#distributions" id="toc-distributions" class="nav-link" data-scroll-target="#distributions">Distributions</a></li>
+  <li><a href="#calculating-mean-and-median-mode-from-frequency-table" id="toc-calculating-mean-and-median-mode-from-frequency-table" class="nav-link" data-scroll-target="#calculating-mean-and-median-mode-from-frequency-table">Calculating mean and median (mode from frequency table)</a></li>
+  <li><a href="#calculating-mean-and-median-mode-from-frequency-table-1" id="toc-calculating-mean-and-median-mode-from-frequency-table-1" class="nav-link" data-scroll-target="#calculating-mean-and-median-mode-from-frequency-table-1">Calculating mean and median (mode from frequency table)</a></li>
+  <li><a href="#bivariate-cross-tabulation-1" id="toc-bivariate-cross-tabulation-1" class="nav-link" data-scroll-target="#bivariate-cross-tabulation-1">Bivariate: cross-tabulation</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="descriptive_stats.slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../01-lectures/01-the-basics/01-introduction/introduction.html">Section 1</a></li><li class="breadcrumb-item"><a href="../../../01-lectures/01-the-basics/04-descriptive-stats/descriptive_stats.html">4 Types of data</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Types of data, descriptive statistics, and censoring (Lecture 4)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="what-well-cover-today" class="level3">
+<h3 class="anchored" data-anchor-id="what-well-cover-today">What we’ll cover today</h3>
+<ul>
+<li><p>The basics</p></li>
+<li><p>Types and scales of data</p></li>
+<li><p>Descriptive analysis and visualization</p>
+<ul>
+<li><p>Distribution</p></li>
+<li><p>Central tendency</p></li>
+<li><p>Dispersion</p></li>
+</ul></li>
+<li><p>Censored data</p></li>
+</ul>
+<hr>
+</section>
+<section id="the-basics-understanding-exposure" class="level3">
+<h3 class="anchored" data-anchor-id="the-basics-understanding-exposure">The basics: understanding exposure</h3>
+<p><img src="images/clipboard-725271991.png" class="img-fluid" style="width:70.0%"></p>
+<div class="custom-footer">
+<p>White E, Armstrong BK, Saracci R. 2008</p>
+</div>
+<hr>
+</section>
+<section id="assessing-exposures" class="level3">
+<h3 class="anchored" data-anchor-id="assessing-exposures">Assessing exposures</h3>
+<p><img src="images/clipboard-2972842367.png" class="img-fluid" style="width:75.0%"></p>
+<div class="custom-footer">
+<p>Source: Nieuwenhuijsen M. et al, New develpments in exposure assessment: The impact on the practice of health risk assessment and epidemiological studies. Environment International, December 2006, Vol 32 (8) Pgs 996 -1009</p>
+</div>
+<hr>
+</section>
+<section id="exposure-data-examples" class="level3">
+<h3 class="anchored" data-anchor-id="exposure-data-examples">Exposure data examples</h3>
+<p><img src="images/clipboard-4063894503.png" class="img-fluid" style="width:60.0%"></p>
+<hr>
+</section>
+<section id="exposure-data-examples-1" class="level3">
+<h3 class="anchored" data-anchor-id="exposure-data-examples-1">Exposure data examples</h3>
+<p><img src="images/clipboard-2337959814.png" class="img-fluid" style="width:90.0%"></p>
+<div class="custom-footer">
+<p>Ignacio and Bullock, AIHA, 2006</p>
+</div>
+<hr>
+</section>
+<section id="types-and-scales-of-data" class="level3">
+<h3 class="anchored" data-anchor-id="types-and-scales-of-data">Types and scales of data</h3>
+<hr>
+</section>
+<section id="binary-and-nominal" class="level3">
+<h3 class="anchored" data-anchor-id="binary-and-nominal">Binary and nominal</h3>
+<ul>
+<li><p>Values only used as labels</p>
+<ul>
+<li><p>Binary = two categories</p></li>
+<li><p>Nominal &gt;= two categories</p></li>
+</ul></li>
+<li><p>Not ordered</p>
+<ul>
+<li>Tells nothing about individual’s ranking</li>
+</ul></li>
+<li><p>Examples?</p>
+<div class="fragment">
+<ul>
+<li><p>Binary: gender</p></li>
+<li><p>Nominal: occupation (if not ordered in some way related to exposure)</p></li>
+</ul>
+</div></li>
+</ul>
+<p><img src="images/clipboard-2861969903.png" class="img-fluid" style="width:25.0%"></p>
+<div class="custom-footer">
+<p>White E, Armstrong BK, Saracci R. 2008</p>
+</div>
+<hr>
+</section>
+<section id="ordinal" class="level3">
+<h3 class="anchored" data-anchor-id="ordinal">Ordinal</h3>
+<ul>
+<li><p>Values used indicate rank ordering (e.g., low/moderate/high)</p></li>
+<li><p>Differences between numbers do not indicate actual size of differences</p></li>
+<li><p>Examples?</p>
+<div class="fragment">
+<ul>
+<li><p>Socioeconomic status</p></li>
+<li><p>Crude categories of exposure (e.g., exposed daily, weekly, monthly, yearly)</p></li>
+</ul>
+</div></li>
+</ul>
+<div class="custom-footer">
+<p>White E, Armstrong BK, Saracci R. 2008</p>
+</div>
+<hr>
+</section>
+<section id="numeric" class="level3">
+<h3 class="anchored" data-anchor-id="numeric">Numeric</h3>
+<ul>
+<li><p>Relative values of assigned numbers reflect true differences in underlying values</p></li>
+<li><p>We’ll treat these as “numeric”</p></li>
+<li><p>Examples?</p></li>
+</ul>
+<p><img src="images/clipboard-823844858.png" class="img-fluid" style="width:20.0%"></p>
+<div class="fragment">
+<p><img src="images/clipboard-812587732.png" class="img-fluid" style="width:20.0%"></p>
+</div>
+<div class="custom-footer">
+<p>White E, Armstrong BK, Saracci R. 2008</p>
+</div>
+<hr>
+</section>
+<section id="exercise" class="level3">
+<h3 class="anchored" data-anchor-id="exercise">Exercise</h3>
+<ul>
+<li><p>Imagine a study of exposure to 1,4 dioxane in drinking water among community members in Ann Arbor</p></li>
+<li><p>Think of an example of potentially relevant exposure information for each of following data scales:</p>
+<ul>
+<li><p>Binary</p></li>
+<li><p>Nominal</p></li>
+<li><p>Ordinal</p></li>
+<li><p>Numeric</p></li>
+</ul></li>
+</ul>
+<p><img src="images/clipboard-1775968451.png" class="img-fluid" style="width:40.0%"></p>
+<hr>
+</section>
+<section id="data-types-associated-with-exposure-assessment-methods" class="level3">
+<h3 class="anchored" data-anchor-id="data-types-associated-with-exposure-assessment-methods">Data types associated with exposure assessment methods</h3>
+<p><img src="images/clipboard-4142130242.png" class="img-fluid" style="width:70.0%"></p>
+<hr>
+</section>
+<section id="data-that-might-be-available-for-exposure-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="data-that-might-be-available-for-exposure-analysis">Data that might be available for exposure analysis</h3>
+<p><img src="images/clipboard-1972745497.png" class="img-fluid" style="width:90.0%"></p>
+<div class="custom-footer">
+<p><a href="https://synergist.aiha.org/202012-ih-data-standardization" class="uri">https://synergist.aiha.org/202012-ih-data-standardization</a></p>
+</div>
+<hr>
+</section>
+<section id="tool-to-help-document-exposure-measurements" class="level3">
+<h3 class="anchored" data-anchor-id="tool-to-help-document-exposure-measurements">Tool to help document exposure measurements</h3>
+<p>AIHA Basic Exposure Assessment and Sampling Spreadsheet</p>
+<p><img src="images/clipboard-348376499.png" class="img-fluid" style="width:90.0%"></p>
+<p>Let’s explore!</p>
+<p><a href="https://aiha-assets.sfo2.digitaloceanspaces.com/AIHA/resources/Public-Resources/EXASSVG-BasicBCEASamplingCollectionSheet.xls" class="uri">https://aiha-assets.sfo2.digitaloceanspaces.com/AIHA/resources/Public-Resources/EXASSVG-BasicBCEASamplingCollectionSheet.xls</a></p>
+<hr>
+</section>
+<section id="tool-to-help-collect-information-on-exposure-scenarios" class="level3">
+<h3 class="anchored" data-anchor-id="tool-to-help-collect-information-on-exposure-scenarios">Tool to help collect information on exposure scenarios</h3>
+<p><img src="images/clipboard-3212856564.png" class="img-fluid" style="width:70.0%"></p>
+<p>Let’s explore!</p>
+<p><a href="https://aiha-assets.sfo2.digitaloceanspaces.com/AIHA/resources/Public-Resources/IHEST_V15.xlsm" class="uri">https://aiha-assets.sfo2.digitaloceanspaces.com/AIHA/resources/Public-Resources/IHEST_V15.xlsm</a></p>
+<p><strong><em>Note: you mus enable Macros in Excel for tool to work</em></strong></p>
+<hr>
+</section>
+<section id="ramifications-of-data-scales" class="level3">
+<h3 class="anchored" data-anchor-id="ramifications-of-data-scales">Ramifications of data scales</h3>
+<ul>
+<li><p>When exposures can be quantified, best to capture as quantitative rather than categorical</p>
+<ul>
+<li><p>E.g., #cigarettes per day instead of &lt;14, 15-24, 25-34, etc.</p></li>
+<li><p>Even if categories equally sized, mean value in each category cannot be computed</p></li>
+</ul></li>
+<li><p>Can always collapse quantitative to categorical – but not vice versa</p>
+<ul>
+<li>May even want to do this, as ordinal is easy to understand, makes no dose-response assumptions</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="descriptive-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="descriptive-analysis">Descriptive analysis</h3>
+<ul>
+<li><p>Before we can make inference from data we must thoroughly examine variables</p>
+<ul>
+<li><p>Catch mistakes</p></li>
+<li><p>Look for patterns</p></li>
+<li><p>Find violations of statistical assumptions</p></li>
+<li><p>Generate hypotheses</p></li>
+<li><p>Avoid headaches later</p></li>
+</ul></li>
+</ul>
+<p><img src="images/clipboard-4034559650.png" class="img-fluid" style="width:10.0%"></p>
+<hr>
+</section>
+<section id="scope-of-datasetanalysis" class="level3">
+<h3 class="anchored" data-anchor-id="scope-of-datasetanalysis">Scope of dataset/analysis</h3>
+<ul>
+<li><p>Univariate</p>
+<ul>
+<li>Measurements on one variable per subject</li>
+</ul></li>
+<li><p>Bivariate</p>
+<ul>
+<li>Measurements on two variables per subject</li>
+</ul></li>
+<li><p>Multivariate (<em>not today’s focus)</em></p>
+<ul>
+<li>Measurements on many variables per subject</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="univariate-analyses" class="level3">
+<h3 class="anchored" data-anchor-id="univariate-analyses">Univariate analyses</h3>
+<ul>
+<li><p>Characteristics of single variable</p></li>
+<li><p>Typically</p>
+<ul>
+<li><p>Distribution (frequency distribution)</p></li>
+<li><p>Central tendency (mean, median, mode)</p></li>
+<li><p>Dispersion (range, quartiles, absolute deviation, variance, standard deviation)</p></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="distribution-categorical-table" class="level3">
+<h3 class="anchored" data-anchor-id="distribution-categorical-table">Distribution: categorical (table)</h3>
+<p><img src="images/clipboard-1694661947.png" class="img-fluid" style="width:60.0%"></p>
+<hr>
+</section>
+<section id="distribution-categorical-ordinal" class="level3">
+<h3 class="anchored" data-anchor-id="distribution-categorical-ordinal">Distribution: categorical (ordinal)</h3>
+<p><img src="images/clipboard-399953530.png" class="img-fluid" style="width:60.0%"></p>
+<hr>
+</section>
+<section id="distribution-quantitative-ratio-histogram" class="level3">
+<h3 class="anchored" data-anchor-id="distribution-quantitative-ratio-histogram">Distribution: quantitative (ratio) histogram</h3>
+<p><img src="images/clipboard-1314082755.png" class="img-fluid" style="width:60.0%"></p>
+<div class="custom-footer">
+<p><a href="http://www.inchem.org/documents/ehc/ehc/ehc214.htm" class="uri">http://www.inchem.org/documents/ehc/ehc/ehc214.htm</a></p>
+</div>
+<hr>
+</section>
+<section id="distribution-exceedance-fraction" class="level3">
+<h3 class="anchored" data-anchor-id="distribution-exceedance-fraction">Distribution: exceedance fraction</h3>
+<p><img src="images/clipboard-717205221.png" class="img-fluid"></p>
+<div class="custom-footer">
+<p><a href="http://www.inchem.org/documents/ehc/ehc/ehc214.htm" class="uri">http://www.inchem.org/documents/ehc/ehc/ehc214.htm</a></p>
+</div>
+<hr>
+</section>
+<section id="central-tendency-mean-median-mode" class="level3">
+<h3 class="anchored" data-anchor-id="central-tendency-mean-median-mode">Central tendency: mean, median, mode</h3>
+<p><img src="images/clipboard-1183599752.png" class="img-fluid" style="width:90.0%"></p>
+<hr>
+</section>
+<section id="dispersion" class="level3">
+<h3 class="anchored" data-anchor-id="dispersion">Dispersion</h3>
+<ul>
+<li><p>Measures which identify spread of data (i.e., how far measurements are from “center”)</p>
+<ul>
+<li><p><u>Range</u> (min to max)</p></li>
+<li><p><u>Quartiles</u> (Q3 – Q4 is interquartile range, IQR)</p></li>
+<li><p><u>Standard deviation</u> (SD) Variance</p></li>
+</ul></li>
+</ul>
+<p><img src="images/clipboard-1829525954.png" class="img-fluid" style="width:30.0%"></p>
+<hr>
+</section>
+<section id="dispersion-standard-deviation-vs-variance" class="level3">
+<h3 class="anchored" data-anchor-id="dispersion-standard-deviation-vs-variance">Dispersion: standard deviation vs variance</h3>
+<ul>
+<li><p>Standard deviation</p>
+<ul>
+<li><p>Not dependent on n</p></li>
+<li><p>Not affected by number of measurements</p></li>
+<li><p>Expressed in same units as data</p></li>
+<li><p>Commonly used in exposure analysis</p></li>
+</ul></li>
+<li><p>Variance is square of standard deviation</p>
+<ul>
+<li><p>Squaring eliminates negative values</p></li>
+<li><p>Unit is square of measurement unit (!) – i.e., not same units as data</p></li>
+<li><p>Values farther from mean contribute more to variance</p></li>
+<li><p>Commonly used in exposure analysis</p></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="dispersion-visualization-boxplot" class="level3">
+<h3 class="anchored" data-anchor-id="dispersion-visualization-boxplot">Dispersion visualization: boxplot</h3>
+<p>R: <code>ggplot(dataset, aes(x = varname1, y = varname2) + geom_boxplot()</code></p>
+<p><img src="images/clipboard-1468430471.png" class="img-fluid" style="width:50.0%"></p>
+<div class="custom-footer">
+<p><a href="http://www.inchem.org/documents/ehc/ehc/ehc214.htm" class="uri">http://www.inchem.org/documents/ehc/ehc/ehc214.htm</a></p>
+</div>
+<hr>
+</section>
+<section id="excel-tool-available-for-basic-descriptive-statistics-ihstat" class="level3">
+<h3 class="anchored" data-anchor-id="excel-tool-available-for-basic-descriptive-statistics-ihstat">Excel tool available for basic descriptive statistics: IHSTAT</h3>
+<p><img src="images/clipboard-4145330414.png" class="img-fluid" style="width:70.0%"></p>
+<div class="custom-footer">
+<p><a href="https://aiha-assets.sfo2.digitaloceanspaces.com/AIHA/resources/StrategyBook4/Appendix-IV/EXPASSVG-IHSTATmacrofree.xls" class="uri">https://aiha-assets.sfo2.digitaloceanspaces.com/AIHA/resources/StrategyBook4/Appendix-IV/EXPASSVG-IHSTATmacrofree.xls</a></p>
+</div>
+<hr>
+</section>
+<section id="bivariate-analyses" class="level3">
+<h3 class="anchored" data-anchor-id="bivariate-analyses">Bivariate analyses</h3>
+<ul>
+<li><p>Allow us to begin to explore relationships between variables</p>
+<ul>
+<li><p>Scatter plot</p></li>
+<li><p>Correlation</p></li>
+<li><p>Cross-tabulation</p></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="bivariate-scatter-plot" class="level3">
+<h3 class="anchored" data-anchor-id="bivariate-scatter-plot">Bivariate: scatter plot</h3>
+<p><img src="images/clipboard-1057319563.png" class="img-fluid" style="width:70.0%"></p>
+<div class="custom-footer">
+<p><a href="http://www.inchem.org/documents/ehc/ehc/ehc214.htm" class="uri">http://www.inchem.org/documents/ehc/ehc/ehc214.htm</a></p>
+</div>
+<hr>
+</section>
+<section id="bivariate-pearson-correlation" class="level3">
+<h3 class="anchored" data-anchor-id="bivariate-pearson-correlation">Bivariate: Pearson correlation</h3>
+<ul>
+<li><span class="math inline">\(\rho\)</span> (Pearson’s correlation coefficient) is amount of change in one value you expect from change in another value</li>
+<li>Assumptions:
+<ul>
+<li>Both variables numeric data</li>
+<li>Both variables normally distributed</li>
+<li>Absence of outliers</li>
+<li>Linear relationship</li>
+<li>Homeskedasticity</li>
+</ul></li>
+</ul>
+<p><img src="images/clipboard-1948086742.png" class="img-fluid" style="width:40.0%"></p>
+<hr>
+</section>
+<section id="bivariate-spearman-correlation" class="level3">
+<h3 class="anchored" data-anchor-id="bivariate-spearman-correlation">Bivariate: Spearman correlation</h3>
+<ul>
+<li><p>Spearman’s rank correlation coefficient (<span class="math inline">\(\rho_s\)</span>)</p>
+<ul>
+<li><p>Pearson correlation coefficient between ranked variables</p></li>
+<li><p>Raw scores <span class="math inline">\(X_i\)</span>, <span class="math inline">\(Y_i\)</span> converted to ranks <span class="math inline">\(x_i\)</span>, <span class="math inline">\(y_i\)</span></p></li>
+<li><p>Nonparametric (no distributional assumptions)</p></li>
+</ul></li>
+<li><p>Assumptions:</p>
+<ul>
+<li><p>Numeric or interval data</p></li>
+<li><p>Monotonic relationship</p></li>
+</ul></li>
+</ul>
+<p><img src="images/clipboard-237165684.png" class="img-fluid" style="width:50.0%"></p>
+<hr>
+</section>
+<section id="bivariate-spearman-vs-pearson-correlation-coefficient" class="level3">
+<h3 class="anchored" data-anchor-id="bivariate-spearman-vs-pearson-correlation-coefficient">Bivariate: Spearman vs Pearson correlation coefficient</h3>
+<p><img src="images/clipboard-3747475332.png" class="img-fluid" style="width:90.0%"></p>
+<hr>
+</section>
+<section id="bivariate-cross-tabulation" class="level3">
+<h3 class="anchored" data-anchor-id="bivariate-cross-tabulation">Bivariate: cross-tabulation</h3>
+<p><img src="images/clipboard-2943457781.png" class="img-fluid" style="width:60.0%"></p>
+<hr>
+</section>
+<section id="censored-data" class="level3">
+<h3 class="anchored" data-anchor-id="censored-data">Censored data</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<ul>
+<li><p>Uncensored/complete</p>
+<ul>
+<li><p>Value of each sample unit observed/known</p></li>
+<li><p>Default assumption</p></li>
+</ul></li>
+<li><p>Left censored</p>
+<ul>
+<li>Data &lt;min value</li>
+</ul></li>
+<li><p>Interval censored</p>
+<ul>
+<li>Data between min and max</li>
+</ul></li>
+<li><p>Right censored</p>
+<ul>
+<li>Data &gt;max value</li>
+</ul></li>
+</ul>
+</div>
+<div class="slide-column">
+<p><img src="images/clipboard-1393743470.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="exercise-1" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-1">Exercise</h3>
+<ul>
+<li><p>Come up with one example of exposure data where you might find each type of censoring</p>
+<ul>
+<li><p>Right censoring</p></li>
+<li><p>Left censoring</p></li>
+<li><p>Interval censoring</p></li>
+</ul></li>
+<li><p>One example that’s immediately relevant: our own noise measurements</p>
+<ul>
+<li><p>L<sub>EQ</sub> measured from 70-140 dBA</p></li>
+<li><p>Minutes with levels that never exceed 70 dBA assigned 0 dBA</p></li>
+<li><p>Shifts with mixture of minutes above and below 70 dBA may yield shift average &lt;70 dBA</p></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="common-approach-1-to-dealing-with-censored-data" class="level3">
+<h3 class="anchored" data-anchor-id="common-approach-1-to-dealing-with-censored-data">Common approach #1 to dealing with censored data</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<p><span class="math display">\[
+\frac{LOD}{2}
+\]</span></p>
+<p>Assign all censored data 1/2 LOD</p>
+<p>Assumes data uniformly distributed below LOD</p>
+</div>
+<div class="columns-only-on-slides">
+<p><img src="images/clipboard-4074007373.png" class="img-fluid" style="width:75.0%"></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="common-approach-1-to-dealing-with-censored-data-1" class="level3">
+<h3 class="anchored" data-anchor-id="common-approach-1-to-dealing-with-censored-data-1">Common approach #1 to dealing with censored data</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<p>Hornung and Reed (1990)</p>
+<p><span class="math display">\[
+\frac{LOD}{\sqrt2}
+\]</span></p>
+<p>More accurate than LOD/2 when datanormally or lognormally distributed</p>
+<ul>
+<li><p>Okay if &lt;~50% data censored if low to moderate variability</p></li>
+<li><p>Less accurate than LOD/2 for highly skewed data</p></li>
+</ul>
+</div>
+<div class="columns-only-on-slides">
+<p><img src="images/clipboard-4092495713.png" class="img-fluid" style="width:75.0%"></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="on-to-r" class="level3">
+<h3 class="anchored" data-anchor-id="on-to-r">On to R!</h3>
+<p>Get the data ready again</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages we need</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># read dataset excel file</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"Dataset V1.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="distributions" class="level3">
+<h3 class="anchored" data-anchor-id="distributions">Distributions</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<p>Distribution: categorical (table) - table function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+         Carpenter           Carpentr         Electrican        Electrician 
+                38                  2                  2                 39 
+        Ironworker          Ironworkr            Laboerr            Laborer 
+                40                  2                  2                 34 
+            Lborer  Operaing engineer Operating engineer 
+                 2                  2                 38 </code></pre>
+</div>
+</div>
+<p>Categorical (ordinal) - boxplot function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ehs655, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(<span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>), <span class="at">y =</span> <span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="descriptive_stats_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>OR</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>, <span class="at">y =</span> <span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="descriptive_stats_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="slide-column">
+<p>Quantitative (histogram) - histogram function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="descriptive_stats_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="calculating-mean-and-median-mode-from-frequency-table" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-mean-and-median-mode-from-frequency-table">Calculating mean and median (mode from frequency table)</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<p>Table function for mean and median</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_leq=</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">median_leq =</span> <span class="fu">median</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+  mean_leq median_leq
+     &lt;dbl&gt;      &lt;dbl&gt;
+1     83.0       89.5</code></pre>
+</div>
+</div>
+<p>Quantitative (histogram) - histogram function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">sd_leq =</span> <span class="fu">sd</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">iqr_leq =</span> <span class="fu">IQR</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span> , <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">var_leq =</span> <span class="fu">var</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">min_leq =</span> <span class="fu">min</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">max_leq =</span> <span class="fu">max</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 5
+  sd_leq iqr_leq var_leq min_leq max_leq
+   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1   26.3    11.8    691.       0    108.</code></pre>
+</div>
+</div>
+</div>
+<div class="slide-column">
+<p>And of course these could be combined in a single table</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="calculating-mean-and-median-mode-from-frequency-table-1" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-mean-and-median-mode-from-frequency-table-1">Calculating mean and median (mode from frequency table)</h3>
+<div class="columns-only-on-slides">
+<div class="slide-column">
+<p>Scatterplot</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">y =</span> <span class="st">`</span><span class="at">Age-baseline-years</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="descriptive_stats_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><img src="images/clipboard-4290410222.png" class="img-fluid" style="width:40.0%"></p>
+</div>
+<div class="slide-column">
+<p>Pearson correlation coefficient</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(<span class="at">x =</span> ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">y =</span> ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Age-baseline-years</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's product-moment correlation
+
+data:  ehs655$`Work-LEQ-dBA` and ehs655$`Age-baseline-years`
+t = -0.074189, df = 199, p-value = 0.9409
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.1435493  0.1332326
+sample estimates:
+         cor 
+-0.005259052 </code></pre>
+</div>
+</div>
+<p>Spearman correlation coefficient</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(<span class="at">x =</span> ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">y =</span> ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Age-baseline-years</span><span class="st">`</span>, <span class="at">method =</span> <span class="st">"spearman"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor.test.default(x = ehs655$`Work-LEQ-dBA`, y =
+ehs655$`Age-baseline-years`, : Cannot compute exact p-value with ties</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Spearman's rank correlation rho
+
+data:  ehs655$`Work-LEQ-dBA` and ehs655$`Age-baseline-years`
+S = 1220766, p-value = 0.1663
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+       rho 
+0.09800029 </code></pre>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="bivariate-cross-tabulation-1" class="level3">
+<h3 class="anchored" data-anchor-id="bivariate-cross-tabulation-1">Bivariate: cross-tabulation</h3>
+<p>Use the <code>xtabs</code> function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span><span class="st">`</span><span class="at">Job-title</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">Gender</span><span class="st">`</span>, <span class="at">data =</span> ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    Gender
+Job-title             F Female  M Male
+  Carpenter           2      0 36    0
+  Carpentr            0      0  2    0
+  Electrican          0      0  2    0
+  Electrician         4      0 35    0
+  Ironworker          0      0 38    2
+  Ironworkr           0      0  2    0
+  Laboerr             0      0  2    0
+  Laborer             4      0 28    2
+  Lborer              0      0  2    0
+  Operaing engineer   2      0  0    0
+  Operating engineer  6      2 30    0</code></pre>
+</div>
+</div>
+</section>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section"></h3>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../../01-lectures/01-the-basics/03-introduction-to-R/introduction_to_R.html" class="pagination-link" aria-label="3 (Re)introduction to R">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">3 (Re)introduction to R</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
