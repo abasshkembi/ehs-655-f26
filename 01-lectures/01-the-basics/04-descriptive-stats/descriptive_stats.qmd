@@ -18,19 +18,19 @@ library(tidyverse)
 
 ### What we'll cover today
 
--   The basics
+- The basics
 
--   Types and scales of data
+- Types and scales of data
 
--   Descriptive analysis and visualization
+- Descriptive analysis and visualization
 
-    -   Distribution
+  - Distribution
 
-    -   Central tendency
+  - Central tendency
 
-    -   Dispersion
+  - Dispersion
 
--   Censored data
+- Censored data
 
 ------------------------------------------------------------------------
 
@@ -76,23 +76,23 @@ Ignacio and Bullock, AIHA, 2006
 
 ### Binary and nominal
 
--   Values only used as labels
+- Values only used as labels
 
-    -   Binary = two categories
+  - Binary = two categories
 
-    -   Nominal \>= two categories
+  - Nominal \>= two categories
 
--   Not ordered
+- Not ordered
 
-    -   Tells nothing about individual’s ranking
+  - Tells nothing about individual’s ranking
 
--   Examples?
+- Examples?
 
-    ::: fragment
-    -   Binary: gender
+  ::: fragment
+  - Binary: gender
 
-    -   Nominal: occupation (if not ordered in some way related to exposure)
-    :::
+  - Nominal: occupation (if not ordered in some way related to exposure)
+  :::
 
 ![](images/clipboard-2861969903.png){width="25%"}
 
@@ -104,17 +104,17 @@ White E, Armstrong BK, Saracci R. 2008
 
 ### Ordinal
 
--   Values used indicate rank ordering (e.g., low/moderate/high)
+- Values used indicate rank ordering (e.g., low/moderate/high)
 
--   Differences between numbers do not indicate actual size of differences
+- Differences between numbers do not indicate actual size of differences
 
--   Examples?
+- Examples?
 
-    ::: fragment
-    -   Socioeconomic status
+  ::: fragment
+  - Socioeconomic status
 
-    -   Crude categories of exposure (e.g., exposed daily, weekly, monthly, yearly)
-    :::
+  - Crude categories of exposure (e.g., exposed daily, weekly, monthly, yearly)
+  :::
 
 ::: custom-footer
 White E, Armstrong BK, Saracci R. 2008
@@ -124,11 +124,11 @@ White E, Armstrong BK, Saracci R. 2008
 
 ### Numeric
 
--   Relative values of assigned numbers reflect true differences in underlying values
+- Relative values of assigned numbers reflect true differences in underlying values
 
--   We’ll treat these as “numeric”
+- We’ll treat these as “numeric”
 
--   Examples?
+- Examples?
 
 ![](images/clipboard-823844858.png){width="20%"}
 
@@ -144,17 +144,17 @@ White E, Armstrong BK, Saracci R. 2008
 
 ### Exercise
 
--   Imagine a study of exposure to 1,4 dioxane in drinking water among community members in Ann Arbor
+- Imagine a study of exposure to 1,4 dioxane in drinking water among community members in Ann Arbor
 
--   Think of an example of potentially relevant exposure information for each of following data scales:
+- Think of an example of potentially relevant exposure information for each of following data scales:
 
-    -   Binary
+  - Binary
 
-    -   Nominal
+  - Nominal
 
-    -   Ordinal
+  - Ordinal
 
-    -   Numeric
+  - Numeric
 
 ![](images/clipboard-1775968451.png){width="40%"}
 
@@ -202,31 +202,31 @@ Let's explore!
 
 ### Ramifications of data scales
 
--   When exposures can be quantified, best to capture as quantitative rather than categorical
+- When exposures can be quantified, best to capture as quantitative rather than categorical
 
-    -   E.g., #cigarettes per day instead of \<14, 15-24, 25-34, etc.
+  - E.g., #cigarettes per day instead of \<14, 15-24, 25-34, etc.
 
-    -   Even if categories equally sized, mean value in each category cannot be computed
+  - Even if categories equally sized, mean value in each category cannot be computed
 
--   Can always collapse quantitative to categorical – but not vice versa
+- Can always collapse quantitative to categorical – but not vice versa
 
-    -   May even want to do this, as ordinal is easy to understand, makes no dose-response assumptions
+  - May even want to do this, as ordinal is easy to understand, makes no dose-response assumptions
 
 ------------------------------------------------------------------------
 
 ### Descriptive analysis
 
--   Before we can make inference from data we must thoroughly examine variables
+- Before we can make inference from data we must thoroughly examine variables
 
-    -   Catch mistakes
+  - Catch mistakes
 
-    -   Look for patterns
+  - Look for patterns
 
-    -   Find violations of statistical assumptions
+  - Find violations of statistical assumptions
 
-    -   Generate hypotheses
+  - Generate hypotheses
 
-    -   Avoid headaches later
+  - Avoid headaches later
 
 ![](images/clipboard-4034559650.png){width="10%"}
 
@@ -234,31 +234,31 @@ Let's explore!
 
 ### Scope of dataset/analysis
 
--   Univariate
+- Univariate
 
-    -   Measurements on one variable per subject
+  - Measurements on one variable per subject
 
--   Bivariate
+- Bivariate
 
-    -   Measurements on two variables per subject
+  - Measurements on two variables per subject
 
--   Multivariate (*not today's focus)*
+- Multivariate (*not today's focus)*
 
-    -   Measurements on many variables per subject
+  - Measurements on many variables per subject
 
 ------------------------------------------------------------------------
 
 ### Univariate analyses
 
--   Characteristics of single variable
+- Characteristics of single variable
 
--   Typically
+- Typically
 
-    -   Distribution (frequency distribution)
+  - Distribution (frequency distribution)
 
-    -   Central tendency (mean, median, mode)
+  - Central tendency (mean, median, mode)
 
-    -   Dispersion (range, quartiles, absolute deviation, variance, standard deviation)
+  - Dispersion (range, quartiles, absolute deviation, variance, standard deviation)
 
 ------------------------------------------------------------------------
 
@@ -302,13 +302,13 @@ Let's explore!
 
 ### Dispersion
 
--   Measures which identify spread of data (i.e., how far measurements are from “center”)
+- Measures which identify spread of data (i.e., how far measurements are from “center”)
 
-    -   [Range]{.underline} (min to max)
+  - [Range]{.underline} (min to max)
 
-    -   [Quartiles]{.underline} (Q3 – Q4 is interquartile range, IQR)
+  - [Quartiles]{.underline} (Q3 – Q4 is interquartile range, IQR)
 
-    -   [Standard deviation]{.underline} (SD) Variance
+  - [Standard deviation]{.underline} (SD) Variance
 
 ![](images/clipboard-1829525954.png){width="30%"}
 
@@ -316,25 +316,25 @@ Let's explore!
 
 ### Dispersion: standard deviation vs variance
 
--   Standard deviation
+- Standard deviation
 
-    -   Not dependent on n
+  - Not dependent on n
 
-    -   Not affected by number of measurements
+  - Not affected by number of measurements
 
-    -   Expressed in same units as data
+  - Expressed in same units as data
 
-    -   Commonly used in exposure analysis
+  - Commonly used in exposure analysis
 
--   Variance is square of standard deviation
+- Variance is square of standard deviation
 
-    -   Squaring eliminates negative values
+  - Squaring eliminates negative values
 
-    -   Unit is square of measurement unit (!) – i.e., not same units as data
+  - Unit is square of measurement unit (!) – i.e., not same units as data
 
-    -   Values farther from mean contribute more to variance
+  - Values farther from mean contribute more to variance
 
-    -   Commonly used in exposure analysis
+  - Commonly used in exposure analysis
 
 ------------------------------------------------------------------------
 
@@ -362,13 +362,13 @@ R: `ggplot(dataset, aes(x = varname1, y = varname2) + geom_boxplot()`
 
 ### Bivariate analyses
 
--   Allow us to begin to explore relationships between variables
+- Allow us to begin to explore relationships between variables
 
-    -   Scatter plot
+  - Scatter plot
 
-    -   Correlation
+  - Correlation
 
-    -   Cross-tabulation
+  - Cross-tabulation
 
 ------------------------------------------------------------------------
 
@@ -384,13 +384,13 @@ R: `ggplot(dataset, aes(x = varname1, y = varname2) + geom_boxplot()`
 
 ### Bivariate: Pearson correlation
 
--   $\rho$ (Pearson’s correlation coefficient) is amount of change in one value you expect from change in another value
--   Assumptions:
-    -   Both variables numeric data
-    -   Both variables normally distributed
-    -   Absence of outliers
-    -   Linear relationship
-    -   Homeskedasticity
+- $\rho$ (Pearson’s correlation coefficient) is amount of change in one value you expect from change in another value
+- Assumptions:
+  - Both variables numeric data
+  - Both variables normally distributed
+  - Absence of outliers
+  - Linear relationship
+  - Homeskedasticity
 
 ![](images/clipboard-1948086742.png){width="40%"}
 
@@ -398,19 +398,19 @@ R: `ggplot(dataset, aes(x = varname1, y = varname2) + geom_boxplot()`
 
 ### Bivariate: Spearman correlation
 
--   Spearman’s rank correlation coefficient ($\rho_s$)
+- Spearman’s rank correlation coefficient ($\rho_s$)
 
-    -   Pearson correlation coefficient between ranked variables
+  - Pearson correlation coefficient between ranked variables
 
-    -   Raw scores $X_i$, $Y_i$ converted to ranks $x_i$, $y_i$
+  - Raw scores $X_i$, $Y_i$ converted to ranks $x_i$, $y_i$
 
-    -   Nonparametric (no distributional assumptions)
+  - Nonparametric (no distributional assumptions)
 
--   Assumptions:
+- Assumptions:
 
-    -   Numeric or interval data
+  - Numeric or interval data
 
-    -   Monotonic relationship
+  - Monotonic relationship
 
 ![](images/clipboard-237165684.png){width="50%"}
 
@@ -432,23 +432,23 @@ R: `ggplot(dataset, aes(x = varname1, y = varname2) + geom_boxplot()`
 
 ::::: columns-only-on-slides
 ::: slide-column
--   Uncensored/complete
+- Uncensored/complete
 
-    -   Value of each sample unit observed/known
+  - Value of each sample unit observed/known
 
-    -   Default assumption
+  - Default assumption
 
--   Left censored
+- Left censored
 
-    -   Data \<min value
+  - Data \<min value
 
--   Interval censored
+- Interval censored
 
-    -   Data between min and max
+  - Data between min and max
 
--   Right censored` `{=html}
+- Right censored
 
-    -   Data \>max value
+  - Data \>max value
 :::
 
 ::: slide-column
@@ -460,21 +460,21 @@ R: `ggplot(dataset, aes(x = varname1, y = varname2) + geom_boxplot()`
 
 ### Exercise
 
--   Come up with one example of exposure data where you might find each type of censoring
+- Come up with one example of exposure data where you might find each type of censoring
 
-    -   Right censoring
+  - Right censoring
 
-    -   Left censoring
+  - Left censoring
 
-    -   Interval censoring
+  - Interval censoring
 
--   One example that’s immediately relevant: our own noise measurements
+- One example that’s immediately relevant: our own noise measurements
 
-    -   L~EQ~ measured from 70-140 dBA
+  - L~EQ~ measured from 70-140 dBA
 
-    -   Minutes with levels that never exceed 70 dBA assigned 0 dBA
+  - Minutes with levels that never exceed 70 dBA assigned 0 dBA
 
-    -   Shifts with mixture of minutes above and below 70 dBA may yield shift average \<70 dBA
+  - Shifts with mixture of minutes above and below 70 dBA may yield shift average \<70 dBA
 
 ------------------------------------------------------------------------
 
@@ -498,7 +498,7 @@ Assumes data uniformly distributed below LOD
 
 ------------------------------------------------------------------------
 
-### Common approach #1 to dealing with censored data
+### Common approach #2 to dealing with censored data
 
 ::::: columns-only-on-slides
 ::: slide-column
@@ -510,15 +510,25 @@ $$
 
 More accurate than LOD/2 when datanormally or lognormally distributed
 
--   Okay if \<\~50% data censored if low to moderate variability
+- Okay if \<\~50% data censored if low to moderate variability
 
--   Less accurate than LOD/2 for highly skewed data
+- Less accurate than LOD/2 for highly skewed data
 :::
 
 ::: columns-only-on-slides
 ![](images/clipboard-4092495713.png){width="75%"}
 :::
 :::::
+
+------------------------------------------------------------------------
+
+### Better approach #3 to dealing with censored data
+
+- "$\beta$-substitution method” (Hewett and Ganser 2010)
+
+  - Basically computes a $\beta$ factor for each specific dataset that can be used instead of $LOD/2$ or $LOD/\sqrt2$
+
+  - Minimum $N$ for this equation should be ≥5 when data are censored up to 50%
 
 ------------------------------------------------------------------------
 
@@ -648,4 +658,171 @@ Use the `xtabs` function
 xtabs(~`Job-title` + `Gender`, data = ehs655)
 ```
 
-### 
+------------------------------------------------------------------------
+
+### Censored data
+
+::::: columns-only-on-slides
+::: slide-column
+Let's simulate some R code for some random, log-normal contaminant with a LOD of 1.5
+
+```{r}
+sim_df <-
+  tibble(true_conc = round(rlnorm(n = 300, meanlog = 1, sdlog = 0.7), 2)) %>%
+  mutate(LOD = 1.5,
+         obs_conc = ifelse(true_conc <= LOD, NA, true_conc),
+         above_LOD = ifelse(true_conc <= LOD, 0, 1))
+```
+:::
+
+::: slide-column
+We can visualize the distribution of the true contaminant levels versus what we observe due to values falling below the LOD of 1.5
+
+```{r, warning = F}
+sim_df %>%
+  ggplot() +
+  geom_histogram(aes(x = obs_conc), binwidth = 0.5, fill = "grey30", color = "grey30") +
+  geom_histogram(aes(x = true_conc), binwidth = 0.5, fill = "transparent", color = "orange")
+```
+:::
+:::::
+
+------------------------------------------------------------------------
+
+### Method #1: $LOD/2$
+
+::::: columns-only-on-slides
+::: slide-column
+Let's create a new column where values at or below 1.5 are substituted with $LOD/2$
+
+```{r}
+sim_df <-
+  sim_df %>%
+  mutate(conc_lod2 = ifelse(above_LOD == 0, LOD/2, true_conc))
+sim_df %>% select(true_conc, obs_conc, conc_lod2)
+```
+:::
+
+::: slide-column
+Let's visualize the new distribution (grey) compared to the true distribution (orange)
+
+```{r, warning = F}
+sim_df %>%
+  ggplot() +
+  geom_histogram(aes(x = conc_lod2), binwidth = 0.5, fill = "grey30", color = "grey30") +
+  geom_histogram(aes(x = true_conc), binwidth = 0.5, fill = "transparent", color = "orange")
+```
+:::
+:::::
+
+------------------------------------------------------------------------
+
+### Method #2: $LOD/\sqrt2$
+
+::::: columns-only-on-slides
+::: slide-column
+Let's create a new column where values at or below 1.5 are substituted with $LOD/\sqrt2$
+
+```{r}
+sim_df <-
+  sim_df %>%
+  mutate(conc_lodsqrt2 = ifelse(above_LOD == 0, LOD/sqrt(2), true_conc))
+sim_df %>% select(true_conc, obs_conc, conc_lod2, conc_lodsqrt2)
+```
+:::
+
+::: slide-column
+Let's visualize the new distribution (grey) compared to the true distribution (orange)
+
+```{r, warning = F}
+sim_df %>%
+  ggplot() +
+  geom_histogram(aes(x = conc_lodsqrt2), binwidth = 0.5, fill = "grey30", color = "grey30") +
+  geom_histogram(aes(x = true_conc), binwidth = 0.5, fill = "transparent", color = "orange")
+```
+:::
+:::::
+
+------------------------------------------------------------------------
+
+### Method #3: $\beta$-substitution
+
+:::::: columns-only-on-slides
+:::: slide-column
+Let's create a new column where values at or below 1.5 are substituted using the $\beta$-substitution method. First let's load the function to perform the method
+
+```{r}
+source("beta_sub_function.R")
+```
+
+<details>
+
+<summary>Click to view R Script</summary>
+
+``` r
+{{< include beta_sub_function.R >}}
+```
+
+</details>
+
+Then we can call the function: `beta_substitution(data, x_var, lod_var)`
+
+- `data`: your dataframe
+
+- `x_var`: the observed concentration data
+
+- `lod_var`: whether the observed concentration is above the LOD
+
+```{r}
+# first set all values at or below LOD to LOD value
+sim_df <- sim_df %>% mutate(obs_conc2 = ifelse(is.na(obs_conc), LOD, obs_conc))
+sim_bsub <- beta_substitution(sim_df, "obs_conc2", "above_LOD")
+sim_bsub
+```
+::::
+
+::: slide-column
+We now have our $\beta$ factor (`r sim_bsub$beta_mean`), which we can multiply with our LOD (1.5)
+
+```{r, warning = F}
+sim_df <- sim_df %>%
+  mutate(conc_bsub = ifelse(above_LOD == 0, 1.5*sim_bsub$beta_mean, true_conc)) 
+
+sim_df %>%
+  ggplot() +
+  geom_histogram(aes(x = conc_bsub), binwidth = 0.5, fill = "grey30", color = "grey30") +
+  geom_histogram(aes(x = true_conc), binwidth = 0.5, fill = "transparent", color = "orange")
+```
+:::
+::::::
+
+------------------------------------------------------------------------
+
+### Comparing censoring methods
+
+::::: columns-only-on-slides
+::: slide-column
+We replaced concentrations at or below the LOD with the following values:
+
+- LOD/2 = 1.5/2 = `r round(1.5/2, 2)`
+
+- LOD/$\sqrt2$ = 1.5/$\sqrt2$ = `r round(1.5/sqrt(2), 2)`
+
+- $\beta$-substitution = LOD\*$\beta$ = 1.5\*`r sim_bsub$beta_mean` = `r round(1.5*sim_bsub$beta_mean, 2)`
+:::
+
+::: slide-column
+Now let’s look at scatterplots of each of these censored estimate approaches
+
+```{r, warning = F}
+sim_df %>%
+  filter(true_conc < 5) %>%
+  ggplot(aes(x = true_conc)) +
+  geom_point(aes(y = conc_lod2), color = "pink", shape = 1) +
+  geom_point(aes(y = conc_lodsqrt2), color = "blue", shape = 1) +
+  geom_point(aes(y = conc_bsub), color = "orange", shape = 1) +
+  geom_point(aes(y = true_conc), color = "black", shape = 16, size = 2) +
+  labs(x = "True concentration", y = "Estimated concentration with censoring")
+```
+:::
+:::::
