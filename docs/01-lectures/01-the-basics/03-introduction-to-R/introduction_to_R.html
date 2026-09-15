@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>(Re)introduction to R (Lecture 3) – EHS 655</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -73,10 +79,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-445b8638c3d06994fee0907d791121c4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -365,7 +371,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>&gt;</code>: greater than</li>
 <li><code>&gt;=</code>: greater than or equal to</li>
 <li><code>&lt;</code>: less than</li>
-<li><code>&lt;</code>: less than or equal to</li>
+<li><code>&lt;=</code>: less than or equal to</li>
 <li><code>==</code>: equal to</li>
 <li><code>!=</code>: not equal to</li>
 </ul>
@@ -393,7 +399,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>ggplot2</code> - for data visualization</li>
 <li><code>lubridate</code> - used for handling date and time data</li>
 <li><code>purrr</code> - a functional programming toolkit</li>
-<li><code>readr</code> - for reading reading data files</li>
+<li><code>readr</code> - for reading data files</li>
 <li><code>stringr</code> - for handling string variables</li>
 <li><code>tibble</code> - provides better formatting for data frames</li>
 <li><code>tidyr</code> - provides tools to handle tibble-formatted data frame</li>
@@ -405,7 +411,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>To demonstrate the basic features of the tidyverse packages, we will use the <code>airquality</code> dataframe that is pre-loaded into base R</p>
 <p>We will store this dataframe under the name <code>aq_df</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>aq_df <span class="ot">&lt;-</span> datasets<span class="sc">::</span>airquality</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>aq_df <span class="ot">&lt;-</span> datasets<span class="sc">::</span>airquality</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <hr>
 </section>
@@ -413,7 +419,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="air-quality-example-data-frame-and-tibble">Air quality example: data frame and tibble</h3>
 <p>Let’s view what the dataset looks like</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(aq_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(aq_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Ozone Solar.R Wind Temp Month Day
 1    41     190  7.4   67     5   1
@@ -426,14 +432,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We can view what <em>class</em> of dataset this is</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(aq_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(aq_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "data.frame"</code></pre>
 </div>
 </div>
 <p>This shows the dataset is stored in R as a <code>data.frame</code>, not a <code>tibble</code>. We can change this using the <code>as_tibble()</code> function</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>aq_df <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(aq_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>aq_df <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(aq_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Pro tip: use the up arrow in the command line to scroll to last command</p>
 <hr>
@@ -463,7 +469,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="slide-column">
 <p>Now, we can check the class of the dataset to see if it is a tibble:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(aq_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(aq_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "tbl_df"     "tbl"        "data.frame"</code></pre>
 </div>
@@ -471,7 +477,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Now we can start exploring and manipulating this dataset</p>
 <p>First, let’s sort data by ascending temperature using the <code>arrange()</code> function</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(aq_df, Temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(aq_df, Temp)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 153 × 6
    Ozone Solar.R  Wind  Temp Month   Day
@@ -493,7 +499,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="slide-column">
 <p>Or, we could sort by descending temperature by adding a minus (-) sign</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(aq_df, <span class="sc">-</span>Temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(aq_df, <span class="sc">-</span>Temp)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 153 × 6
    Ozone Solar.R  Wind  Temp Month   Day
@@ -521,7 +527,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="slide-column">
 <p>We can also sort by multiple columns (e.g., day and then month</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(aq_df, Day, Month)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(aq_df, Day, Month)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 153 × 6
    Ozone Solar.R  Wind  Temp Month   Day
@@ -541,7 +547,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We can also keep or remove specific columns using the <code>select()</code> function. To remove the solar radiation column:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(aq_df, <span class="sc">-</span>Solar.R)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(aq_df, <span class="sc">-</span>Solar.R)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 153 × 5
    Ozone  Wind  Temp Month   Day
@@ -563,7 +569,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="slide-column">
 <p>Or, if there are specific columns we want to keep (e.g., ozone, month, day), we can list them:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(aq_df, Ozone, Month, Day)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(aq_df, Ozone, Month, Day)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 153 × 3
    Ozone Month   Day
@@ -591,7 +597,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="slide-column">
 <p>In addition to removing columns, we can also remove specific rows using the <code>filter()</code> function. For example, to look only at the month of May:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(aq_df, Month <span class="sc">==</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(aq_df, Month <span class="sc">==</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 31 × 6
    Ozone Solar.R  Wind  Temp Month   Day
@@ -614,7 +620,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="slide-column">
 <p>We can also create new columns using the <code>mutate()</code> function. Let’s create an indicator variable for days when ozone is greater than 30:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(aq_df, <span class="at">Ozone_above_30 =</span> <span class="fu">ifelse</span>(Ozone <span class="sc">&gt;</span> <span class="dv">30</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(aq_df, <span class="at">Ozone_above_30 =</span> <span class="fu">ifelse</span>(Ozone <span class="sc">&gt;</span> <span class="dv">30</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 153 × 7
    Ozone Solar.R  Wind  Temp Month   Day Ozone_above_30
@@ -643,7 +649,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="slide-column">
 <p>To arrange, select, filter, and mutate data all in one line of code, we could use:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="fu">filter</span>(<span class="fu">select</span>(<span class="fu">arrange</span>(aq_df, <span class="sc">-</span>Temp), <span class="sc">-</span>Solar.R), Month <span class="sc">==</span> <span class="dv">5</span>), <span class="at">Ozone_above_30 =</span> <span class="fu">ifelse</span>(Ozone <span class="sc">&gt;</span> <span class="dv">30</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="fu">filter</span>(<span class="fu">select</span>(<span class="fu">arrange</span>(aq_df, <span class="sc">-</span>Temp), <span class="sc">-</span>Solar.R), Month <span class="sc">==</span> <span class="dv">5</span>), <span class="at">Ozone_above_30 =</span> <span class="fu">ifelse</span>(Ozone <span class="sc">&gt;</span> <span class="dv">30</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 31 × 6
    Ozone  Wind  Temp Month   Day Ozone_above_30
@@ -666,10 +672,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="slide-column">
 <p>With the pipe operator (<code>%&gt;%</code>), we can separate command sequentially:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(aq_df, <span class="sc">-</span>Temp) <span class="sc">%&gt;%</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(aq_df, <span class="sc">-</span>Temp) <span class="sc">%&gt;%</span> </span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Solar.R) <span class="sc">%&gt;%</span> </span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Month <span class="sc">==</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Ozone_above_30 =</span> <span class="fu">ifelse</span>(Ozone <span class="sc">&gt;</span> <span class="dv">30</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Ozone_above_30 =</span> <span class="fu">ifelse</span>(Ozone <span class="sc">&gt;</span> <span class="dv">30</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 31 × 6
    Ozone  Wind  Temp Month   Day Ozone_above_30
@@ -732,8 +738,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><p>Next we want to actually use the <code>tidyverse</code> and <code>readxl</code> packages</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></li>
 <li><p>Pro tip for R scripts: document, document, document</p>
 <ul>
@@ -741,12 +747,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>R will recognize this and display text after the <code>#</code> in green</p></li>
 <li><p>Example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This section loads our datafile and tidyverse </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This section loads our datafile and tidyverse </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></li>
 </ul></li>
 <li><p>Now we can load our data file</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"Dataset V1.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"Dataset V1.xlsx"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li>Note: R will look for this file in your working directory; make sure it’s saved there!</li>
@@ -758,12 +764,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="creating-an-r-script-2">Creating an R script</h3>
 <p>Now let’s save our dataframe as a tibble</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(ehs655)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Congratulations! Our dataset is loaded and ready for exploration</p>
 <p>Some basic exploration</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ehs655)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 36
   `Subject-ID` `Job-title` Gender `Measurement date`  `Site-type` County   
@@ -796,16 +802,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="lets-interact-with-the-data-a-bit">Let’s interact with the data a bit</h3>
 <p>Let’s limit the number of variable we’re looking at to just the first 8</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span> </span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">Subject-ID</span><span class="st">`</span>, <span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>, <span class="st">`</span><span class="at">Measurement date</span><span class="st">`</span>, <span class="st">`</span><span class="at">Site-type</span><span class="st">`</span>,  County, <span class="st">`</span><span class="at">Age-baseline-years</span><span class="st">`</span>, <span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">Subject-ID</span><span class="st">`</span>, <span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>, <span class="st">`</span><span class="at">Measurement date</span><span class="st">`</span>, <span class="st">`</span><span class="at">Site-type</span><span class="st">`</span>,  County, <span class="st">`</span><span class="at">Age-baseline-years</span><span class="st">`</span>, <span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><em>Note: we can select any number and selection of variables this way</em></p>
 <p><em>Note: we don’t have to save changes (first line) – just showing this for clarification for when you do might want to save changes (for instance, when you create a permanent new variable)</em></p>
 <p><em>Note: when there are spaces and weird symbols in a column name (e.g., a dash), you have to use the backward tick symbol (`) around your column name to call it. Otherwise, you don’t need it (like when we call the County variable). We will discuss how to clean up column names later.</em></p>
 <p>Now let’s sort by measurement date instead of subject ID</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="st">`</span><span class="at">Measurement date</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="st">`</span><span class="at">Measurement date</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <hr>
 </section>
@@ -813,11 +819,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="lets-interact-with-the-data-a-bit-1">Let’s interact with the data a bit</h3>
 <p>And then back to sorted by subject ID</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="st">`</span><span class="at">Subject-ID</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="st">`</span><span class="at">Subject-ID</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Display data types</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(ehs655)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>tibble [201 × 7] (S3: tbl_df/tbl/data.frame)
  $ Subject-ID        : num [1:201] 1 2 3 4 5 6 7 8 9 10 ...
@@ -831,7 +837,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>List variable names</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(ehs655)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Subject-ID"         "Job-title"          "Measurement date"  
 [4] "Site-type"          "County"             "Age-baseline-years"
@@ -840,7 +846,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Identify unique values in a variable</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "Laborer"            "Lborer"             "Laboerr"           
  [4] "Electrician"        "Electrican"         "Carpenter"         
@@ -856,35 +862,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="slide-column">
 <p>Summarize all variables</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ehs655)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ehs655)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   Subject-ID   Job-title         Measurement date             
- Min.   :  1   Length:201         Min.   :2008-01-08 00:00:00  
- 1st Qu.: 51   Class :character   1st Qu.:2009-02-07 00:00:00  
- Median :101   Mode  :character   Median :2010-03-01 00:00:00  
- Mean   :101                      Mean   :2010-03-22 23:45:40  
- 3rd Qu.:151                      3rd Qu.:2011-05-22 00:00:00  
- Max.   :201                      Max.   :2012-12-01 00:00:00  
-  Site-type            County          Age-baseline-years  Work-LEQ-dBA   
- Length:201         Length:201         Min.   :21.00      Min.   :  0.00  
- Class :character   Class :character   1st Qu.:25.00      1st Qu.: 84.30  
- Mode  :character   Mode  :character   Median :29.00      Median : 89.50  
-                                       Mean   :28.67      Mean   : 83.01  
-                                       3rd Qu.:32.00      3rd Qu.: 96.10  
-                                       Max.   :36.00      Max.   :108.20  </code></pre>
+<pre><code>   Subject-ID      Job-title   Measurement date                  Site-type  
+ Min.   :  1   Length   :201   Min.   :2008-01-08 00:00:00   Length   :201  
+ 1st Qu.: 51   N.unique : 11   1st Qu.:2009-02-07 00:00:00   N.unique :  6  
+ Median :101   N.blank  :  0   Median :2010-03-01 00:00:00   N.blank  :  0  
+ Mean   :101   Min.nchar:  6   Mean   :2010-03-22 23:45:40   Min.nchar:  4  
+ 3rd Qu.:151   Max.nchar: 18   3rd Qu.:2011-05-22 00:00:00   Max.nchar: 11  
+ Max.   :201                   Max.   :2012-12-01 00:00:00                  
+       County    Age-baseline-years  Work-LEQ-dBA   
+ Length   :201   Min.   :21.00      Min.   :  0.00  
+ N.unique : 31   1st Qu.:25.00      1st Qu.: 84.30  
+ N.blank  :  0   Median :29.00      Median : 89.50  
+ Min.nchar:  4   Mean   :28.67      Mean   : 83.01  
+ Max.nchar: 12   3rd Qu.:32.00      3rd Qu.: 96.10  
+                 Max.   :36.00      Max.   :108.20  </code></pre>
 </div>
 </div>
 <p>Calculate specific statistics (more later)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 83.01025</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Age-baseline-years</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Age-baseline-years</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 29</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Subject-ID</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Subject-ID</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 58.16786</code></pre>
 </div>
@@ -894,7 +900,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="slide-column">
 <p>Create a table of unique values in a variable</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
          Carpenter           Carpentr         Electrican        Electrician 
@@ -974,13 +980,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
