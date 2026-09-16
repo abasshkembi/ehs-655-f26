@@ -16,6 +16,20 @@ library(tidyverse)
 ------------------------------------------------------------------------
 :::
 
+```{r}
+#| code-fold: true
+#| code-summary: "Click to view catchup R code"
+
+# set your working directory with `setwd()`!!
+
+# load packages we need
+library(tidyverse)
+library(readxl)
+
+# read dataset excel file and make sure it's a tibble
+ehs655 <- read_xlsx("Dataset V1.xlsx") %>% as_tibble()
+```
+
 ### What we'll cover today
 
 - The basics
@@ -74,74 +88,6 @@ Ignacio and Bullock, AIHA, 2006
 
 ------------------------------------------------------------------------
 
-### Binary and nominal
-
-- Values only used as labels
-
-  - Binary = two categories
-
-  - Nominal \>= two categories
-
-- Not ordered
-
-  - Tells nothing about individual’s ranking
-
-- Examples?
-
-  ::: fragment
-  - Binary: gender
-
-  - Nominal: occupation (if not ordered in some way related to exposure)
-  :::
-
-![](images/clipboard-2861969903.png){width="25%"}
-
-::: custom-footer
-White E, Armstrong BK, Saracci R. 2008
-:::
-
-------------------------------------------------------------------------
-
-### Ordinal
-
-- Values used indicate rank ordering (e.g., low/moderate/high)
-
-- Differences between numbers do not indicate actual size of differences
-
-- Examples?
-
-  ::: fragment
-  - Socioeconomic status
-
-  - Crude categories of exposure (e.g., exposed daily, weekly, monthly, yearly)
-  :::
-
-::: custom-footer
-White E, Armstrong BK, Saracci R. 2008
-:::
-
-------------------------------------------------------------------------
-
-### Numeric
-
-- Relative values of assigned numbers reflect true differences in underlying values
-
-- We’ll treat these as “numeric”
-
-- Examples?
-
-![](images/clipboard-823844858.png){width="20%"}
-
-::: fragment
-![](images/clipboard-812587732.png){width="20%"}
-:::
-
-::: custom-footer
-White E, Armstrong BK, Saracci R. 2008
-:::
-
-------------------------------------------------------------------------
-
 ### Exercise
 
 - Imagine a study of exposure to 1,4 dioxane in drinking water among community members in Ann Arbor
@@ -157,12 +103,6 @@ White E, Armstrong BK, Saracci R. 2008
   - Numeric
 
 ![](images/clipboard-1775968451.png){width="40%"}
-
-------------------------------------------------------------------------
-
-### Data types associated with exposure assessment methods
-
-![](images/clipboard-4142130242.png){width="70%"}
 
 ------------------------------------------------------------------------
 
@@ -262,41 +202,108 @@ Let's explore!
 
 ------------------------------------------------------------------------
 
-### Distribution: categorical (table)
+### Distribution: categorical (table) (`table()` in R)
 
-![](images/clipboard-1694661947.png){width="60%"}
+```{r}
+table(ehs655$`Job-title`)
+```
 
-------------------------------------------------------------------------
+So... this is a problem. Stupid typos! \<shakes fist at sky\>
 
-### Distribution: categorical (ordinal)
-
-![](images/clipboard-399953530.png){width="60%"}
-
-------------------------------------------------------------------------
-
-### Distribution: quantitative (ratio) histogram
-
-![](images/clipboard-1314082755.png){width="60%"}
-
-::: custom-footer
-<http://www.inchem.org/documents/ehc/ehc/ehc214.htm>
-:::
+How do we fix them?
 
 ------------------------------------------------------------------------
 
-### Distribution: exceedance fraction
+### Example: fixing errors in the data in R
 
-![](images/clipboard-717205221.png)
+How to fix these? `mutate` them!
 
-::: custom-footer
-<http://www.inchem.org/documents/ehc/ehc/ehc214.htm>
-:::
+Example for fixing one misspelling ("Lborer")
+
+```{r}
+ehs655 <- ehs655 %>%
+  mutate(`Job-title`= case_when(`Job-title`== "Lborer" ~ "Laborer",.default = `Job-title`))
+table(ehs655$`Job-title`)
+```
+
+------------------------------------------------------------------------
+
+### Example: fixing all errors in the data in R
+
+But! We can do [all]{.underline} of the trades at once
+
+```{r}
+ehs655 <- ehs655%>%
+  mutate(
+    `Job-title` = 
+      case_when(
+        `Job-title` == "Lborer" ~ "Laborer",
+        `Job-title` == "Laboerr" ~ "Laborer",
+        `Job-title` == "Electrican" ~ "Electrician",
+        `Job-title` == "Carpentr" ~ "Carpenter",
+        `Job-title` == "Operaing engineer" ~ "Operating engineer",
+        `Job-title` == "Ironworkr" ~ "Ironworker",
+        `Job-title` == "" ~ NA,
+        .default = `Job-title`))
+```
+
+------------------------------------------------------------------------
+
+### What did that do?
+
+Success!! Down from 11 categories of job title to just the actual 5
+
+```{r}
+table(ehs655$`Job-title`)
+```
+
+Can use same approach for other variables with misspellings
+
+------------------------------------------------------------------------
+
+### Distribution: categorical (ordinal) (`ggplot()` + `geom_boxplot()` in R)
+
+```{r}
+ggplot(ehs655, aes(x = factor(`Job-title`), y = `Work-LEQ-dBA`)) + 
+  geom_boxplot()
+```
+
+OR
+
+```{r, eval=FALSE}
+ehs655 %>%
+  ggplot() +
+  geom_boxplot(aes(x=`Job-title`, y=`Work-LEQ-dBA`))
+```
+
+------------------------------------------------------------------------
+
+### Distribution: quantitative histogram
+
+```{r, message=FALSE, warning=FALSE}
+ehs655 %>%
+  ggplot(aes(x = `Work-LEQ-dBA`)) +
+  geom_histogram()
+```
 
 ------------------------------------------------------------------------
 
 ### Central tendency: mean, median, mode
 
 ![](images/clipboard-1183599752.png){width="90%"}
+
+------------------------------------------------------------------------
+
+### Mean and median table (`summarize()` in R)
+
+```{r}
+# `na.rm` argument removes any values that are NA
+# otherwise, if NAs exist, the mean and median would return NA
+# !! USE `na.rm` WITH CAUTION !!
+ehs655 %>% 
+  summarize(mean_leq= mean(`Work-LEQ-dBA`, na.rm = TRUE), 
+            median_leq = median(`Work-LEQ-dBA`, na.rm = TRUE))
+```
 
 ------------------------------------------------------------------------
 
@@ -311,6 +318,21 @@ Let's explore!
   - [Standard deviation]{.underline} (SD) Variance
 
 ![](images/clipboard-1829525954.png){width="30%"}
+
+------------------------------------------------------------------------
+
+### Dispersion (`summarize()` in R)
+
+```{r}
+ehs655 %>% 
+  summarize(
+    sd_leq = sd(`Work-LEQ-dBA`, na.rm = TRUE), 
+    iqr_leq = IQR(`Work-LEQ-dBA`, na.rm = TRUE), 
+    var_leq = var(`Work-LEQ-dBA`, na.rm = TRUE), 
+    min_leq = min(`Work-LEQ-dBA`, na.rm = TRUE), 
+    max_leq = max(`Work-LEQ-dBA`, na.rm = TRUE)
+    )
+```
 
 ------------------------------------------------------------------------
 
@@ -338,18 +360,6 @@ Let's explore!
 
 ------------------------------------------------------------------------
 
-### Dispersion visualization: boxplot
-
-R: `ggplot(dataset, aes(x = varname1, y = varname2) + geom_boxplot()`
-
-![](images/clipboard-1468430471.png){width="50%"}
-
-::: custom-footer
-<http://www.inchem.org/documents/ehc/ehc/ehc214.htm>
-:::
-
-------------------------------------------------------------------------
-
 ### Excel tool available for basic descriptive statistics: IHSTAT
 
 ![](images/clipboard-4145330414.png){width="70%"}
@@ -372,18 +382,20 @@ R: `ggplot(dataset, aes(x = varname1, y = varname2) + geom_boxplot()`
 
 ------------------------------------------------------------------------
 
-### Bivariate: scatter plot
+### Bivariate: scatter plot (`ggplot()` + `geom_point()` in R)
 
-![](images/clipboard-1057319563.png){width="70%"}
-
-::: custom-footer
-<http://www.inchem.org/documents/ehc/ehc/ehc214.htm>
-:::
+```{r}
+ehs655 %>%
+  ggplot(aes(`Work-LEQ-dBA`, y = `Age-baseline-years`)) +
+  geom_point()
+```
 
 ------------------------------------------------------------------------
 
-### Bivariate: Pearson correlation
+### Bivariate: Pearson correlation (`cor.test()` in R)
 
+::::: columns-only-on-slides
+::: slide-column
 - $\rho$ (Pearson’s correlation coefficient) is amount of change in one value you expect from change in another value
 - Assumptions:
   - Both variables numeric data
@@ -393,11 +405,24 @@ R: `ggplot(dataset, aes(x = varname1, y = varname2) + geom_boxplot()`
   - Homeskedasticity
 
 ![](images/clipboard-1948086742.png){width="40%"}
+:::
+
+::: slide-column
+Pearson correlation coefficient
+
+```{r}
+# the default method of `cor.test()`
+cor.test(x = ehs655$`Work-LEQ-dBA`, y = ehs655$`Age-baseline-years`)
+```
+:::
+:::::
 
 ------------------------------------------------------------------------
 
-### Bivariate: Spearman correlation
+### Bivariate: Spearman correlation (`cor.test()` in R)
 
+::::: columns-only-on-slides
+::: slide-column
 - Spearman’s rank correlation coefficient ($\rho_s$)
 
   - Pearson correlation coefficient between ranked variables
@@ -413,6 +438,17 @@ R: `ggplot(dataset, aes(x = varname1, y = varname2) + geom_boxplot()`
   - Monotonic relationship
 
 ![](images/clipboard-237165684.png){width="50%"}
+:::
+
+::: slide-column
+Spearman correlation coefficient
+
+```{r}
+# note method argument is set to "spearman"
+cor.test(x = ehs655$`Work-LEQ-dBA`, y = ehs655$`Age-baseline-years`, method = "spearman")
+```
+:::
+:::::
 
 ------------------------------------------------------------------------
 
@@ -422,9 +458,21 @@ R: `ggplot(dataset, aes(x = varname1, y = varname2) + geom_boxplot()`
 
 ------------------------------------------------------------------------
 
-### Bivariate: cross-tabulation
+### Bivariate: cross-tabulation (`xtabs()` in R)
 
-![](images/clipboard-2943457781.png){width="60%"}
+::::: columns-only-on-slides
+::: slide-column
+```{r}
+ehs655 %>% select(`Job-title`, County)
+```
+:::
+
+::: slide-column
+```{r}
+xtabs(~`Job-title` + `County`, data = ehs655)
+```
+:::
+:::::
 
 ------------------------------------------------------------------------
 
@@ -458,23 +506,17 @@ R: `ggplot(dataset, aes(x = varname1, y = varname2) + geom_boxplot()`
 
 ------------------------------------------------------------------------
 
-### Exercise
+### Our noise data
 
-- Come up with one example of exposure data where you might find each type of censoring
+- $L_{EQ}$ measured from 70-140 dBA
 
-  - Right censoring
+- Minutes with levels that never exceed 70 dBA assigned 0 dBA
 
-  - Left censoring
+- Shifts with mixture of minutes above and below 70 dBA may yield shift average \<70 dBA
 
-  - Interval censoring
+  - If levels never exceed 70 dBA in a minute, dosimeters assign 0 dBA
 
-- One example that’s immediately relevant: our own noise measurements
-
-  - L~EQ~ measured from 70-140 dBA
-
-  - Minutes with levels that never exceed 70 dBA assigned 0 dBA
-
-  - Shifts with mixture of minutes above and below 70 dBA may yield shift average \<70 dBA
+  - Note: 0 dBA is [not]{.underline} a tenable number – this implies the absence of any audible sound, which is [not]{.underline} a condition experienced on construction sites, ever
 
 ------------------------------------------------------------------------
 
@@ -522,145 +564,58 @@ More accurate than LOD/2 when datanormally or lognormally distributed
 
 ------------------------------------------------------------------------
 
-### Better approach #3 to dealing with censored data
-
-- "$\beta$-substitution method” (Hewett and Ganser 2010)
-
-  - Basically computes a $\beta$ factor for each specific dataset that can be used instead of $LOD/2$ or $LOD/\sqrt2$
-
-  - Minimum $N$ for this equation should be ≥5 when data are censored up to 50%
-
-------------------------------------------------------------------------
-
-### On to R!
-
-Get the data ready again
-
-```{r}
-# load packages we need
-library(tidyverse)
-library(readxl)
-
-# read dataset excel file
-ehs655 <- read_xlsx("Dataset V1.xlsx")
-```
-
-------------------------------------------------------------------------
-
-### Distributions
+### Let's implement these two approaches and compare
 
 ::::: columns-only-on-slides
 ::: slide-column
-Distribution: categorical (table) - table function
+Method 1 ($LOD/2$)
 
 ```{r}
-table(ehs655$`Job-title`)
+ehs655 <- ehs655 %>%
+  mutate(leq_lod2 = ifelse(`Work-LEQ-dBA` < 70, 70/2, `Work-LEQ-dBA`))
 ```
 
-Categorical (ordinal) - boxplot function
+Method 2 ($LOD/sqrt2$)
 
 ```{r}
-ggplot(ehs655, aes(x = factor(`Job-title`), y = `Work-LEQ-dBA`)) + 
-  geom_boxplot(outlier.shape = NA)
-
+ehs655 <- ehs655 %>%
+  mutate(leq_lodsqrt2 = ifelse(`Work-LEQ-dBA` < 70, 70/sqrt(2), `Work-LEQ-dBA`))
 ```
+:::
 
-OR
+::: slide-column
+Let's compare density plots of these results vs original
 
 ```{r}
 ehs655 %>%
   ggplot() +
-  geom_boxplot(aes(x = `Job-title`, y = `Work-LEQ-dBA`))
-```
-:::
-
-::: slide-column
-Quantitative (histogram) - histogram function
-
-```{r}
-ehs655 %>%
-  ggplot(aes(x = `Work-LEQ-dBA`)) +
-  geom_histogram()
+  geom_density(aes(x = leq_lod2), color = "red", fill = "red", alpha = 0.1) +
+  geom_density(aes(x = leq_lodsqrt2), color = "blue", fill = "blue", alpha = 0.1) +
+  geom_density(aes(x = `Work-LEQ-dBA`), color = "black", fill = "black", alpha = 0.5) +
+  labs(x = "LEQ", y = "Density")
 ```
 :::
 :::::
 
 ------------------------------------------------------------------------
 
-### Calculating mean and median (mode from frequency table)
+### Better approach #3 to dealing with censored data
 
-::::: columns-only-on-slides
-::: slide-column
-Table function for mean and median
+- "$\beta$-substitution method” (Hewett and Ganser 2010)
 
-```{r}
-ehs655 %>% 
-  summarise(mean_leq= mean(`Work-LEQ-dBA`, na.rm = TRUE),
-            median_leq = median(`Work-LEQ-dBA`, na.rm = TRUE))
-```
+  - Computes a $\beta$ factor for an exposure (i.e., $\beta$\*LOD) that can be used instead of $LOD/2$ or $LOD/\sqrt2$
 
-Quantitative (histogram) - histogram function
+  - For lognormal data (e.g., chemicals), NOT normal data (e.g., noise)
 
-```{r}
-ehs655 %>% 
-  summarise(sd_leq = sd(`Work-LEQ-dBA`, na.rm = TRUE), 
-            iqr_leq = IQR(`Work-LEQ-dBA` , na.rm = TRUE),
-            var_leq = var(`Work-LEQ-dBA`, na.rm = TRUE),
-            min_leq = min(`Work-LEQ-dBA`, na.rm = TRUE),
-            max_leq = max(`Work-LEQ-dBA`, na.rm = TRUE))
-```
-:::
+  - Minimum $N$ for this equation should be ≥5 when data are censored up to 50%
 
-::: slide-column
-And of course these could be combined in a single table
-:::
-:::::
+- This method is beyond the class scope
+
+  - But we have included an example below if you are interested
 
 ------------------------------------------------------------------------
 
-### Calculating mean and median (mode from frequency table)
-
-::::: columns-only-on-slides
-::: slide-column
-Scatterplot
-
-```{r}
-ehs655 %>%
-  ggplot(aes(`Work-LEQ-dBA`, y = `Age-baseline-years`)) +
-  geom_point()
-```
-
-![](images/clipboard-4290410222.png){width="40%"}
-:::
-
-::: slide-column
-Pearson correlation coefficient
-
-```{r}
-cor.test(x = ehs655$`Work-LEQ-dBA`, y = ehs655$`Age-baseline-years`)
-```
-
-Spearman correlation coefficient
-
-```{r}
-cor.test(x = ehs655$`Work-LEQ-dBA`, y = ehs655$`Age-baseline-years`, method = "spearman")
-```
-:::
-:::::
-
-------------------------------------------------------------------------
-
-### Bivariate: cross-tabulation
-
-Use the `xtabs` function
-
-```{r}
-xtabs(~`Job-title` + `Gender`, data = ehs655)
-```
-
-------------------------------------------------------------------------
-
-### Censored data
+### Censored data example
 
 ::::: columns-only-on-slides
 ::: slide-column
@@ -672,6 +627,7 @@ sim_df <-
   mutate(LOD = 1.5,
          obs_conc = ifelse(true_conc <= LOD, NA, true_conc),
          above_LOD = ifelse(true_conc <= LOD, 0, 1))
+sim_df
 ```
 :::
 
@@ -747,8 +703,8 @@ sim_df %>%
 
 ### Method #3: $\beta$-substitution
 
-:::::: columns-only-on-slides
-:::: slide-column
+::::: columns-only-on-slides
+::: slide-column
 Let's create a new column where values at or below 1.5 are substituted using the $\beta$-substitution method. First let's load the function to perform the method
 
 ```{r}
@@ -779,7 +735,7 @@ sim_df <- sim_df %>% mutate(obs_conc2 = ifelse(is.na(obs_conc), LOD, obs_conc))
 sim_bsub <- beta_substitution(sim_df, "obs_conc2", "above_LOD")
 sim_bsub
 ```
-::::
+:::
 
 ::: slide-column
 We now have our $\beta$ factor (`r sim_bsub$beta_mean`), which we can multiply with our LOD (1.5)
@@ -794,7 +750,7 @@ sim_df %>%
   geom_histogram(aes(x = true_conc), binwidth = 0.5, fill = "transparent", color = "orange")
 ```
 :::
-::::::
+:::::
 
 ------------------------------------------------------------------------
 
