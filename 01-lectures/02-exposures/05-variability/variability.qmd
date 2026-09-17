@@ -1,0 +1,551 @@
+---
+title: "Variability (Lecture 5)"
+---
+
+```{r, include = F}
+# list of packages for this lecture
+library(tidyverse)
+```
+
+::: {.content-visible when-format="revealjs"}
+
+------------------------------------------------------------------------
+
+## Lecture 5: Exposure variability
+
+------------------------------------------------------------------------
+
+:::
+
+::: {.content-hidden when-format="revealjs"}
+```{r}
+#| code-fold: true
+#| code-summary: "Click to view catchup R code"
+
+# set your working directory with `setwd()`!!
+
+# load packages we need
+library(tidyverse)
+library(readxl)
+
+# read dataset excel file and make sure it's a tibble
+ehs655 <- read_xlsx("Dataset V1.xlsx") %>% as_tibble()
+
+# clean job title variable to remove misspellings
+ehs655 <- ehs655 %>%
+  mutate(
+    `Job-title` = 
+      case_when(
+        `Job-title` == "Lborer" ~ "Laborer",
+        `Job-title` == "Laboerr" ~ "Laborer",
+        `Job-title` == "Electrican" ~ "Electrician",
+        `Job-title` == "Carpentr" ~ "Carpenter",
+        `Job-title` == "Operaing engineer" ~ "Operating engineer",
+        `Job-title` == "Ironworkr" ~ "Ironworker",
+        `Job-title` == "" ~ NA,
+        .default = `Job-title`))
+
+# convert LEQ values <LOD to LOD/sqrt(2)
+ehs655 <- ehs655 %>%
+  mutate(`Work-LEQ-dBA` = ifelse(`Work-LEQ-dBA` < 70, 70/sqrt(2), `Work-LEQ-dBA`))
+```
+:::
+
+### What we'll cover today
+
+- What is variability
+
+- Sources of variability
+
+- Effects of variability
+
+- More on R
+
+------------------------------------------------------------------------
+
+### Exposure equation (for a chemical)
+
+![](images/clipboard-3515687660.png){width="90%"}
+
+::: custom-footer
+EPA Exposure Factors Handbook, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Dose equation (for a chemical)
+
+![](images/clipboard-439996550.png){width="90%"}
+
+::: custom-footer
+EPA Exposure Factors Handbook, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Why we care about variability
+
+![](images/clipboard-1520306331.png){width="60%"}
+
+::: custom-footer
+L Fisher and G van Belle, 1993
+:::
+
+------------------------------------------------------------------------
+
+### Variability in exposure
+
+![](images/clipboard-3721600767.png){width="90%"}
+
+::: custom-footer
+Moretto A, *Handbook Clin Neurol*, 2015
+:::
+
+------------------------------------------------------------------------
+
+### Exposure variability across samples
+
+```{r, eval=FALSE}
+df %>%
+  ggplot(aes(x = var1, y = var2)) +
+  geom_line()
+```
+
+![](images/clipboard-1677108832.png){width="50%"}
+
+::: custom-footer
+AIHA, *Strategy for Assessing and Managing Occupational Exposures*, 3rd ed, 2006
+:::
+
+------------------------------------------------------------------------
+
+### Dimensions of exposure variability
+
+- Fundamental dimensions
+
+  - Person
+
+  - Time
+
+  - Space
+
+- Other contributing factors
+
+  - Measurement method Is variability in exposure desirable or undesirable?
+
+- Is it better to make…
+
+  - More measurements on few individuals?
+
+  - Fewer/one measurement on many individuals?
+
+------------------------------------------------------------------------
+
+### Basic concepts
+
+- If exposures [varied over time, but not among people]{.underline}, we could…
+
+  - Monitor single individual continuously
+
+  - Make multiple measurements randomly distributed over time on that individual
+
+- If exposures varied [between people, but not over time]{.underline}, we could…
+
+  - Make single instantaneous measure on every person
+
+  - More people better; repeated measurements not
+
+------------------------------------------------------------------------
+
+### Exposure variability within and across people (from the reading)
+
+![](images/clipboard-2855769963.png){width="90%"}
+
+::: custom-footer
+Loomis and Kromhout, *Am J Ind Med*, 2004
+:::
+
+------------------------------------------------------------------------
+
+### Exercises
+
+::::: columns-only-on-slides
+::: slide-column
+Under what circumstances would [area]{.underline} exposure monitoring data be preferred?
+
+Under what circumstances would [personal]{.underline} exposure monitoring data be preferred?
+:::
+
+::: slide-column
+![](images/clipboard-1366370332.png){width="47%"}
+
+![](images/clipboard-826190292.png){width="47%"}
+:::
+:::::
+
+::: custom-footer
+WR Ott, AC Steinemann, LA Wallace, 2007
+:::
+
+------------------------------------------------------------------------
+
+### Personal vs area monitoring
+
+![](images/clipboard-1682179247.png){width="90%"}
+
+::: custom-footer
+WHO Criteria 214, 2010
+:::
+
+------------------------------------------------------------------------
+
+### Personal vs. area monitoring
+
+![](images/clipboard-1895665065.png)
+
+::: custom-footer
+Grivas G et al, *Sci Tot Environ*, 2017
+:::
+
+------------------------------------------------------------------------
+
+### Temporal variability
+
+- Basic dimension of variability at individual level
+
+  - Change jobs or residence
+
+  - Quit smoking
+
+  - Retire
+
+- Exposures vary within and between days, months, years, decades
+
+- Congenital attributes may be only exposure truly fixed at individual level
+
+  - However, many epidemiological methods require exposures to be treated as fixed (e.g., case-control)
+
+------------------------------------------------------------------------
+
+### Patterns of exposure
+
+![](images/clipboard-2625176677.png){width="95%"}
+
+------------------------------------------------------------------------
+
+### So all we need is biomarkers, right? (Wrong)
+
+![](images/clipboard-1770010332.png){width="70%"}
+
+::: custom-footer
+Henderson et al, The Use of Biological Markers in Toxicology.  *Critical Reviews in Toxicology* (1989), 20:2, 65-82
+:::
+
+------------------------------------------------------------------------
+
+### Variability in urinary biomarkers over (shorter) time – 11 workers
+
+![](images/clipboard-2051982023.png){width="80%"}
+
+::: custom-footer
+Yang Y-X et al, *Environ Health Persp*, 2016
+:::
+
+------------------------------------------------------------------------
+
+### Variability over (longer) time across individuals
+
+![](images/clipboard-975412296.png){width="90%"}
+
+::: custom-footer
+Stacey SL, *Environ Sci Tech*, 2016
+:::
+
+------------------------------------------------------------------------
+
+### Variability over time
+
+![](images/clipboard-1247407256.png){width="80%"}
+
+::: custom-footer
+<https://pubmed.ncbi.nlm.nih.gov/17356105/>
+:::
+
+------------------------------------------------------------------------
+
+### Variability in urinary biomarkers in 11 workers – 24 hr sample vs spot check
+
+::::: columns-only-on-slides
+::: slide-column
+```{r, eval=FALSE}
+# example code
+df %>%
+  ggplot(aes(x = var1, y = var2, color = var3)) + # your x- and y-axis, by a third variable (e.g., sample vs spot check)
+  geom_point() + # plot the scatterplot
+  geom_smooth(method = "lm", se = FALSE) + # plot the fitted line
+  facet_wrap(~var4) # create a matrix by the fourth variable (e.g., metal)
+```
+:::
+
+::: slide-column
+![](images/clipboard-4010108427.png){width="95%"}
+:::
+:::::
+
+::: custom-footer
+Yang Y-X et al, *Environ Health Persp*, 2016
+:::
+
+------------------------------------------------------------------------
+
+### Spatial variablity (air quality example)
+
+![](images/clipboard-3481775204.png){width="95%"}
+
+------------------------------------------------------------------------
+
+### Example of spatial variability (air quality)
+
+![](images/clipboard-3809493093.png){width="80%"}
+
+::: custom-footer
+<https://www.nature.com/articles/s41598-022-13942-3/figures/1>
+:::
+
+------------------------------------------------------------------------
+
+### Spatial variability
+
+![](images/clipboard-1426496945.png){width="85%"}
+
+::: custom-footer
+INCHEM Environmental Health Criteria 214, 2000
+:::
+
+------------------------------------------------------------------------
+
+### Spatial variability example
+
+![](images/clipboard-3064465945.png){width="90%"}
+
+::: custom-footer
+Crippa P et al, *Sci Repo*, 2016
+:::
+
+------------------------------------------------------------------------
+
+### Spatial variability example
+
+![](images/clipboard-47705526.png){width="80%"}
+
+::: custom-footer
+Wang M et al, *Atmosph Environ*, 2015
+:::
+
+------------------------------------------------------------------------
+
+### Temporal and spatial variability - individual
+
+![](images/clipboard-2014083502.png){width="90%"}
+
+::: custom-footer
+WR Ott, AC Steinemann, LA Wallace, 2007
+:::
+
+------------------------------------------------------------------------
+
+### Temporal and spatial variability
+
+![](images/clipboard-2304997690.png){width="90%"}
+
+::: custom-footer
+WHO Criteria 214, 2010
+:::
+
+------------------------------------------------------------------------
+
+### Another source of variability: the lab!
+
+![](images/clipboard-206319984.png){width="70%"}
+
+::: custom-footer
+Cox LA et al, *Reg Tox Pharmacol*, 2015
+:::
+
+------------------------------------------------------------------------
+
+### Measures to summarize exposure variability
+
+- Continuous data
+
+  - Standard deviation ($\sigma$)
+
+  - Variance ($\sigma^2$)
+
+  - Interquartile range
+
+- Categorical data
+
+  - Frequency table
+
+------------------------------------------------------------------------
+
+### Another measure to describe variability
+
+Standard error of the mean
+
+$$
+SE(\bar{x})=\frac{\sigma}{\sqrt{n}}
+$$
+
+How does this differ from the standard deviation?
+
+- **SD is measure of dispersion** of data around mean
+
+- SD stays the same (on average) when sample size increases
+
+- **SE describes accuracy of sample mean** as estimate of population mean
+
+- SE decreases with increasing sample size
+
+------------------------------------------------------------------------
+
+### Methods for dealing with exposure variability
+
+::::: columns-only-on-slides
+::: slide-column
+- Ignore variability
+
+- Use maximum or minimum value
+
+- Use average value
+
+- Disaggregate variability
+
+  - Develop distribution(s)
+:::
+
+::: slide-column
+![](images/clipboard-1321335048.png){width="90%"}
+:::
+:::::
+
+------------------------------------------------------------------------
+
+### Effects of exposure variability - compare to exposure limits
+
+![](images/clipboard-3907878521.png){width="80%"}
+
+::: custom-footer
+AIHA, *Strategy for Assessing and Managing Occupational Exposures*, 3rd ed, 2006
+:::
+
+------------------------------------------------------------------------
+
+### Effects of exposure variability - sample size
+
+![](images/clipboard-3208383813.png){width="90%"}
+
+::: custom-footer
+AIHA, *Strategy for Assessing and Managing Occupational Exposures*, 3rd ed, 2006
+:::
+
+------------------------------------------------------------------------
+
+### Data manipulation functions in R
+
+**Rename variable:**
+
+```{r, eval=FALSE}
+rename(new_varname = old_varname)
+```
+
+**Generate a new variable:**
+
+```{r, eval=FALSE}
+mutate(new_var = *some manipulation to old_var*)
+```
+
+**Replace an existing variable**
+
+```{r, eval=FALSE}
+mutate(old_var = *some manipulation to old_var*)
+```
+
+- **E.g., convert variable to string/character**
+
+  ```{r, eval=FALSE}
+  mutate(old_var = as.character(old_var))
+  ```
+
+<!-- -->
+
+- **E.g., assign labels to categorical data**
+
+  ```{r, eval=FALSE}
+  mutate(old_var = factor(old_var, 
+                          labels = c("label1", "label2", ..., "labelN")))
+  ```
+
+------------------------------------------------------------------------
+
+### Data manipulation functions in R
+
+**Logical operators are very powerful**
+
+- i.e., `&` and `|`
+
+- R has `%in%` operator to see if an element belongs to a vector
+
+  ```{r}
+  c(1, 2, 3) %in% c(1, 2)
+  ```
+
+- See more at <https://www.w3schools.com/r/r_operators.asp>
+
+------------------------------------------------------------------------
+
+### Data manipulation functions in R
+
+**Replace existing value**
+
+```{r, eval = FALSE}
+mutate(
+  var =
+    case_when(
+      condition_1 ~ "value_if_true_1",
+      condition_2 ~ "value_if_true_2",
+      TRUE ~ "default_value"  # Acts as the "ELSE" statement
+    )
+)
+```
+
+------------------------------------------------------------------------
+
+### Data manipulation functions in R
+
+**Create dummy variables for groups**
+
+```{r, eval = FALSE}
+mutate(dummy_var = ifelse(old_var > 70, 1, 0))
+```
+
+------------------------------------------------------------------------
+
+### Making a fancier ggplot in R
+
+Fancier version of a boxplot with labels, different aesthetics, flipping the axes, and theme
+
+```{r}
+ehs655 %>%
+  ggplot() +
+  geom_boxplot(aes(x = `Job-title`, y = `Work-LEQ-dBA`),
+               outlier.shape = 1, outlier.fill = "transparent",
+               color = "black", fill = "#f7fafc",
+               linewidth = 0.3, width = 0.5) +
+  labs(title = "LEQ noise levels (dBA) by job title",
+       x = "Job title", 
+       y = "LEQ (dBA) noise level") +
+  theme_minimal() +
+  coord_flip()
+```

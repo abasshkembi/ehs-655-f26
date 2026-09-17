@@ -24,6 +24,10 @@ website:
             text: 3 (Re)introduction to R
           - href: 01-lectures/01-the-basics/04-descriptive-stats/descriptive_stats.qmd
             text: 4 Types of data
+      - section: Section 2
+        contents:
+          - href: 01-lectures/02-exposures/05-variability/variability.qmd
+            text: 5 Variability
 
 format:
   html:

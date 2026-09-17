@@ -36,3 +36,7 @@ This webpage accompanies the lectures to EHS 655: Human Exposure Analysis taught
 [3 (Re)introduction to R](/01-lectures/01-the-basics/03-introduction-to-R/introduction_to_R.qmd)
 
 [4 Types of data, descriptive statistics, censoring](/01-lectures/01-the-basics/04-descriptive-stats/descriptive_stats.qmd)
+
+**Section 2: Exposures, exposures, exposures...**
+
+[5 Variability](/01-lectures/02-exposures/05-variability/variability.qmd)
