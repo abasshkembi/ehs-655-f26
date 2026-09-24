@@ -240,6 +240,18 @@ window.Quarto = {
  <span class="menu-text">5 Variability</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../01-lectures/02-exposures/06-data-cleaning/data_cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">6 Data cleaning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../01-lectures/02-exposures/07-exposure-groups/exposure_groups.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">7 Exposure grouping</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -320,19 +332,6 @@ window.Quarto = {
 </header>
 
 
-<div class="cell">
-<details class="code-fold">
-<summary>Click to view catchup R code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set your working directory with `setwd()`!!</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages we need</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># read dataset excel file and make sure it's a tibble</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"Dataset V1.xlsx"</span>) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
 <section id="what-well-cover-today" class="level3">
 <h3 class="anchored" data-anchor-id="what-well-cover-today">What we’ll cover today</h3>
 <ul>
@@ -484,7 +483,6 @@ window.Quarto = {
 <section id="distribution-categorical-table-table-in-r" class="level3">
 <h3 class="anchored" data-anchor-id="distribution-categorical-table-table-in-r">Distribution: categorical (table) (<code>table()</code> in R)</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
          Carpenter           Carpentr         Electrican        Electrician 
@@ -504,9 +502,6 @@ window.Quarto = {
 <p>How to fix these? <code>mutate</code> them!</p>
 <p>Example for fixing one misspelling (“Lborer”)</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Job-title</span><span class="st">`</span><span class="ot">=</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Job-title</span><span class="st">`</span><span class="sc">==</span> <span class="st">"Lborer"</span> <span class="sc">~</span> <span class="st">"Laborer"</span>,<span class="at">.default =</span> <span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
          Carpenter           Carpentr         Electrican        Electrician 
@@ -522,27 +517,12 @@ window.Quarto = {
 <section id="example-fixing-all-errors-in-the-data-in-r" class="level3">
 <h3 class="anchored" data-anchor-id="example-fixing-all-errors-in-the-data-in-r">Example: fixing all errors in the data in R</h3>
 <p>But! We can do <u>all</u> of the trades at once</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> ehs655<span class="sc">%&gt;%</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Job-title</span><span class="st">`</span> <span class="ot">=</span> </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">case_when</span>(</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">Job-title</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Lborer"</span> <span class="sc">~</span> <span class="st">"Laborer"</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">Job-title</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Laboerr"</span> <span class="sc">~</span> <span class="st">"Laborer"</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">Job-title</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Electrican"</span> <span class="sc">~</span> <span class="st">"Electrician"</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">Job-title</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Carpentr"</span> <span class="sc">~</span> <span class="st">"Carpenter"</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">Job-title</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Operaing engineer"</span> <span class="sc">~</span> <span class="st">"Operating engineer"</span>,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">Job-title</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Ironworkr"</span> <span class="sc">~</span> <span class="st">"Ironworker"</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">Job-title</span><span class="st">`</span> <span class="sc">==</span> <span class="st">""</span> <span class="sc">~</span> <span class="cn">NA</span>,</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">.default =</span> <span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <hr>
 </section>
 <section id="what-did-that-do" class="level3">
 <h3 class="anchored" data-anchor-id="what-did-that-do">What did that do?</h3>
 <p>Success!! Down from 11 categories of job title to just the actual 5</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
          Carpenter        Electrician         Ironworker            Laborer 
@@ -557,34 +537,24 @@ Operating engineer
 <section id="distribution-categorical-ordinal-ggplot-geom_boxplot-in-r" class="level3">
 <h3 class="anchored" data-anchor-id="distribution-categorical-ordinal-ggplot-geom_boxplot-in-r">Distribution: categorical (ordinal) (<code>ggplot()</code> + <code>geom_boxplot()</code> in R)</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ehs655, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(<span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>), <span class="at">y =</span> <span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>)) <span class="sc">+</span> </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptive_stats_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="descriptive_stats_files/figure-revealjs/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>OR</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="sc">%&gt;%</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>, <span class="at">y=</span><span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <hr>
 </section>
 <section id="distribution-quantitative-histogram" class="level3">
 <h3 class="anchored" data-anchor-id="distribution-quantitative-histogram">Distribution: quantitative histogram</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="sc">%&gt;%</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>)) <span class="sc">+</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptive_stats_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="descriptive_stats_files/figure-revealjs/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -599,12 +569,6 @@ Operating engineer
 <section id="mean-and-median-table-summarize-in-r" class="level3">
 <h3 class="anchored" data-anchor-id="mean-and-median-table-summarize-in-r">Mean and median table (<code>summarize()</code> in R)</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># `na.rm` argument removes any values that are NA</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># otherwise, if NAs exist, the mean and median would return NA</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># !! USE `na.rm` WITH </span><span class="al">CAUTION</span><span class="co"> !!</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="sc">%&gt;%</span> </span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_leq=</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">median_leq =</span> <span class="fu">median</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 2
   mean_leq median_leq
@@ -630,14 +594,6 @@ Operating engineer
 <section id="dispersion-summarize-in-r" class="level3">
 <h3 class="anchored" data-anchor-id="dispersion-summarize-in-r">Dispersion (<code>summarize()</code> in R)</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="sc">%&gt;%</span> </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_leq =</span> <span class="fu">sd</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">iqr_leq =</span> <span class="fu">IQR</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">var_leq =</span> <span class="fu">var</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_leq =</span> <span class="fu">min</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_leq =</span> <span class="fu">max</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 5
   sd_leq iqr_leq var_leq min_leq max_leq
@@ -690,13 +646,10 @@ Operating engineer
 <section id="bivariate-scatter-plot-ggplot-geom_point-in-r" class="level3">
 <h3 class="anchored" data-anchor-id="bivariate-scatter-plot-ggplot-geom_point-in-r">Bivariate: scatter plot (<code>ggplot()</code> + <code>geom_point()</code> in R)</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="sc">%&gt;%</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">y =</span> <span class="st">`</span><span class="at">Age-baseline-years</span><span class="st">`</span>)) <span class="sc">+</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptive_stats_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="descriptive_stats_files/figure-revealjs/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -723,8 +676,6 @@ Operating engineer
 <div class="slide-column">
 <p>Pearson correlation coefficient</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the default method of `cor.test()`</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(<span class="at">x =</span> ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">y =</span> ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Age-baseline-years</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's product-moment correlation
@@ -765,12 +716,6 @@ sample estimates:
 <div class="slide-column">
 <p>Spearman correlation coefficient</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># note method argument is set to "spearman"</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(<span class="at">x =</span> ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>, <span class="at">y =</span> ehs655<span class="sc">$</span><span class="st">`</span><span class="at">Age-baseline-years</span><span class="st">`</span>, <span class="at">method =</span> <span class="st">"spearman"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in cor.test.default(x = ehs655$`Work-LEQ-dBA`, y =
-ehs655$`Age-baseline-years`, : cannot compute exact p-value with ties</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Spearman's rank correlation rho
@@ -797,7 +742,6 @@ sample estimates:
 <div class="columns-only-on-slides">
 <div class="slide-column">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="st">`</span><span class="at">Job-title</span><span class="st">`</span>, County)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 201 × 2
    `Job-title` County   
@@ -818,7 +762,6 @@ sample estimates:
 </div>
 <div class="slide-column">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span><span class="st">`</span><span class="at">Job-title</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">County</span><span class="st">`</span>, <span class="at">data =</span> ehs655)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                    County
 Job-title            Adams Benton Chelan Clallam Clark Cowlitz Douglas Ferry
@@ -945,29 +888,15 @@ Job-title            Thurston Whatcom Whitman Yakima
 <div class="columns-only-on-slides">
 <div class="slide-column">
 <p>Method 1 (<span class="math inline">\(LOD/2\)</span>)</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">leq_lod2 =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span> <span class="sc">&lt;</span> <span class="dv">70</span>, <span class="dv">70</span><span class="sc">/</span><span class="dv">2</span>, <span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <p>Method 2 (<span class="math inline">\(LOD/sqrt2\)</span>)</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">leq_lodsqrt2 =</span> <span class="fu">ifelse</span>(<span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span> <span class="sc">&lt;</span> <span class="dv">70</span>, <span class="dv">70</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">2</span>), <span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 </div>
 <div class="slide-column">
 <p>Let’s compare density plots of these results vs original</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="sc">%&gt;%</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> leq_lod2), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">fill =</span> <span class="st">"red"</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> leq_lodsqrt2), <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Work-LEQ-dBA</span><span class="st">`</span>), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"black"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"LEQ"</span>, <span class="at">y =</span> <span class="st">"Density"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptive_stats_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="descriptive_stats_files/figure-revealjs/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -998,26 +927,20 @@ Job-title            Thurston Whatcom Whitman Yakima
 <div class="slide-column">
 <p>Let’s simulate some R code for some random, log-normal contaminant with a LOD of 1.5</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>sim_df <span class="ot">&lt;-</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">true_conc =</span> <span class="fu">round</span>(<span class="fu">rlnorm</span>(<span class="at">n =</span> <span class="dv">300</span>, <span class="at">meanlog =</span> <span class="dv">1</span>, <span class="at">sdlog =</span> <span class="fl">0.7</span>), <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">LOD =</span> <span class="fl">1.5</span>,</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">obs_conc =</span> <span class="fu">ifelse</span>(true_conc <span class="sc">&lt;=</span> LOD, <span class="cn">NA</span>, true_conc),</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">above_LOD =</span> <span class="fu">ifelse</span>(true_conc <span class="sc">&lt;=</span> LOD, <span class="dv">0</span>, <span class="dv">1</span>))</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>sim_df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 300 × 4
    true_conc   LOD obs_conc above_LOD
        &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
- 1      8.3    1.5     8.3          1
- 2      0.79   1.5    NA            0
- 3      0.6    1.5    NA            0
- 4      4.03   1.5     4.03         1
- 5      1.82   1.5     1.82         1
- 6      2.78   1.5     2.78         1
- 7      3.5    1.5     3.5          1
- 8      1.83   1.5     1.83         1
- 9      4.12   1.5     4.12         1
-10      1.26   1.5    NA            0
+ 1      2.98   1.5     2.98         1
+ 2      3.48   1.5     3.48         1
+ 3      2.63   1.5     2.63         1
+ 4      2.37   1.5     2.37         1
+ 5      0.61   1.5    NA            0
+ 6      3.16   1.5     3.16         1
+ 7      2.18   1.5     2.18         1
+ 8      2.02   1.5     2.02         1
+ 9      3.7    1.5     3.7          1
+10      7.6    1.5     7.6          1
 # ℹ 290 more rows</code></pre>
 </div>
 </div>
@@ -1025,14 +948,10 @@ Job-title            Thurston Whatcom Whitman Yakima
 <div class="slide-column">
 <p>We can visualize the distribution of the true contaminant levels versus what we observe due to values falling below the LOD of 1.5</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>sim_df <span class="sc">%&gt;%</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> obs_conc), <span class="at">binwidth =</span> <span class="fl">0.5</span>, <span class="at">fill =</span> <span class="st">"grey30"</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) <span class="sc">+</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> true_conc), <span class="at">binwidth =</span> <span class="fl">0.5</span>, <span class="at">fill =</span> <span class="st">"transparent"</span>, <span class="at">color =</span> <span class="st">"orange"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptive_stats_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="descriptive_stats_files/figure-revealjs/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1047,24 +966,20 @@ Job-title            Thurston Whatcom Whitman Yakima
 <div class="slide-column">
 <p>Let’s create a new column where values at or below 1.5 are substituted with <span class="math inline">\(LOD/2\)</span></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>sim_df <span class="ot">&lt;-</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  sim_df <span class="sc">%&gt;%</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">conc_lod2 =</span> <span class="fu">ifelse</span>(above_LOD <span class="sc">==</span> <span class="dv">0</span>, LOD<span class="sc">/</span><span class="dv">2</span>, true_conc))</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>sim_df <span class="sc">%&gt;%</span> <span class="fu">select</span>(true_conc, obs_conc, conc_lod2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 300 × 3
    true_conc obs_conc conc_lod2
        &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
- 1      8.3      8.3       8.3 
- 2      0.79    NA         0.75
- 3      0.6     NA         0.75
- 4      4.03     4.03      4.03
- 5      1.82     1.82      1.82
- 6      2.78     2.78      2.78
- 7      3.5      3.5       3.5 
- 8      1.83     1.83      1.83
- 9      4.12     4.12      4.12
-10      1.26    NA         0.75
+ 1      2.98     2.98      2.98
+ 2      3.48     3.48      3.48
+ 3      2.63     2.63      2.63
+ 4      2.37     2.37      2.37
+ 5      0.61    NA         0.75
+ 6      3.16     3.16      3.16
+ 7      2.18     2.18      2.18
+ 8      2.02     2.02      2.02
+ 9      3.7      3.7       3.7 
+10      7.6      7.6       7.6 
 # ℹ 290 more rows</code></pre>
 </div>
 </div>
@@ -1072,14 +987,10 @@ Job-title            Thurston Whatcom Whitman Yakima
 <div class="slide-column">
 <p>Let’s visualize the new distribution (grey) compared to the true distribution (orange)</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>sim_df <span class="sc">%&gt;%</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> conc_lod2), <span class="at">binwidth =</span> <span class="fl">0.5</span>, <span class="at">fill =</span> <span class="st">"grey30"</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) <span class="sc">+</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> true_conc), <span class="at">binwidth =</span> <span class="fl">0.5</span>, <span class="at">fill =</span> <span class="st">"transparent"</span>, <span class="at">color =</span> <span class="st">"orange"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptive_stats_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="descriptive_stats_files/figure-revealjs/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1094,24 +1005,20 @@ Job-title            Thurston Whatcom Whitman Yakima
 <div class="slide-column">
 <p>Let’s create a new column where values at or below 1.5 are substituted with <span class="math inline">\(LOD/\sqrt2\)</span></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>sim_df <span class="ot">&lt;-</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  sim_df <span class="sc">%&gt;%</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">conc_lodsqrt2 =</span> <span class="fu">ifelse</span>(above_LOD <span class="sc">==</span> <span class="dv">0</span>, LOD<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">2</span>), true_conc))</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>sim_df <span class="sc">%&gt;%</span> <span class="fu">select</span>(true_conc, obs_conc, conc_lod2, conc_lodsqrt2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 300 × 4
    true_conc obs_conc conc_lod2 conc_lodsqrt2
        &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;
- 1      8.3      8.3       8.3           8.3 
- 2      0.79    NA         0.75          1.06
- 3      0.6     NA         0.75          1.06
- 4      4.03     4.03      4.03          4.03
- 5      1.82     1.82      1.82          1.82
- 6      2.78     2.78      2.78          2.78
- 7      3.5      3.5       3.5           3.5 
- 8      1.83     1.83      1.83          1.83
- 9      4.12     4.12      4.12          4.12
-10      1.26    NA         0.75          1.06
+ 1      2.98     2.98      2.98          2.98
+ 2      3.48     3.48      3.48          3.48
+ 3      2.63     2.63      2.63          2.63
+ 4      2.37     2.37      2.37          2.37
+ 5      0.61    NA         0.75          1.06
+ 6      3.16     3.16      3.16          3.16
+ 7      2.18     2.18      2.18          2.18
+ 8      2.02     2.02      2.02          2.02
+ 9      3.7      3.7       3.7           3.7 
+10      7.6      7.6       7.6           7.6 
 # ℹ 290 more rows</code></pre>
 </div>
 </div>
@@ -1119,14 +1026,10 @@ Job-title            Thurston Whatcom Whitman Yakima
 <div class="slide-column">
 <p>Let’s visualize the new distribution (grey) compared to the true distribution (orange)</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>sim_df <span class="sc">%&gt;%</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> conc_lodsqrt2), <span class="at">binwidth =</span> <span class="fl">0.5</span>, <span class="at">fill =</span> <span class="st">"grey30"</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) <span class="sc">+</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> true_conc), <span class="at">binwidth =</span> <span class="fl">0.5</span>, <span class="at">fill =</span> <span class="st">"transparent"</span>, <span class="at">color =</span> <span class="st">"orange"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptive_stats_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="descriptive_stats_files/figure-revealjs/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1140,102 +1043,99 @@ Job-title            Thurston Whatcom Whitman Yakima
 <div class="columns-only-on-slides">
 <div class="slide-column">
 <p>Let’s create a new column where values at or below 1.5 are substituted using the <span class="math inline">\(\beta\)</span>-substitution method. First let’s load the function to perform the method</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"beta_sub_function.R"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <details>
 <summary>
 Click to view R Script
 </summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Title: Beta substitution method</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Author: Abas Shkembi (ashkembi@umich.edu) &amp; Jie He (jayhe@umich.edu)</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Last updated: May 8, 2025</span></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------------------</span></span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="do">### Description</span></span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="do">### conducts beta-substitution method for values &lt;LOD</span></span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="do">### following Ganser &amp; Hewett, JOEH, 2010</span></span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------------------</span></span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="co"># create function to perform beta-substitution</span></span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>beta_substitution <span class="ot">&lt;-</span> <span class="cf">function</span>(data, x_var, lod_var) {</span>
-<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Check for multiple, different LOD values in non-detects</span></span>
-<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>  lod_values <span class="ot">&lt;-</span> <span class="fu">unique</span>(data[[x_var]][data[[lod_var]] <span class="sc">==</span> <span class="dv">0</span>])</span>
-<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(lod_values) <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
-<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Multiple LOD values detected. All non-detects must have the same LOD."</span>)</span>
-<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>  LOD <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">length</span>(lod_values) <span class="sc">==</span> <span class="dv">0</span>) <span class="cn">NA</span> <span class="cf">else</span> lod_values[<span class="dv">1</span>]</span>
-<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
-<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">sum</span>(data[[lod_var]] <span class="sc">==</span> <span class="dv">0</span>)</span>
-<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (k <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(</span>
-<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">beta_mean =</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">beta_gm =</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb39-28"><a href="#cb39-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">substituted_mean =</span> <span class="fu">mean</span>(data[[x_var]]),</span>
-<span id="cb39-29"><a href="#cb39-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">substituted_gm =</span> <span class="fu">exp</span>(<span class="fu">mean</span>(<span class="fu">log</span>(data[[x_var]]))),</span>
-<span id="cb39-30"><a href="#cb39-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">substituted_gsd =</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb39-31"><a href="#cb39-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">substituted_x95 =</span> <span class="cn">NA_real_</span></span>
-<span id="cb39-32"><a href="#cb39-32" aria-hidden="true" tabindex="-1"></a>    ))</span>
-<span id="cb39-33"><a href="#cb39-33" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb39-34"><a href="#cb39-34" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-35"><a href="#cb39-35" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (n <span class="sc">-</span> k <span class="sc">&lt;</span> <span class="dv">2</span>) {</span>
-<span id="cb39-36"><a href="#cb39-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Insufficient detected values (need at least 2)."</span>)</span>
-<span id="cb39-37"><a href="#cb39-37" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb39-38"><a href="#cb39-38" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-39"><a href="#cb39-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 1: Create a detects array</span></span>
-<span id="cb39-40"><a href="#cb39-40" aria-hidden="true" tabindex="-1"></a>  detected <span class="ot">&lt;-</span> data[[x_var]][data[[lod_var]] <span class="sc">==</span> <span class="dv">1</span>]</span>
-<span id="cb39-41"><a href="#cb39-41" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-42"><a href="#cb39-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 2: Calculate input and intermediate values</span></span>
-<span id="cb39-43"><a href="#cb39-43" aria-hidden="true" tabindex="-1"></a>  y_bar <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">log</span>(detected))</span>
-<span id="cb39-44"><a href="#cb39-44" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(k <span class="sc">/</span> n)</span>
-<span id="cb39-45"><a href="#cb39-45" aria-hidden="true" tabindex="-1"></a>  fz <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(z) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(z))</span>
-<span id="cb39-46"><a href="#cb39-46" aria-hidden="true" tabindex="-1"></a>  sy <span class="ot">&lt;-</span> <span class="fu">sqrt</span>((y_bar <span class="sc">-</span> <span class="fu">log</span>(LOD))<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> (fz <span class="sc">-</span> z)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb39-47"><a href="#cb39-47" aria-hidden="true" tabindex="-1"></a>  f_sy_z <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(z <span class="sc">-</span> sy <span class="sc">/</span> n)) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(z))</span>
-<span id="cb39-48"><a href="#cb39-48" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-49"><a href="#cb39-49" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 3: Calculate beta_mean</span></span>
-<span id="cb39-50"><a href="#cb39-50" aria-hidden="true" tabindex="-1"></a>  beta_mean <span class="ot">&lt;-</span> (n <span class="sc">/</span> k) <span class="sc">*</span> <span class="fu">pnorm</span>(z <span class="sc">-</span> sy) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>sy <span class="sc">*</span> z <span class="sc">+</span> sy<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb39-51"><a href="#cb39-51" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-52"><a href="#cb39-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 4: Substitute each non-detect with beta_mean * LOD, and calculate the sample mean</span></span>
-<span id="cb39-53"><a href="#cb39-53" aria-hidden="true" tabindex="-1"></a>  data_substituted_mean <span class="ot">&lt;-</span> data[[x_var]]</span>
-<span id="cb39-54"><a href="#cb39-54" aria-hidden="true" tabindex="-1"></a>  data_substituted_mean[data[[lod_var]] <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> beta_mean <span class="sc">*</span> LOD</span>
-<span id="cb39-55"><a href="#cb39-55" aria-hidden="true" tabindex="-1"></a>  mean_sub <span class="ot">&lt;-</span> <span class="fu">mean</span>(data_substituted_mean)</span>
-<span id="cb39-56"><a href="#cb39-56" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-57"><a href="#cb39-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 5: Calculate beta_gm</span></span>
-<span id="cb39-58"><a href="#cb39-58" aria-hidden="true" tabindex="-1"></a>  beta_gm <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span> (n <span class="sc">*</span> (n <span class="sc">-</span> k) <span class="sc">/</span> k <span class="sc">*</span> <span class="fu">log</span>(f_sy_z) <span class="sc">-</span> sy <span class="sc">*</span> z <span class="sc">-</span> (n <span class="sc">-</span> k) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> k <span class="sc">*</span> n) <span class="sc">*</span> sy<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb39-59"><a href="#cb39-59" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-60"><a href="#cb39-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 6: Substitute each non-detect with beta_gm * LOD, and calculate the sample GM         </span></span>
-<span id="cb39-61"><a href="#cb39-61" aria-hidden="true" tabindex="-1"></a>  data_substituted_gm <span class="ot">&lt;-</span> data[[x_var]]</span>
-<span id="cb39-62"><a href="#cb39-62" aria-hidden="true" tabindex="-1"></a>  data_substituted_gm[data[[lod_var]] <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> beta_gm <span class="sc">*</span> LOD</span>
-<span id="cb39-63"><a href="#cb39-63" aria-hidden="true" tabindex="-1"></a>  gm_sub <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">mean</span>(<span class="fu">log</span>(data_substituted_gm)))</span>
-<span id="cb39-64"><a href="#cb39-64" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-65"><a href="#cb39-65" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 7: Recalculate sy and then calculate the sample GSD</span></span>
-<span id="cb39-66"><a href="#cb39-66" aria-hidden="true" tabindex="-1"></a>  ratio <span class="ot">&lt;-</span> mean_sub <span class="sc">/</span> gm_sub</span>
-<span id="cb39-67"><a href="#cb39-67" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (ratio <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
-<span id="cb39-68"><a href="#cb39-68" aria-hidden="true" tabindex="-1"></a>    sy_new <span class="ot">&lt;-</span> <span class="fu">sqrt</span>((<span class="dv">2</span> <span class="sc">*</span> n <span class="sc">/</span> (n <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">*</span> <span class="fu">log</span>(ratio))</span>
-<span id="cb39-69"><a href="#cb39-69" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb39-70"><a href="#cb39-70" aria-hidden="true" tabindex="-1"></a>    sy_new <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb39-71"><a href="#cb39-71" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb39-72"><a href="#cb39-72" aria-hidden="true" tabindex="-1"></a>  gsd_sub <span class="ot">&lt;-</span> <span class="fu">exp</span>(sy_new)</span>
-<span id="cb39-73"><a href="#cb39-73" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-74"><a href="#cb39-74" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 8: Calculate the sample 95th percentile</span></span>
-<span id="cb39-75"><a href="#cb39-75" aria-hidden="true" tabindex="-1"></a>  x95 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">log</span>(gm_sub) <span class="sc">-</span> (sy_new<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> n) <span class="sc">+</span> <span class="fl">1.645</span> <span class="sc">*</span> sy_new)</span>
-<span id="cb39-76"><a href="#cb39-76" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb39-77"><a href="#cb39-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
-<span id="cb39-78"><a href="#cb39-78" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb39-79"><a href="#cb39-79" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the beta factor we are interested in</span></span>
-<span id="cb39-80"><a href="#cb39-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">beta_mean =</span> beta_mean, <span class="co">#*** in the original scale</span></span>
-<span id="cb39-81"><a href="#cb39-81" aria-hidden="true" tabindex="-1"></a>    <span class="at">beta_gm =</span> beta_gm, <span class="co"># in the geometric scale</span></span>
-<span id="cb39-82"><a href="#cb39-82" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb39-83"><a href="#cb39-83" aria-hidden="true" tabindex="-1"></a>    <span class="co"># after replacing &lt;LOD values with beta * LOD...</span></span>
-<span id="cb39-84"><a href="#cb39-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">substituted_mean =</span> mean_sub, <span class="co"># the mean of the new distribution</span></span>
-<span id="cb39-85"><a href="#cb39-85" aria-hidden="true" tabindex="-1"></a>    <span class="at">substituted_gm =</span> gm_sub, <span class="co"># the geometric mean of the new distribution</span></span>
-<span id="cb39-86"><a href="#cb39-86" aria-hidden="true" tabindex="-1"></a>    <span class="at">substituted_gsd =</span> gsd_sub, <span class="co"># the geometric SD of the new distribution</span></span>
-<span id="cb39-87"><a href="#cb39-87" aria-hidden="true" tabindex="-1"></a>    <span class="at">substituted_x95 =</span> x95 <span class="co"># the 95th percentile of the new distribution</span></span>
-<span id="cb39-88"><a href="#cb39-88" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb39-89"><a href="#cb39-89" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Title: Beta substitution method</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Author: Abas Shkembi (ashkembi@umich.edu) &amp; Jie He (jayhe@umich.edu)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Last updated: May 8, 2025</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------------------</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="do">### Description</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="do">### conducts beta-substitution method for values &lt;LOD</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="do">### following Ganser &amp; Hewett, JOEH, 2010</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#------------------------------------------------------------</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co"># create function to perform beta-substitution</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>beta_substitution <span class="ot">&lt;-</span> <span class="cf">function</span>(data, x_var, lod_var) {</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Check for multiple, different LOD values in non-detects</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  lod_values <span class="ot">&lt;-</span> <span class="fu">unique</span>(data[[x_var]][data[[lod_var]] <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(lod_values) <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Multiple LOD values detected. All non-detects must have the same LOD."</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  LOD <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">length</span>(lod_values) <span class="sc">==</span> <span class="dv">0</span>) <span class="cn">NA</span> <span class="cf">else</span> lod_values[<span class="dv">1</span>]</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">sum</span>(data[[lod_var]] <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (k <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">beta_mean =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">beta_gm =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">substituted_mean =</span> <span class="fu">mean</span>(data[[x_var]]),</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">substituted_gm =</span> <span class="fu">exp</span>(<span class="fu">mean</span>(<span class="fu">log</span>(data[[x_var]]))),</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">substituted_gsd =</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">substituted_x95 =</span> <span class="cn">NA_real_</span></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (n <span class="sc">-</span> k <span class="sc">&lt;</span> <span class="dv">2</span>) {</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Insufficient detected values (need at least 2)."</span>)</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 1: Create a detects array</span></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>  detected <span class="ot">&lt;-</span> data[[x_var]][data[[lod_var]] <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 2: Calculate input and intermediate values</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>  y_bar <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">log</span>(detected))</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(k <span class="sc">/</span> n)</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>  fz <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(z) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(z))</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>  sy <span class="ot">&lt;-</span> <span class="fu">sqrt</span>((y_bar <span class="sc">-</span> <span class="fu">log</span>(LOD))<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> (fz <span class="sc">-</span> z)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>  f_sy_z <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(z <span class="sc">-</span> sy <span class="sc">/</span> n)) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(z))</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 3: Calculate beta_mean</span></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>  beta_mean <span class="ot">&lt;-</span> (n <span class="sc">/</span> k) <span class="sc">*</span> <span class="fu">pnorm</span>(z <span class="sc">-</span> sy) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>sy <span class="sc">*</span> z <span class="sc">+</span> sy<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 4: Substitute each non-detect with beta_mean * LOD, and calculate the sample mean</span></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>  data_substituted_mean <span class="ot">&lt;-</span> data[[x_var]]</span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>  data_substituted_mean[data[[lod_var]] <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> beta_mean <span class="sc">*</span> LOD</span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>  mean_sub <span class="ot">&lt;-</span> <span class="fu">mean</span>(data_substituted_mean)</span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 5: Calculate beta_gm</span></span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>  beta_gm <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span> (n <span class="sc">*</span> (n <span class="sc">-</span> k) <span class="sc">/</span> k <span class="sc">*</span> <span class="fu">log</span>(f_sy_z) <span class="sc">-</span> sy <span class="sc">*</span> z <span class="sc">-</span> (n <span class="sc">-</span> k) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> k <span class="sc">*</span> n) <span class="sc">*</span> sy<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 6: Substitute each non-detect with beta_gm * LOD, and calculate the sample GM         </span></span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>  data_substituted_gm <span class="ot">&lt;-</span> data[[x_var]]</span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>  data_substituted_gm[data[[lod_var]] <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> beta_gm <span class="sc">*</span> LOD</span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a>  gm_sub <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">mean</span>(<span class="fu">log</span>(data_substituted_gm)))</span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 7: Recalculate sy and then calculate the sample GSD</span></span>
+<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a>  ratio <span class="ot">&lt;-</span> mean_sub <span class="sc">/</span> gm_sub</span>
+<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (ratio <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
+<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a>    sy_new <span class="ot">&lt;-</span> <span class="fu">sqrt</span>((<span class="dv">2</span> <span class="sc">*</span> n <span class="sc">/</span> (n <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">*</span> <span class="fu">log</span>(ratio))</span>
+<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a>    sy_new <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a>  gsd_sub <span class="ot">&lt;-</span> <span class="fu">exp</span>(sy_new)</span>
+<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 8: Calculate the sample 95th percentile</span></span>
+<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a>  x95 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">log</span>(gm_sub) <span class="sc">-</span> (sy_new<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> n) <span class="sc">+</span> <span class="fl">1.645</span> <span class="sc">*</span> sy_new)</span>
+<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the beta factor we are interested in</span></span>
+<span id="cb13-80"><a href="#cb13-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">beta_mean =</span> beta_mean, <span class="co">#*** in the original scale</span></span>
+<span id="cb13-81"><a href="#cb13-81" aria-hidden="true" tabindex="-1"></a>    <span class="at">beta_gm =</span> beta_gm, <span class="co"># in the geometric scale</span></span>
+<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a>    <span class="co"># after replacing &lt;LOD values with beta * LOD...</span></span>
+<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">substituted_mean =</span> mean_sub, <span class="co"># the mean of the new distribution</span></span>
+<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a>    <span class="at">substituted_gm =</span> gm_sub, <span class="co"># the geometric mean of the new distribution</span></span>
+<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a>    <span class="at">substituted_gsd =</span> gsd_sub, <span class="co"># the geometric SD of the new distribution</span></span>
+<span id="cb13-87"><a href="#cb13-87" aria-hidden="true" tabindex="-1"></a>    <span class="at">substituted_x95 =</span> x95 <span class="co"># the 95th percentile of the new distribution</span></span>
+<span id="cb13-88"><a href="#cb13-88" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <p>Then we can call the function: <code>beta_substitution(data, x_var, lod_var)</code></p>
 <ul>
@@ -1244,45 +1144,34 @@ Click to view R Script
 <li><p><code>lod_var</code>: whether the observed concentration is above the LOD</p></li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first set all values at or below LOD to LOD value</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>sim_df <span class="ot">&lt;-</span> sim_df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">obs_conc2 =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(obs_conc), LOD, obs_conc))</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>sim_bsub <span class="ot">&lt;-</span> <span class="fu">beta_substitution</span>(sim_df, <span class="st">"obs_conc2"</span>, <span class="st">"above_LOD"</span>)</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>sim_bsub</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$beta_mean
-[1] 0.7009594
+[1] 0.7107854
 
 $beta_gm
-[1] 0.1879777
+[1] 0.2118354
 
 $substituted_mean
-[1] 3.562512
+[1] 3.442469
 
 $substituted_gm
-[1] 2.217117
+[1] 2.131957
 
 $substituted_gsd
-[1] 2.652613
+[1] 2.665954
 
 $substituted_x95
-[1] 11.01649</code></pre>
+[1] 10.68096</code></pre>
 </div>
 </div>
 </div>
 <div class="slide-column">
-<p>We now have our <span class="math inline">\(\beta\)</span> factor (0.7009594), which we can multiply with our LOD (1.5)</p>
+<p>We now have our <span class="math inline">\(\beta\)</span> factor (0.7107854), which we can multiply with our LOD (1.5)</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>sim_df <span class="ot">&lt;-</span> sim_df <span class="sc">%&gt;%</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">conc_bsub =</span> <span class="fu">ifelse</span>(above_LOD <span class="sc">==</span> <span class="dv">0</span>, <span class="fl">1.5</span><span class="sc">*</span>sim_bsub<span class="sc">$</span>beta_mean, true_conc)) </span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>sim_df <span class="sc">%&gt;%</span></span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> conc_bsub), <span class="at">binwidth =</span> <span class="fl">0.5</span>, <span class="at">fill =</span> <span class="st">"grey30"</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) <span class="sc">+</span></span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> true_conc), <span class="at">binwidth =</span> <span class="fl">0.5</span>, <span class="at">fill =</span> <span class="st">"transparent"</span>, <span class="at">color =</span> <span class="st">"orange"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptive_stats_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="descriptive_stats_files/figure-revealjs/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1299,24 +1188,16 @@ $substituted_x95
 <ul>
 <li><p>LOD/2 = 1.5/2 = 0.75</p></li>
 <li><p>LOD/<span class="math inline">\(\sqrt2\)</span> = 1.5/<span class="math inline">\(\sqrt2\)</span> = 1.06</p></li>
-<li><p><span class="math inline">\(\beta\)</span>-substitution = LOD*<span class="math inline">\(\beta\)</span> = 1.5*0.7009594 = 1.05</p></li>
+<li><p><span class="math inline">\(\beta\)</span>-substitution = LOD*<span class="math inline">\(\beta\)</span> = 1.5*0.7107854 = 1.07</p></li>
 </ul>
 </div>
 <div class="slide-column">
 <p>Now let’s look at scatterplots of each of these censored estimate approaches</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>sim_df <span class="sc">%&gt;%</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(true_conc <span class="sc">&lt;</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> true_conc)) <span class="sc">+</span></span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> conc_lod2), <span class="at">color =</span> <span class="st">"pink"</span>, <span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> conc_lodsqrt2), <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> conc_bsub), <span class="at">color =</span> <span class="st">"orange"</span>, <span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> true_conc), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">shape =</span> <span class="dv">16</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"True concentration"</span>, <span class="at">y =</span> <span class="st">"Estimated concentration with censoring"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="descriptive_stats_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="descriptive_stats_files/figure-revealjs/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1328,6 +1209,44 @@ $substituted_x95
 </section>
 
 </main> <!-- /main -->
+
+<script>
+  // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+  // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+  // slide changes (different for each slide format).
+  (function () {
+    // dispatch for htmlwidgets
+    function fireSlideEnter() {
+      const event = window.document.createEvent("Event");
+      event.initEvent("slideenter", true, true);
+      window.document.dispatchEvent(event);
+    }
+
+    function fireSlideChanged(previousSlide, currentSlide) {
+      fireSlideEnter();
+
+      // dispatch for shiny
+      if (window.jQuery) {
+        if (previousSlide) {
+          window.jQuery(previousSlide).trigger("hidden");
+        }
+        if (currentSlide) {
+          window.jQuery(currentSlide).trigger("shown");
+        }
+      }
+    }
+
+    // hookup for slidy
+    if (window.w3c_slidy) {
+      window.w3c_slidy.add_observer(function (slide_num) {
+        // slide_num starts at position 1
+        fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+      });
+    }
+
+  })();
+</script>
+
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
