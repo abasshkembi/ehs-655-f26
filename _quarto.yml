@@ -30,6 +30,8 @@ website:
             text: 5 Variability
           - href: 01-lectures/02-exposures/06-data-cleaning/data_cleaning.qmd
             text: 6 Data cleaning
+          - href: /01-lectures/02-exposures/07-exposure-groups/exposure_groups.qmd
+            text: 7 Exposure grouping
 
 format:
   html:
