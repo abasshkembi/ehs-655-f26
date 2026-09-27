@@ -14,7 +14,6 @@ library(tidyverse)
 ## Lecture 5: Exposure variability
 
 ------------------------------------------------------------------------
-
 :::
 
 ::: {.content-hidden when-format="revealjs"}
