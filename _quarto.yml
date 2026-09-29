@@ -32,6 +32,8 @@ website:
             text: 6 Data cleaning
           - href: 01-lectures/02-exposures/07-exposure-groups/exposure_groups.qmd
             text: 7 Exposure grouping
+          - href: 01-lectures/02-exposures/08-exposure-metrics/exposure_metrics.qmd
+            text: 8 Exposure metrics
 
 format:
   html:

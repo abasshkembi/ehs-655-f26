@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Exposure Grouping Strategies (Lecture 7) – EHS 655</title>
+<title>Exposure Metrics (Lecture 8) – EHS 655</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -71,8 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
-<link href="../../../01-lectures/02-exposures/08-exposure-metrics/exposure_metrics.html" rel="next">
-<link href="../../../01-lectures/02-exposures/06-data-cleaning/data_cleaning.html" rel="prev">
+<link href="../../../01-lectures/02-exposures/07-exposure-groups/exposure_groups.html" rel="prev">
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
@@ -111,6 +110,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../../html_styles.css">
 </head>
@@ -124,7 +152,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../01-lectures/02-exposures/05-variability/variability.html">Section 2</a></li><li class="breadcrumb-item"><a href="../../../01-lectures/02-exposures/07-exposure-groups/exposure_groups.html">7 Exposure grouping</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../01-lectures/02-exposures/05-variability/variability.html">Section 2</a></li><li class="breadcrumb-item"><a href="../../../01-lectures/02-exposures/08-exposure-metrics/exposure_metrics.html">8 Exposure metrics</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -219,13 +247,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../01-lectures/02-exposures/07-exposure-groups/exposure_groups.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../../01-lectures/02-exposures/07-exposure-groups/exposure_groups.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">7 Exposure grouping</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../01-lectures/02-exposures/08-exposure-metrics/exposure_metrics.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../01-lectures/02-exposures/08-exposure-metrics/exposure_metrics.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">8 Exposure metrics</span></a>
   </div>
 </li>
@@ -242,38 +270,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#what-well-cover-today" id="toc-what-well-cover-today" class="nav-link active" data-scroll-target="#what-well-cover-today">What we’ll cover today</a></li>
-  <li><a href="#repeated-measurements" id="toc-repeated-measurements" class="nav-link" data-scroll-target="#repeated-measurements">Repeated measurements</a></li>
-  <li><a href="#sampling-issues" id="toc-sampling-issues" class="nav-link" data-scroll-target="#sampling-issues">Sampling issues</a></li>
-  <li><a href="#sampling-issues---temporal-trends" id="toc-sampling-issues---temporal-trends" class="nav-link" data-scroll-target="#sampling-issues---temporal-trends">Sampling issues - temporal trends</a></li>
-  <li><a href="#sampling-issues---temporal-trends-1" id="toc-sampling-issues---temporal-trends-1" class="nav-link" data-scroll-target="#sampling-issues---temporal-trends-1">Sampling issues - temporal trends</a></li>
-  <li><a href="#individual-level-assessment" id="toc-individual-level-assessment" class="nav-link" data-scroll-target="#individual-level-assessment">Individual-level assessment</a></li>
-  <li><a href="#question" id="toc-question" class="nav-link" data-scroll-target="#question">Question</a></li>
-  <li><a href="#reasons-we-might-not-want-individual-level-assessments" id="toc-reasons-we-might-not-want-individual-level-assessments" class="nav-link" data-scroll-target="#reasons-we-might-not-want-individual-level-assessments">Reasons we might not want individual-level assessments</a></li>
-  <li><a href="#exposure-groups" id="toc-exposure-groups" class="nav-link" data-scroll-target="#exposure-groups">Exposure groups</a></li>
-  <li><a href="#group-level-assessment" id="toc-group-level-assessment" class="nav-link" data-scroll-target="#group-level-assessment">Group level assessment</a></li>
-  <li><a href="#advantages-of-grouping" id="toc-advantages-of-grouping" class="nav-link" data-scroll-target="#advantages-of-grouping">Advantages of grouping</a></li>
-  <li><a href="#grouping-and-attenuation" id="toc-grouping-and-attenuation" class="nav-link" data-scroll-target="#grouping-and-attenuation">Grouping and attenuation</a></li>
-  <li><a href="#exposure-groups-1" id="toc-exposure-groups-1" class="nav-link" data-scroll-target="#exposure-groups-1">Exposure groups</a></li>
-  <li><a href="#exposure-groups-2" id="toc-exposure-groups-2" class="nav-link" data-scroll-target="#exposure-groups-2">Exposure groups</a></li>
-  <li><a href="#what-do-we-need-to-think-about-when-grouping-people" id="toc-what-do-we-need-to-think-about-when-grouping-people" class="nav-link" data-scroll-target="#what-do-we-need-to-think-about-when-grouping-people">What do we need to think about when grouping people?</a></li>
-  <li><a href="#exposure-grouping-goals" id="toc-exposure-grouping-goals" class="nav-link" data-scroll-target="#exposure-grouping-goals">Exposure grouping goals</a></li>
-  <li><a href="#specificity-vs-precision-from-the-reading" id="toc-specificity-vs-precision-from-the-reading" class="nav-link" data-scroll-target="#specificity-vs-precision-from-the-reading">Specificity vs precision (from the reading)</a></li>
-  <li><a href="#grouping-strategies" id="toc-grouping-strategies" class="nav-link" data-scroll-target="#grouping-strategies">Grouping strategies</a></li>
-  <li><a href="#ways-to-create-exposure-groups" id="toc-ways-to-create-exposure-groups" class="nav-link" data-scroll-target="#ways-to-create-exposure-groups">Ways to create exposure groups</a></li>
-  <li><a href="#example-grouping-by-agent" id="toc-example-grouping-by-agent" class="nav-link" data-scroll-target="#example-grouping-by-agent">Example: grouping by agent</a></li>
-  <li><a href="#example-grouping-by-job-title" id="toc-example-grouping-by-job-title" class="nav-link" data-scroll-target="#example-grouping-by-job-title">Example: grouping by job title</a></li>
-  <li><a href="#example---grouping-outcomes" id="toc-example---grouping-outcomes" class="nav-link" data-scroll-target="#example---grouping-outcomes">Example - grouping outcomes</a></li>
-  <li><a href="#group-size-and-attenuation-bias" id="toc-group-size-and-attenuation-bias" class="nav-link" data-scroll-target="#group-size-and-attenuation-bias">Group size and attenuation bias</a></li>
-  <li><a href="#question-1" id="toc-question-1" class="nav-link" data-scroll-target="#question-1">Question</a></li>
+  <li><a href="#how-can-we-quantify-grouping-effectiveness" id="toc-how-can-we-quantify-grouping-effectiveness" class="nav-link" data-scroll-target="#how-can-we-quantify-grouping-effectiveness">How can we quantify grouping effectiveness?</a></li>
+  <li><a href="#contrast" id="toc-contrast" class="nav-link" data-scroll-target="#contrast">Contrast</a></li>
+  <li><a href="#grouping---contrast" id="toc-grouping---contrast" class="nav-link" data-scroll-target="#grouping---contrast">Grouping - contrast</a></li>
+  <li><a href="#job-exposure-matrix" id="toc-job-exposure-matrix" class="nav-link" data-scroll-target="#job-exposure-matrix">Job exposure matrix</a></li>
+  <li><a href="#simple-job-exposure-matrix-example" id="toc-simple-job-exposure-matrix-example" class="nav-link" data-scroll-target="#simple-job-exposure-matrix-example">Simple job exposure matrix example</a></li>
+  <li><a href="#more-complex-job-exposure-matrix-example" id="toc-more-complex-job-exposure-matrix-example" class="nav-link" data-scroll-target="#more-complex-job-exposure-matrix-example">More complex job exposure matrix example</a></li>
+  <li><a href="#grouping-by-exposure" id="toc-grouping-by-exposure" class="nav-link" data-scroll-target="#grouping-by-exposure">Grouping by exposure</a></li>
+  <li><a href="#what-about-complicated-variables" id="toc-what-about-complicated-variables" class="nav-link" data-scroll-target="#what-about-complicated-variables">What about complicated variables?</a></li>
+  <li><a href="#exposure-metrics" id="toc-exposure-metrics" class="nav-link" data-scroll-target="#exposure-metrics">Exposure metrics</a></li>
+  <li><a href="#examples-of-exposure-metrics" id="toc-examples-of-exposure-metrics" class="nav-link" data-scroll-target="#examples-of-exposure-metrics">Examples of exposure metrics</a></li>
+  <li><a href="#examples-of-exposure-metrics-applied-to-noise" id="toc-examples-of-exposure-metrics-applied-to-noise" class="nav-link" data-scroll-target="#examples-of-exposure-metrics-applied-to-noise">Examples of exposure metrics (applied to noise)</a></li>
+  <li><a href="#average-vs-time-weighted-average-twa" id="toc-average-vs-time-weighted-average-twa" class="nav-link" data-scroll-target="#average-vs-time-weighted-average-twa">Average vs Time-Weighted Average (TWA)</a></li>
+  <li><a href="#why-convert-average-to-twa" id="toc-why-convert-average-to-twa" class="nav-link" data-scroll-target="#why-convert-average-to-twa">Why convert average to TWA?</a></li>
+  <li><a href="#peakiness-metrics" id="toc-peakiness-metrics" class="nav-link" data-scroll-target="#peakiness-metrics">Peakiness metrics</a></li>
+  <li><a href="#example-of-exposure-metrics-applied-to-noise" id="toc-example-of-exposure-metrics-applied-to-noise" class="nav-link" data-scroll-target="#example-of-exposure-metrics-applied-to-noise">Example of exposure metrics (applied to noise)</a></li>
+  <li><a href="#example-relationships-between-exposure-metrics" id="toc-example-relationships-between-exposure-metrics" class="nav-link" data-scroll-target="#example-relationships-between-exposure-metrics">Example relationships between exposure metrics</a></li>
+  <li><a href="#example-relationships-between-exposure-metrics-1" id="toc-example-relationships-between-exposure-metrics-1" class="nav-link" data-scroll-target="#example-relationships-between-exposure-metrics-1">Example relationships between exposure metrics</a></li>
+  <li><a href="#relationship-of-annual-exposure-metrics-by-person" id="toc-relationship-of-annual-exposure-metrics-by-person" class="nav-link" data-scroll-target="#relationship-of-annual-exposure-metrics-by-person">Relationship of annual exposure metrics by person</a></li>
+  <li><a href="#metrics---agent-of-interest" id="toc-metrics---agent-of-interest" class="nav-link" data-scroll-target="#metrics---agent-of-interest">Metrics - agent of interest</a></li>
+  <li><a href="#metrics---average-and-variability" id="toc-metrics---average-and-variability" class="nav-link" data-scroll-target="#metrics---average-and-variability">Metrics - average and variability</a></li>
+  <li><a href="#combination-of-exposure-groups-and-exposure-metrics" id="toc-combination-of-exposure-groups-and-exposure-metrics" class="nav-link" data-scroll-target="#combination-of-exposure-groups-and-exposure-metrics">Combination of exposure groups and exposure metrics</a></li>
+  <li><a href="#metrics-and-exposure-limits" id="toc-metrics-and-exposure-limits" class="nav-link" data-scroll-target="#metrics-and-exposure-limits">Metrics and exposure limits</a></li>
+  <li><a href="#a-bit-more-on-data-cleaning" id="toc-a-bit-more-on-data-cleaning" class="nav-link" data-scroll-target="#a-bit-more-on-data-cleaning">A bit more on data cleaning</a></li>
+  <li><a href="#example-data-cleaning" id="toc-example-data-cleaning" class="nav-link" data-scroll-target="#example-data-cleaning">Example: data cleaning</a></li>
+  <li><a href="#back-to-r" id="toc-back-to-r" class="nav-link" data-scroll-target="#back-to-r">Back to R</a></li>
+  <li><a href="#r" id="toc-r" class="nav-link" data-scroll-target="#r">R</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="exposure_groups.slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="exposure_metrics.slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../01-lectures/02-exposures/05-variability/variability.html">Section 2</a></li><li class="breadcrumb-item"><a href="../../../01-lectures/02-exposures/07-exposure-groups/exposure_groups.html">7 Exposure grouping</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../01-lectures/02-exposures/05-variability/variability.html">Section 2</a></li><li class="breadcrumb-item"><a href="../../../01-lectures/02-exposures/08-exposure-metrics/exposure_metrics.html">8 Exposure metrics</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Exposure Grouping Strategies (Lecture 7)</h1>
+<h1 class="title">Exposure Metrics (Lecture 8)</h1>
 </div>
 
 
@@ -340,288 +371,327 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-well-cover-today" class="level3">
 <h3 class="anchored" data-anchor-id="what-well-cover-today">What we’ll cover today</h3>
 <ul>
-<li><p>Sampling issues</p></li>
-<li><p>Temporal trends</p></li>
-<li><p>Exposure groups</p></li>
+<li><p>A bit more on grouping exposures</p></li>
+<li><p>Exposure metrics</p></li>
 </ul>
 <hr>
 </section>
-<section id="repeated-measurements" class="level3">
-<h3 class="anchored" data-anchor-id="repeated-measurements">Repeated measurements</h3>
-<p><img src="images/clipboard-4242092338.png" class="img-fluid" style="width:90.0%"></p>
-<div class="custom-footer">
-<p>Loomis, Kromhout, 2004</p>
-</div>
+<section id="how-can-we-quantify-grouping-effectiveness" class="level3">
+<h3 class="anchored" data-anchor-id="how-can-we-quantify-grouping-effectiveness">How can we quantify grouping effectiveness?</h3>
+<ul>
+<li><p>Look at variance within and between groups</p></li>
+<li><p>One summary measure is referred to as contrast (ability to create groups with different exposures)</p></li>
+<li><p>Contrast</p></li>
+</ul>
+<p><span class="math display">\[
+\epsilon = \frac{_{BG}S^{2}_{y}}{(_{BG}S^{2}_{y}+_{WG}S^{2}_{y})}
+\]</span></p>
 <hr>
 </section>
-<section id="sampling-issues" class="level3">
-<h3 class="anchored" data-anchor-id="sampling-issues">Sampling issues</h3>
+<section id="contrast" class="level3">
+<h3 class="anchored" data-anchor-id="contrast">Contrast</h3>
 <ul>
-<li><p>Several different sampling strategies</p>
+<li><p>Grouping affects standard error of exposure-response slope very adversely if low contrast between groups</p>
 <ul>
-<li><p>Haphazard/convenience</p></li>
-<li><p>Worst case</p></li>
-<li><p>Representative</p></li>
-<li><p>Random</p></li>
+<li>Ratio of within-group to between-group variance &gt;1 leads to low contrast</li>
 </ul></li>
-<li><p>How exposures were collected may determine what we can infer from them</p></li>
-<li><p>Also need to consider temporal trends</p></li>
-<li><p><span style="color: blue;"><strong>Question:</strong> what are the strengths and weaknesses of each of these approaches?</span></p></li>
+<li><p>So, grouping schemes must be optimized</p>
+<ul>
+<li>A priori grouping by job may not address factors that actually affect exposure</li>
+</ul></li>
 </ul>
 <hr>
 </section>
-<section id="sampling-issues---temporal-trends" class="level3">
-<h3 class="anchored" data-anchor-id="sampling-issues---temporal-trends">Sampling issues - temporal trends</h3>
-<p><img src="images/clipboard-878430838.png" class="img-fluid" style="width:70.0%"></p>
+<section id="grouping---contrast" class="level3">
+<h3 class="anchored" data-anchor-id="grouping---contrast">Grouping - contrast</h3>
+<p><img src="images/clipboard-628479331.png" class="img-fluid" style="width:95.0%"></p>
 <div class="custom-footer">
-<p>Heederik, Attfield, 2000</p>
+<p>Niewenheijsen, 1997</p>
 </div>
 <hr>
 </section>
-<section id="sampling-issues---temporal-trends-1" class="level3">
-<h3 class="anchored" data-anchor-id="sampling-issues---temporal-trends-1">Sampling issues - temporal trends</h3>
-<p><img src="images/clipboard-3861189444.png" class="img-fluid" style="width:80.0%"></p>
+<section id="job-exposure-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="job-exposure-matrix">Job exposure matrix</h3>
+<ul>
+<li><p>Large-scale grouping strategy</p></li>
+<li><p>Essentially a giant table with 3 axes</p>
+<ul>
+<li><p>Agent</p></li>
+<li><p>Exposure</p></li>
+<li><p>Time</p></li>
+</ul></li>
+<li><p>Often used in large population-based studies</p>
+<ul>
+<li>Few or no measurements on study subjects</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="simple-job-exposure-matrix-example" class="level3">
+<h3 class="anchored" data-anchor-id="simple-job-exposure-matrix-example">Simple job exposure matrix example</h3>
+<p><img src="images/clipboard-1657930602.png" class="img-fluid" style="width:80.0%"></p>
+<hr>
+</section>
+<section id="more-complex-job-exposure-matrix-example" class="level3">
+<h3 class="anchored" data-anchor-id="more-complex-job-exposure-matrix-example">More complex job exposure matrix example</h3>
+<p><img src="images/clipboard-1520679395.png" class="img-fluid" style="width:80.0%"></p>
+<div class="custom-footer">
+<p><a href="https://oem.bmj.com/content/oemed/62/4/272/F3.large.jpg" class="uri">https://oem.bmj.com/content/oemed/62/4/272/F3.large.jpg</a></p>
+</div>
+<hr>
+</section>
+<section id="grouping-by-exposure" class="level3">
+<h3 class="anchored" data-anchor-id="grouping-by-exposure">Grouping by exposure</h3>
+<p><img src="images/clipboard-3560137633.png" class="img-fluid" style="width:85.0%"></p>
+<div class="custom-footer">
+<p>AIHA, <em>Strategy for Assessing and Managing Occupational Exposures</em>, 3rd ed, 2006</p>
+</div>
+<hr>
+</section>
+<section id="what-about-complicated-variables" class="level3">
+<h3 class="anchored" data-anchor-id="what-about-complicated-variables">What about complicated variables?</h3>
+<ul>
+<li><p>How many categories are there in <code>PrimaryTaskShift</code> variable?</p>
+<ul>
+<li>(SPOILER ALERT: a lot!)</li>
+</ul></li>
+<li><p>Is this manageable? If not, consider collapsing into fewer categories, <u><em>as long as you have good rationale</em></u></p>
+<ul>
+<li><p>Combine tasks with similar central tendency and distributions</p>
+<ul>
+<li>If all equipment used by operating engineers has similar levels, make one “operating heavy equipment” variable?</li>
+</ul></li>
+<li><p>Combine tasks that&nbsp;seem similar</p>
+<ul>
+<li>Could panel wiring and pulling wire be combined as “wiring”? Could chipping concrete and grinding concrete be”concrete work”? Could building and stripping forms be “formwork”?</li>
+</ul></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="exposure-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="exposure-metrics">Exposure metrics</h3>
+<p>How we quantify/define exposure</p>
+<p><img src="images/clipboard-3087801286.png" class="img-fluid" style="width:75.0%"></p>
+<div class="custom-footer">
+<p>WR Ott, AC Steinemann, LA Wallace, 2007</p>
+</div>
+<hr>
+</section>
+<section id="examples-of-exposure-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="examples-of-exposure-metrics">Examples of exposure metrics</h3>
+<p><img src="images/clipboard-86932104.png" class="img-fluid" style="width:95.0%"></p>
+<div class="custom-footer">
+<p>Nieuwenhuijsen, Lowson, Venables, Newman Taylor, 1995</p>
+</div>
+<hr>
+</section>
+<section id="examples-of-exposure-metrics-applied-to-noise" class="level3">
+<h3 class="anchored" data-anchor-id="examples-of-exposure-metrics-applied-to-noise">Examples of exposure metrics (applied to noise)</h3>
+<p>Average exposure</p>
+<p><span class="math inline">\(L_{Aeq,T} = 10\cdot\text{log}[\frac{1}{T}\sum\limits_{i=1}^{N}t_i\cdot10^{L_{Ai}/10}]\)</span></p>
+<p>Where</p>
+<ul>
+<li><p><span class="math inline">\(T\)</span> is total duration</p></li>
+<li><p><span class="math inline">\(t_i\)</span> is an interval within duration</p></li>
+<li><p><span class="math inline">\(N\)</span> is total number of intervals</p></li>
+<li><p><span class="math inline">\(L_A\)</span> is A-weighted noise level</p></li>
+</ul>
+<p>Note: this is the level in the <code>WorkLEQdBA</code> variable</p>
+<p><img src="images/clipboard-271622889.png" class="img-fluid" style="width:50.0%"></p>
+<div class="custom-footer">
+<p>Chapter 3, AIHA Noise Manual, 2022</p>
+</div>
+<hr>
+</section>
+<section id="average-vs-time-weighted-average-twa" class="level3">
+<h3 class="anchored" data-anchor-id="average-vs-time-weighted-average-twa">Average vs Time-Weighted Average (TWA)</h3>
+<p>TWA normalizes measurements to a standard exposure (typically 8 hours)</p>
+<p><span class="math display">\[
+L_{A8hn} = 10 \cdot \text{log}[\frac{1}{8}\int_0^T 10^{L_A(t)/10}dt] = L_{Aeq,T} + 10 \cdot \text{log}(\frac{T}{8})
+\]</span></p>
+<p>Where</p>
+<ul>
+<li><p><span class="math inline">\(L_{A8hn}\)</span> = 8-hour equivalent exposure</p></li>
+<li><p><span class="math inline">\(T\)</span> is duration of exposure (in hours)</p></li>
+</ul>
+<p>Note: you have duration of exposure in minutes</p>
+<div class="custom-footer">
+<p>Chapter 3, AIHA Noise Manual, 2022</p>
+</div>
+<hr>
+</section>
+<section id="why-convert-average-to-twa" class="level3">
+<h3 class="anchored" data-anchor-id="why-convert-average-to-twa">Why convert average to TWA?</h3>
+<p>Allows for direct comparison of exposures measured over different periods</p>
+<p>For example:</p>
+<p><img src="images/clipboard-3228937960.png" class="img-fluid" style="width:90.0%"></p>
+<p>Both of these exposures have the same LEQ average</p>
+<p>However, TWA for right-hand exposure would be 2X as high, since monitoring duration is 2X as long</p>
+<hr>
+</section>
+<section id="peakiness-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="peakiness-metrics">Peakiness metrics</h3>
+<p>Ratio of peak or maximum to average?</p>
+<p><img src="images/clipboard-2981239824.png" class="img-fluid" style="width:90.0%"></p>
+<div class="custom-footer">
+<p>Moretto A, <em>Handbook Clin Neurol</em>, 2015</p>
+</div>
+<hr>
+</section>
+<section id="example-of-exposure-metrics-applied-to-noise" class="level3">
+<h3 class="anchored" data-anchor-id="example-of-exposure-metrics-applied-to-noise">Example of exposure metrics (applied to noise)</h3>
+<p>Ratio exposure (peakiness)</p>
+<p><span class="math display">\[
+\text{Ratio of }L_{MAX}/L_{EQ} = \frac{L_{MAX(\text{in dBA})}}{L_{EQ(\text{in dBA})}}
+\]</span></p>
+<p>Provides summary of highest exposure during measurement to average exposure during measurement</p>
+<hr>
+</section>
+<section id="example-relationships-between-exposure-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="example-relationships-between-exposure-metrics">Example relationships between exposure metrics</h3>
+<p><img src="images/clipboard-3517829101.png" class="img-fluid" style="width:90.0%"></p>
+<div class="custom-footer">
+<p>Nieuwenhuijsen, Lowson, Venables, Newman Taylor, 1995</p>
+</div>
+<hr>
+</section>
+<section id="example-relationships-between-exposure-metrics-1" class="level3">
+<h3 class="anchored" data-anchor-id="example-relationships-between-exposure-metrics-1">Example relationships between exposure metrics</h3>
+<ul>
+<li><p>Created composite index of exposure</p>
+<ul>
+<li>At area level, not personal</li>
+</ul></li>
+<li><p>Also allows for assessment of correlations between combinations of exposures</p></li>
+</ul>
+<p><img src="images/clipboard-2824868426.png" class="img-fluid" style="width:50.0%"></p>
+<p><img src="images/clipboard-3827012114.png" class="img-fluid" style="width:60.0%"></p>
+<hr>
+</section>
+<section id="relationship-of-annual-exposure-metrics-by-person" class="level3">
+<h3 class="anchored" data-anchor-id="relationship-of-annual-exposure-metrics-by-person">Relationship of annual exposure metrics by person</h3>
+<p><strong>Question: do we want these to be highly or poorly correlated?</strong></p>
+<p><img src="images/clipboard-2348277182.png" class="img-fluid" style="width:80.0%"></p>
+<div class="custom-footer">
+<p>Seixas, Neitzel, Sheppard, Goldman, 2004</p>
+</div>
+<hr>
+</section>
+<section id="metrics---agent-of-interest" class="level3">
+<h3 class="anchored" data-anchor-id="metrics---agent-of-interest">Metrics - agent of interest</h3>
+<p><img src="images/clipboard-3048216689.png" class="img-fluid" style="width:90.0%"></p>
+<div class="custom-footer">
+<p>Friesen et al, 2007</p>
+</div>
+<hr>
+</section>
+<section id="metrics---average-and-variability" class="level3">
+<h3 class="anchored" data-anchor-id="metrics---average-and-variability">Metrics - average and variability</h3>
+<p><img src="images/clipboard-1350620585.png" class="img-fluid" style="width:85.0%"></p>
+<div class="custom-footer">
+<p>Seixas, Neitzel, Stover, Sheppard, Feeney, Mills, Kujawa, 2012</p>
+</div>
+<hr>
+</section>
+<section id="combination-of-exposure-groups-and-exposure-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="combination-of-exposure-groups-and-exposure-metrics">Combination of exposure groups and exposure metrics</h3>
+<p><img src="images/clipboard-1787800797.png" class="img-fluid" style="width:95.0%"></p>
+<div class="custom-footer">
+<p>Seixas, Neitzel, Sheppard, Goldman, 2004</p>
+</div>
+<hr>
+</section>
+<section id="metrics-and-exposure-limits" class="level3">
+<h3 class="anchored" data-anchor-id="metrics-and-exposure-limits">Metrics and exposure limits</h3>
+<p><img src="images/clipboard-2014163290.png" class="img-fluid" style="width:75.0%"></p>
+<div class="custom-footer">
+<p>AIHA, <em>Strategy for Assessing and Managing Occupational Exposures</em>, 3rd ed, 2006</p>
+</div>
+<hr>
+</section>
+<section id="a-bit-more-on-data-cleaning" class="level3">
+<h3 class="anchored" data-anchor-id="a-bit-more-on-data-cleaning">A bit more on data cleaning</h3>
+<p>Example of how to treat missing data</p>
+<p><img src="images/clipboard-2573739037.png" class="img-fluid" style="width:80.0%"></p>
 <div class="custom-footer">
 <p>Davies, Teschke, Kennedy, Hodgson, Demers, 2008</p>
 </div>
 <hr>
 </section>
-<section id="individual-level-assessment" class="level3">
-<h3 class="anchored" data-anchor-id="individual-level-assessment">Individual-level assessment</h3>
-<ul>
-<li><p>Exposure varies greatly over time and space</p></li>
-<li><p>Measure individuals’ exposures</p>
-<ul>
-<li><p>Use repeated measurements on individual to calculate individual average (only their data)</p></li>
-<li><p>Often considered gold standard approach</p></li>
-</ul></li>
-</ul>
-<p><img src="images/clipboard-1964007746.png" class="img-fluid" style="width:50.0%"></p>
+<section id="example-data-cleaning" class="level3">
+<h3 class="anchored" data-anchor-id="example-data-cleaning">Example: data cleaning</h3>
+<p><img src="images/clipboard-1905774284.png" class="img-fluid"></p>
 <div class="custom-footer">
-<p>Ignacio and Bullock, AIHA, 2006</p>
+<p>Seias, Neitzel, Sheppard, Goldman, 2004</p>
 </div>
 <hr>
 </section>
-<section id="question" class="level3">
-<h3 class="anchored" data-anchor-id="question">Question</h3>
-<p>If individual-level approach is gold standard, come up with <strong>at least two reasons</strong> we might want to create exposure groups?</p>
-<hr>
-</section>
-<section id="reasons-we-might-not-want-individual-level-assessments" class="level3">
-<h3 class="anchored" data-anchor-id="reasons-we-might-not-want-individual-level-assessments">Reasons we might not want individual-level assessments</h3>
+<section id="back-to-r" class="level3">
+<h3 class="anchored" data-anchor-id="back-to-r">Back to R</h3>
 <ul>
-<li><p>Even with repeated measurements, measured average level is at best approximation of true exposure</p>
+<li><p>What exposure metrics can we look at in our data?</p></li>
+<li><p>Average and TWA</p>
 <ul>
-<li>N of repeated measurements per individual usually small (scarcity of data)</li>
+<li><p>How to compute TWA?</p></li>
+<li><p>By individual? By group?</p></li>
 </ul></li>
-<li><p>Higher within-person variability and/or smaller inter-person variability = more attenuation of exposure-response relationship</p></li>
-<li><p>Logistical/financial challenges</p></li>
-<li><p>Lack of direct access to individuals</p></li>
-</ul>
-<hr>
-</section>
-<section id="exposure-groups" class="level3">
-<h3 class="anchored" data-anchor-id="exposure-groups">Exposure groups</h3>
+<li><p>Maximum</p>
 <ul>
-<li><p>To address scarce individual data, we commonly pool data across individuals</p>
-<ul>
-<li>Create group estimates</li>
+<li>By individual? By group?</li>
 </ul></li>
-<li><p>Increased amount of data in groups reduces random variability associated with estimate</p></li>
-<li><p>Apply group estimates to individuals who likely have similar exposures</p>
+<li><p>Peakiness metric?</p>
 <ul>
-<li>May not be truly applicable to all individuals in group</li>
+<li><p>How to compute peakiness?</p></li>
+<li><p>Maximum / average?</p></li>
 </ul></li>
 </ul>
 <hr>
 </section>
-<section id="group-level-assessment" class="level3">
-<h3 class="anchored" data-anchor-id="group-level-assessment">Group level assessment</h3>
-<ul>
-<li><p>Create subgroups based on common features of exposure</p>
-<ul>
-<li><p>Ideally, all workers within each group measured</p></li>
-<li><p>Must consider between-group, within-group, within-individual variability</p></li>
-</ul></li>
-</ul>
-<div class="custom-footer">
-<p>Tielemans, Kupper, Kromhout, Heederik, Houba, 1998</p>
-</div>
-<hr>
-</section>
-<section id="advantages-of-grouping" class="level3">
-<h3 class="anchored" data-anchor-id="advantages-of-grouping">Advantages of grouping</h3>
-<ul>
-<li><p>Often more effective than individual-level assessment</p>
-<ul>
-<li>Especially when temporal variability large</li>
-</ul></li>
-<li><p>Logistically less demanding than individual approach</p></li>
-<li><p>Should result in almost unbiased estimated coefficients of exposure-response relationship</p>
-<ul>
-<li>Attenuation very small with grouped exposure data</li>
-</ul></li>
-</ul>
-<hr>
-</section>
-<section id="grouping-and-attenuation" class="level3">
-<h3 class="anchored" data-anchor-id="grouping-and-attenuation">Grouping and attenuation</h3>
-<p><img src="images/clipboard-1470062659.png" class="img-fluid" style="width:95.0%"></p>
-<div class="custom-footer">
-<p>Seixas and Sheppard, 1996</p>
-</div>
-<hr>
-</section>
-<section id="exposure-groups-1" class="level3">
-<h3 class="anchored" data-anchor-id="exposure-groups-1">Exposure groups</h3>
-<ul>
-<li><p>Originally “Homogeneous exposure groups” (HEGs)</p></li>
-<li><p>Changed to “Similar exposure groups” (SEGs)</p></li>
-<li><p>Groups frequently defined by common structures</p>
-<ul>
-<li>E.g., job title, work area, activity, behavior, agent, street, etc Individuals in different groups assumed to have different exposures</li>
-</ul></li>
-<li><p>Individuals within groups also have different exposures</p>
-<ul>
-<li>Differences in activities, behaviors, protective equipment</li>
-</ul></li>
-</ul>
-<hr>
-</section>
-<section id="exposure-groups-2" class="level3">
-<h3 class="anchored" data-anchor-id="exposure-groups-2">Exposure groups</h3>
-<ul>
-<li><p>Statistical measures of central tendency often applied to groups</p>
-<ul>
-<li><p>Mean, median, mode</p></li>
-<li><p>We treat every individual in the group as though they are exposed at the this measure of central tendency</p></li>
-</ul></li>
-<li><p>For categorical exposures, we assume groups are exposed (1) or unexposed (0)</p>
-<ul>
-<li>Assumes zero variability in groups</li>
-</ul></li>
-</ul>
-<hr>
-</section>
-<section id="what-do-we-need-to-think-about-when-grouping-people" class="level3">
-<h3 class="anchored" data-anchor-id="what-do-we-need-to-think-about-when-grouping-people">What do we need to think about when grouping people?</h3>
-<ul>
-<li><p>Specificity</p>
-<ul>
-<li><p>Summarizes variance within group</p></li>
-<li><p>Small variance = highly specific</p></li>
-</ul></li>
-<li><p>Precision</p>
-<ul>
-<li><p>Summarizes variance between groups</p></li>
-<li><p>Large variance = highly precise</p></li>
-</ul></li>
-</ul>
-<hr>
-</section>
-<section id="exposure-grouping-goals" class="level3">
-<h3 class="anchored" data-anchor-id="exposure-grouping-goals">Exposure grouping goals</h3>
+<section id="r" class="level3">
+<h3 class="anchored" data-anchor-id="r">R</h3>
 <div class="columns-only-on-slides">
 <div class="slide-column">
-<p>Goal 1: create groups with retain true individual differences (specificity)</p>
-<ul>
-<li>i.e., within-group variability small compared to between-group variability</li>
-</ul>
-<p><img src="images/clipboard-3124679093.png" class="img-fluid" style="width:90.0%"></p>
+<p><span class="math inline">\(\text{TWA}=L_{EQ}+\text{log10(Runtime/480)}\)</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">TWA =</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      work_leq_d_ba <span class="sc">+</span> <span class="dv">10</span><span class="sc">*</span><span class="fu">log10</span>(measured_shift_length_mins<span class="sc">/</span><span class="dv">480</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><span class="math inline">\(\text{Peakiness}=L_{MAX}/L_{EQ}\)</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">peakiness =</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>      lmax_d_ba_shift<span class="sc">/</span>work_leq_d_ba</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </div>
 <div class="slide-column">
-<p>Goal 2: create groups that are as large as possible (precision)</p>
-<ul>
-<li>Leads to exposure estimates that are more precise than individual worker means</li>
-</ul>
-<p><img src="images/clipboard-1626660454.png" class="img-fluid" style="width:90.0%"></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ehs655 <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(work_leq_d_ba, measured_shift_length_mins, TWA, peakiness)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 201 × 4
+   work_leq_d_ba measured_shift_length_mins   TWA peakiness
+           &lt;dbl&gt;                      &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+ 1          91.1                        480  91.1      1.22
+ 2          91.4                        478  91.4      1.21
+ 3          92.3                        520  92.6      1.32
+ 4          92                          522  92.4      1.33
+ 5          94.8                        540  95.3      1.17
+ 6          94.3                        538  94.8      1.18
+ 7          90.8                        504  91.0      1.30
+ 8          91.1                        502  91.3      1.31
+ 9          84.9                        410  84.2      1.38
+10          85.4                        412  84.7      1.37
+# ℹ 191 more rows</code></pre>
 </div>
 </div>
-<hr>
-</section>
-<section id="specificity-vs-precision-from-the-reading" class="level3">
-<h3 class="anchored" data-anchor-id="specificity-vs-precision-from-the-reading">Specificity vs precision (from the reading)</h3>
-<p><img src="images/clipboard-2110058871.png" class="img-fluid" style="width:80.0%"></p>
-<div class="custom-footer">
-<p>Werner, Attfield, 2000</p>
-</div>
-<hr>
-</section>
-<section id="grouping-strategies" class="level3">
-<h3 class="anchored" data-anchor-id="grouping-strategies">Grouping strategies</h3>
-<ul>
-<li><p><strong><em>A priori</em></strong></p>
-<ul>
-<li>Grouping takes place <u><strong>before</strong></u> measurement is made</li>
-</ul></li>
-<li><p><strong><em>A posteriori</em></strong></p>
-<ul>
-<li>Grouping takes place <u><strong>after</strong></u> measurement is made</li>
-</ul></li>
-</ul>
-<hr>
-</section>
-<section id="ways-to-create-exposure-groups" class="level3">
-<h3 class="anchored" data-anchor-id="ways-to-create-exposure-groups">Ways to create exposure groups</h3>
-<p><strong>Group by</strong></p>
-<ul>
-<li><p>Activity type</p></li>
-<li><p>Process</p></li>
-<li><p>Agent</p></li>
-<li><p>Exposure pathway</p></li>
-<li><p>Location</p></li>
-<li><p>Time</p></li>
-<li><p>Etc.</p></li>
-</ul>
-<p><img src="images/clipboard-3578502418.png" class="img-fluid" style="width:50.0%"></p>
-<hr>
-</section>
-<section id="example-grouping-by-agent" class="level3">
-<h3 class="anchored" data-anchor-id="example-grouping-by-agent">Example: grouping by agent</h3>
-<p><strong>Note variation in group size, exposure range, repeated measures</strong></p>
-<p><img src="images/clipboard-427981866.png" class="img-fluid" style="width:80.0%"></p>
-<hr>
-</section>
-<section id="example-grouping-by-job-title" class="level3">
-<h3 class="anchored" data-anchor-id="example-grouping-by-job-title">Example: grouping by job title</h3>
-<p><img src="images/clipboard-1000035630.png" class="img-fluid" style="width:95.0%"></p>
-<div class="custom-footer">
-<p>Lewne, Plato, Bellander, Alderling, Gustavsson, 2010</p>
-</div>
-<hr>
-</section>
-<section id="example---grouping-outcomes" class="level3">
-<h3 class="anchored" data-anchor-id="example---grouping-outcomes">Example - grouping outcomes</h3>
-<div class="columns-only-on-slides">
-<div class="slide-column">
-<p><strong>Possibilities</strong></p>
-<ul>
-<li><p>Within group variability &gt; between group variability</p></li>
-<li><p>Between group variability &gt; within group variability</p></li>
-</ul>
-<p><span style="color: blue;">Question: which of these grouping approaches is preferred?</span></p>
-</div>
-<div class="slide-column">
-<p><img src="images/clipboard-826240242.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
-<div class="custom-footer">
-<p>Rappaport, Kromhout, Symanski, 1993</p>
-</div>
-<hr>
-</section>
-<section id="group-size-and-attenuation-bias" class="level3">
-<h3 class="anchored" data-anchor-id="group-size-and-attenuation-bias">Group size and attenuation bias</h3>
-<p><strong>Reducing attenuation bias</strong></p>
-<ul>
-<li>Increasing number of subjects per group can be as effective as increasing number of measurements per subject</li>
-</ul>
-<hr>
-</section>
-<section id="question-1" class="level3">
-<h3 class="anchored" data-anchor-id="question-1">Question</h3>
-<p>What do you think of this as a grouping strategy, and why?</p>
-<p><img src="images/clipboard-2545755670.png" class="img-fluid" style="width:60.0%"></p>
 
 
 </section>
@@ -1029,14 +1099,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../../01-lectures/02-exposures/06-data-cleaning/data_cleaning.html" class="pagination-link" aria-label="6 Data cleaning">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">6 Data cleaning</span>
+      <a href="../../../01-lectures/02-exposures/07-exposure-groups/exposure_groups.html" class="pagination-link" aria-label="7 Exposure grouping">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">7 Exposure grouping</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../../01-lectures/02-exposures/08-exposure-metrics/exposure_metrics.html" class="pagination-link" aria-label="8 Exposure metrics">
-        <span class="nav-page-text">8 Exposure metrics</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

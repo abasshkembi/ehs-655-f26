@@ -44,3 +44,5 @@ This webpage accompanies the lectures to EHS 655: Human Exposure Analysis taught
 [6 Data cleaning](/01-lectures/02-exposures/06-data-cleaning/data_cleaning.qmd)
 
 [7 Exposure grouping strategies](/01-lectures/02-exposures/07-exposure-groups/exposure_groups.qmd)
+
+[8 Exposure metrics](/01-lectures/02-exposures/08-exposure-metrics/exposure_metrics.qmd)
