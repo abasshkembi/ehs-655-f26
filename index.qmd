@@ -46,3 +46,5 @@ This webpage accompanies the lectures to EHS 655: Human Exposure Analysis taught
 [7 Exposure grouping strategies](/01-lectures/02-exposures/07-exposure-groups/exposure_groups.qmd)
 
 [8 Exposure metrics](/01-lectures/02-exposures/08-exposure-metrics/exposure_metrics.qmd)
+
+[9 Biomarkers vs environmental exposures, total exposure](/01-lectures/02-exposures/09-biomarkers/biomarkers.qmd)

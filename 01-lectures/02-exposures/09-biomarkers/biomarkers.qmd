@@ -1,0 +1,394 @@
+---
+title: "Biomarkers vs. environmental measurements, total exposure (Lecture 9)"
+---
+
+::: {.content-visible when-format="revealjs"}
+
+------------------------------------------------------------------------
+
+## Lecture 9: Biomarkers vs. environmental measures, total exposure
+
+------------------------------------------------------------------------
+:::
+
+::: {.content-hidden when-format="revealjs"}
+```{r, message=FALSE, warning=FALSE}
+#| code-fold: true
+#| code-summary: "Click to view catchup R code"
+
+# set your working directory with `setwd()`!!
+
+# load packages we need
+library(tidyverse) # data manipulation and plotting
+library(readxl) # reading in our excel dataset
+library(janitor) # cleaning columns names and more
+
+# set the theme of all ggplots to `theme_minimal()`
+theme_set(theme_minimal())
+
+# read dataset excel file and make sure it's a tibble
+ehs655 <- read_xlsx("Dataset V1.xlsx") %>% as_tibble()
+
+# make all column names lowercase and snake_case
+ehs655 <- ehs655 %>% clean_names()
+
+# clean job title variable to remove misspellings
+ehs655 <- ehs655 %>%
+  mutate(
+    job_title = 
+      case_when(
+        job_title == "Lborer" ~ "Laborer",
+        job_title == "Laboerr" ~ "Laborer",
+        job_title == "Electrican" ~ "Electrician",
+        job_title == "Carpentr" ~ "Carpenter",
+        job_title == "Operaing engineer" ~ "Operating engineer",
+        job_title == "Ironworkr" ~ "Ironworker",
+        job_title == "" ~ NA,
+        .default = job_title))
+
+# clean gender variable to fix multiple classification schemes
+ehs655 <- ehs655 %>%
+  mutate(
+    gender = 
+      case_when(
+        gender == "M" ~ "Male",
+        gender == "F" ~ "Female",
+        .default = gender))
+
+# convert LEQ values <LOD to LOD/sqrt(2)
+ehs655 <- ehs655 %>%
+  mutate(work_leq_d_ba = ifelse(work_leq_d_ba < 70, 70/sqrt(2), work_leq_d_ba))
+
+# estimate time-weighted averages for each shift
+ehs655 <- ehs655 %>%
+  mutate(TWA = work_leq_d_ba + 10*log10(measured_shift_length_mins/480))
+
+# estimate peakiness for each shift
+ehs655 <- ehs655 %>%
+  mutate(peakiness = lmax_d_ba_shift/work_leq_d_ba)
+```
+:::
+
+### What we'll cover today
+
+- External measurements vs biomarkers
+
+- Total exposure assessment (with an example)
+
+------------------------------------------------------------------------
+
+### Ambient measurements vs biomarkers
+
+- We’ve focused so far on external measurements of exposures
+
+  - What about biomarkers?
+
+- Biomarkers
+
+  - Represent events or changes measured in human biological systems as result of exposure or disease
+
+![](images/clipboard-1806426651.png){width="50%"}
+
+------------------------------------------------------------------------
+
+### Several types of biomarkers
+
+![](images/clipboard-1821611691.png){width="90%"}
+
+::: custom-footer
+Manini, De Palma, Mutti, 2007
+:::
+
+------------------------------------------------------------------------
+
+### Biomarkers come in many flavors
+
+![](images/clipboard-2821882981.png){width="90%"}
+
+::: custom-footer
+Manini, De Palma, Mutti, 2007
+:::
+
+------------------------------------------------------------------------
+
+### Biomarkers of exposure
+
+![](images/clipboard-321489923.png){width="95%"}
+
+::: custom-footer
+<http://www.inchem.org/documents/ehc/ehc/ehc155.htm>
+:::
+
+------------------------------------------------------------------------
+
+### Biomarkers of susceptibility
+
+![](images/clipboard-4242884848.png){width="95%"}
+
+::: custom-footer
+<http://www.inchem.org/documents/ehc/ehc/ehc155.htm>
+:::
+
+------------------------------------------------------------------------
+
+### Biomarkers represent many exposure windows
+
+![](images/clipboard-14265935.png){width="95%"}
+
+::: custom-footer
+<http://www.inchem.org/documents/ehc/ehc/ehc155.htm>
+:::
+
+------------------------------------------------------------------------
+
+### Exercise
+
+- Imagine we have air (external) and blood (biomarker) measurements of dioxin from 10 subjects
+
+- What are two reasons we might want to focus on external measurements?
+
+- What are two reasons we might want to focus on biomarker measurements?
+
+------------------------------------------------------------------------
+
+### Sources of variability for biomarkers
+
+![](images/clipboard-304548683.png){width="75%"}
+
+::: custom-footer
+Manini, De Palma, Mutti, 2007
+:::
+
+------------------------------------------------------------------------
+
+### External measurements vs biomarkers
+
+![](images/clipboard-3951380044.png){width="75%"}
+
+::: custom-footer
+Manini, De Palma, Mutti, 2007
+:::
+
+------------------------------------------------------------------------
+
+### Advantages and limitations of biomarkers
+
+![](images/clipboard-3500599012.png){width="90%"}
+
+::: custom-footer
+WHO, 2000
+:::
+
+------------------------------------------------------------------------
+
+### Comparing ambient measures to biomarkers of exposure
+
+Note that correlations are measures of association, not agreement
+
+![](images/clipboard-3618459896.png){width="60%"}
+
+::: custom-footer
+Laohaudomchok et al, *JOEM*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Comparing ambient exposures to biomarkers of susceptibility/effect
+
+![](images/clipboard-2383802778.png){width="95%"}
+
+::: custom-footer
+Fouladi et al, *Noise Health*, 2012
+:::
+
+------------------------------------------------------------------------
+
+### Total exposure
+
+Focusing on exposure duration, frequency, and intensity for one source alone not sufficient
+
+- Need to consider across all sources
+
+![](images/clipboard-633759980.png){width="60%"}
+
+::: custom-footer
+<https://www.nap.edu/read/9767/chapter/6>
+:::
+
+------------------------------------------------------------------------
+
+### Example of total exposure assessment
+
+![](images/clipboard-2763428314.png){width="75%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Exposure data needed to understand risk of NIHL
+
+![](images/clipboard-869847170.png){width="60%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Survey respondents (N=4436)
+
+![](images/clipboard-2540161727.png){width="80%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Transit exposure
+
+![](images/clipboard-691291234.png){width="80%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Annual transit duration (hours) (N=4436)
+
+![](images/clipboard-1066235750.png){width="90%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Exposures - all transit types
+
+![](images/clipboard-4182412640.png){width="80%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Annualized transit exposures (dBA) (N=4436)
+
+![](images/clipboard-3244511008.png){width="80%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Occupational exposure
+
+![](images/clipboard-3878374066.png){width="90%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Annual work durations (hours) (N=4436)
+
+![](images/clipboard-2148881927.png){width="80%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Occupational $L_{EQ}$ levels (dBA)
+
+![](images/clipboard-1877488850.png){width="60%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Annualized occupational exposures (dBA) (N=4436)
+
+![](images/clipboard-3266935591.png){width="80%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Nonoccupational, home, and music exposures
+
+![](images/clipboard-149008095.png){width="80%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Total annual exposure
+
+![](images/clipboard-1523021151.png){width="95%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Total annual exposure
+
+![](images/clipboard-1975860914.png){width="95%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Total annual exposures (dBA) in riders (N=4436)
+
+![](images/clipboard-2403125770.png){width="80%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### % total annual exposures \>70 dBA in transit users (N=4436)
+
+![](images/clipboard-2642881034.png){width="95%"}
+
+::: custom-footer
+Neitzel et al, *Environ Sci Tech*, 2011
+:::
+
+------------------------------------------------------------------------
+
+### Challenge in cumulative risk assessment
+
+![](images/clipboard-2891696002.png)
+
+------------------------------------------------------------------------
+
+### Example: maps of different exposures of Lorraine, France
+
+![](images/clipboard-2939198298.png){width="90%"}
+
+------------------------------------------------------------------------
+
+### Example: composite exposure map of Lorraine, France
+
+![](images/clipboard-537043875.png)

@@ -34,6 +34,8 @@ website:
             text: 7 Exposure grouping
           - href: 01-lectures/02-exposures/08-exposure-metrics/exposure_metrics.qmd
             text: 8 Exposure metrics
+          - href: 01-lectures/02-exposures/09-biomarkers/biomarkers.qmd
+            text: 9 Biomarkers
 
 format:
   html:
