@@ -36,6 +36,8 @@ website:
             text: 8 Exposure metrics
           - href: 01-lectures/02-exposures/09-biomarkers/biomarkers.qmd
             text: 9 Biomarkers
+          - href: 01-lectures/02-exposures/10-measurement-error/measurement_error.qmd
+            text: 10 Measurement error
 
 format:
   html:

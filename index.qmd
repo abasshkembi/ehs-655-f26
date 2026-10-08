@@ -48,3 +48,5 @@ This webpage accompanies the lectures to EHS 655: Human Exposure Analysis taught
 [8 Exposure metrics](/01-lectures/02-exposures/08-exposure-metrics/exposure_metrics.qmd)
 
 [9 Biomarkers vs environmental exposures, total exposure](/01-lectures/02-exposures/09-biomarkers/biomarkers.qmd)
+
+[10 Measurement error](/01-lectures/02-exposures/10-measurement-error/measurement_error.qmd)
