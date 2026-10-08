@@ -50,3 +50,7 @@ This webpage accompanies the lectures to EHS 655: Human Exposure Analysis taught
 [9 Biomarkers vs environmental exposures, total exposure](/01-lectures/02-exposures/09-biomarkers/biomarkers.qmd)
 
 [10 Measurement error](/01-lectures/02-exposures/10-measurement-error/measurement_error.qmd)
+
+**Section 3: Inferential statistics and modeling**
+
+[11 Inferential statistics - t-test and ANOVA](/01-lectures/03-inferential-stats/11-ttest-anova/ttest_anova.qmd)

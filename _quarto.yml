@@ -38,6 +38,10 @@ website:
             text: 9 Biomarkers
           - href: 01-lectures/02-exposures/10-measurement-error/measurement_error.qmd
             text: 10 Measurement error
+      - section: Section 3
+        contents:
+          - href: 01-lectures/03-inferential-stats/11-ttest-anova/ttest_anova.qmd
+            text: 11 t-test & ANOVA
 
 format:
   html:
