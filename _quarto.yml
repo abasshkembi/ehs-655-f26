@@ -42,6 +42,8 @@ website:
         contents:
           - href: 01-lectures/03-inferential-stats/11-ttest-anova/ttest_anova.qmd
             text: 11 t-test & ANOVA
+          - href: 01-lectures/03-inferential-stats/12-linear-regression/linear_regression.qmd
+            text: 12 Linear regression
 
 format:
   html:
