@@ -44,6 +44,8 @@ website:
             text: 11 t-test & ANOVA
           - href: 01-lectures/03-inferential-stats/12-linear-regression/linear_regression.qmd
             text: 12 Linear regression
+          - href: 01-lectures/03-inferential-stats/14-categorical/categorical.qmd
+            text: 14 Categorical analysis
 
 format:
   html:

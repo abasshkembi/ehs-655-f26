@@ -56,3 +56,5 @@ This webpage accompanies the lectures to EHS 655: Human Exposure Analysis taught
 [11 Inferential statistics - t-test and ANOVA](/01-lectures/03-inferential-stats/11-ttest-anova/ttest_anova.qmd)
 
 [12 Inferential statistics - linear regression](/01-lectures/03-inferential-stats/12-linear-regression/linear_regression.qmd)
+
+[14 Exposure modeling - categorical analysis](/01-lectures/03-inferential-stats/14-categorical/categorical.qmd)
