@@ -242,13 +242,13 @@
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a>ehs655 <span class="ot">&lt;-</span> ehs655 <span class="sc">%&gt;%</span></span>
 <span id="cb1-2"><a aria-label="2"></a>  <span class="fu">mutate</span>(<span class="at">hours_worked_per_year =</span></span>
-<span id="cb1-3"><a aria-label="3"></a>           usual_shift_length_hours<span class="sc">*</span>usual_hours_worked_per_week<span class="sc">*</span>usual_weeks_worked_per_year)</span>
+<span id="cb1-3"><a aria-label="3"></a>           usual_hours_worked_per_week<span class="sc">*</span>usual_weeks_worked_per_year)</span>
 <span id="cb1-4"><a aria-label="4"></a></span>
 <span id="cb1-5"><a aria-label="5"></a><span class="co"># check out the data generated</span></span>
 <span id="cb1-6"><a aria-label="6"></a>ehs655 <span class="sc">%&gt;%</span> <span class="fu">pull</span>(hours_worked_per_year) <span class="sc">%&gt;%</span> <span class="fu">summary</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-   8190   12160   15750   16143   19440   27000 </code></pre>
+   1140    1520    1920    1936    2310    3060 </code></pre>
 </div>
 </div>
 </section>

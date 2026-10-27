@@ -125,7 +125,7 @@ We can estimate the number of hours each participant worked per year by combinin
 ```{r}
 ehs655 <- ehs655 %>%
   mutate(hours_worked_per_year =
-           usual_shift_length_hours*usual_hours_worked_per_week*usual_weeks_worked_per_year)
+           usual_hours_worked_per_week*usual_weeks_worked_per_year)
 
 # check out the data generated
 ehs655 %>% pull(hours_worked_per_year) %>% summary()
