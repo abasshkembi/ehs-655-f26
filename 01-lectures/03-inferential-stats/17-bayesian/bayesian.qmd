@@ -314,5 +314,5 @@ tibble(arithmetic_mean) %>%
   scale_x_discrete(drop = FALSE) +
   ylim(c(0, 100)) +
   theme(legend.position = "none") +
-  labs(x = "Exceedance Fraction Category", y = "Probability (%)")
+  labs(x = "Arithmetic Mean Category", y = "Probability (%)")
 ```
