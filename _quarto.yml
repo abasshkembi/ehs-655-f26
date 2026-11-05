@@ -50,6 +50,8 @@ website:
             text: 15 Logistic regression
           - href: 01-lectures/03-inferential-stats/16-mixed-effects/mixed_effects.qmd
             text: 16 Mixed models & probabilistic
+          - href: 01-lectures/03-inferential-stats/17-bayesian/bayesian.qmd
+            text: 17 Bayesian analysis
 
 format:
   html:
