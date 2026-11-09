@@ -52,6 +52,8 @@ website:
             text: 16 Mixed models & probabilistic
           - href: 01-lectures/03-inferential-stats/17-bayesian/bayesian.qmd
             text: 17 Bayesian analysis
+          - href: 01-lectures/03-inferential-stats/18-long-term-exposures/long_term_exposures.qmd
+            text: 18 Long-term exposures
 
 format:
   html:

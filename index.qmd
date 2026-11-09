@@ -64,3 +64,5 @@ This webpage accompanies the lectures to EHS 655: Human Exposure Analysis taught
 [16 Exposure modeling - mixed effects models and probabilistic analysis](/01-lectures/03-inferential-stats/16-mixed-effects/mixed_effects.qmd)
 
 [17 Exposure modeling: Bayesian analysis](/01-lectures/03-inferential-stats/17-bayesian/bayesian.qmd)
+
+[18 Moving from single shift to long term exposures](/01-lectures/03-inferential-stats/18-long-term-exposures/long_term_exposures.qmd)
